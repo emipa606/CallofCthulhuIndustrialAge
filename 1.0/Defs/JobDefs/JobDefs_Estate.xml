@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <JobDef>
+    <defName>PlayGramophone</defName>
+    <driverClass>IndustrialAge.Objects.JobDriver_PlayGramophone</driverClass>
+    <reportString>Winding up gramophone.</reportString>
+  </JobDef>
+  <JobDef>
+    <defName>ListenToGramophone</defName>
+    <driverClass>IndustrialAge.Objects.JobDriver_ListenToGramophone</driverClass>
+    <reportString>listening to gramophone.</reportString>
+    <joyDuration>8000</joyDuration>
+    <joyMaxParticipants>8</joyMaxParticipants>
+    <joyGainRate>1.2</joyGainRate>
+    <joyKind>Meditative</joyKind>
+  </JobDef>
+  <JobDef>
+    <defName>PlayAndListenToGramophone</defName>
+    <driverClass>IndustrialAge.Objects.JobDriver_AutoPlayListenGramophone</driverClass>
+    <reportString>listening to gramophone.</reportString>
+    <joyDuration>8000</joyDuration>
+    <joyMaxParticipants>8</joyMaxParticipants>
+    <joyGainRate>1.2</joyGainRate>
+    <joyKind>Meditative</joyKind>
+  </JobDef>
+  <JobDef>
+    <defName>TurnOffGramophone</defName>
+    <driverClass>IndustrialAge.Objects.JobDriver_TurnOffGramophone</driverClass>
+    <reportString>turning off gramophone.</reportString>
+  </JobDef>
+</Defs>
