@@ -46,6 +46,7 @@
     <Compile Include="Graphic_CustomFlicker.cs" />
     <Compile Include="JobDriver_AutoPlayListenGramophone.cs" />
     <Compile Include="JobDriver_PlayInstrument.cs" />
+    <Compile Include="RoomRequirement_ThingCountAnyOf.cs" />
     <Compile Include="TexButton.cs" />
     <Compile Include="ThingWithComps_Glower.cs" />
     <Compile Include="Tools.cs" />
