@@ -24,15 +24,21 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Prefer32Bit>false</Prefer32Bit>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(MSBuildProjectDirectory)\..\..\..\..\RimWorldWin64.exe</StartProgram>
+    <StartArguments>"-savedatafolder=$(MSBuildProjectDirectory)\TestSaves"</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\1.2\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(MSBuildProjectDirectory)\..\..\..\..\RimWorldWin64.exe</StartProgram>
+    <StartArguments>"-savedatafolder=$(MSBuildProjectDirectory)\TestSaves"</StartArguments>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Building_Radio.cs" />
