@@ -1,4 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
+  <Estate_RoomRequirementAllChandeliersMustBeLit>all chandeliers must be lit</Estate_RoomRequirementAllChandeliersMustBeLit>
+  <Estate_RoomRequirementAllCandelabraMustBeLit>all candelabra must be lit</Estate_RoomRequirementAllCandelabraMustBeLit>
+  <Estate_RoomRequirementAllRoyalChandeliersMustBeLit>all royal chandeliers must be lit</Estate_RoomRequirementAllRoyalChandeliersMustBeLit>
+  <Estate_RoomRequirementTotal>{0} in total of any of these:</Estate_RoomRequirementTotal>
 
 </LanguageData>
