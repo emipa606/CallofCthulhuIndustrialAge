@@ -27,7 +27,7 @@ namespace IndustrialAge.Objects
 
         protected override Job TryGivePlayJob(Pawn pawn, Thing t)
         {
-            if (!ListenBuildingUtility.TryFindBestListenCell(t, pawn, this.def.desireSit, out IntVec3 vec, out Building t2))
+            if (!ListenBuildingUtility.TryFindBestListenCell(t, pawn, def.desireSit, out IntVec3 vec, out Building t2))
             {
                 if (!ListenBuildingUtility.TryFindBestListenCell(t, pawn, false, out vec, out t2))
                 {
@@ -39,11 +39,13 @@ namespace IndustrialAge.Objects
                 if (vec == t2.Position)
                 {
                     if (!pawn.Map.reservationManager.CanReserve(pawn, t2))
+                    {
                         return null;
+                    }
                 }
             }
 
-            return new Job(this.def.jobDef, t, vec, t2);
+            return new Job(def.jobDef, t, vec, t2);
         }
     }
 }

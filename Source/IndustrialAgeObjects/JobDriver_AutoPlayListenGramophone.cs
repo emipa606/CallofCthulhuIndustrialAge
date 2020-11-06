@@ -28,7 +28,7 @@ namespace IndustrialAge.Objects
         {
             get
             {
-                if (!(this.pawn.jobs.curJob.GetTarget(TargetIndex.A).Thing is Building_Gramophone result))
+                if (!(pawn.jobs.curJob.GetTarget(TargetIndex.A).Thing is Building_Gramophone result))
                 {
                     throw new InvalidOperationException("Gramophone is missing.");
                 }
@@ -40,16 +40,8 @@ namespace IndustrialAge.Objects
         public TargetIndex ChairIndex = TargetIndex.B;
         public TargetIndex BedIndex = TargetIndex.C;
 
-        //How long will it take to wind up the gramophone?
-        private readonly int duration = 400;
-        protected int Duration
-        {
-            get
-            {
-                return duration;
-            }
-        }
-        
+        protected int Duration { get; } = 400;
+
         private string report = "";
         public override string GetReport()
         {
@@ -70,7 +62,10 @@ namespace IndustrialAge.Objects
             //Wait a minute, is this thing already playing?
             if (!Gramophone.IsOn())
             {
-                if (this.job.targetA.Thing is Building_Radio) report = "playing the radio.";
+                if (job.targetA.Thing is Building_Radio)
+                {
+                    report = "playing the radio.";
+                }
 
                 // Toil 1:
                 // Reserve Target (TargetPack A is selected (It has the info where the target cell is))
@@ -82,13 +77,13 @@ namespace IndustrialAge.Objects
 
                 // Toil 3:
                 // Wind up the gramophone
-                Toil wind = new Toil
+                var wind = new Toil
                 {
                     defaultCompleteMode = ToilCompleteMode.Delay,
-                    defaultDuration = this.Duration
+                    defaultDuration = Duration
                 };
                 wind.WithProgressBarToilDelay(TargetIndex.A, false, -0.5f);
-                if (this.job.targetA.Thing is Building_Radio)
+                if (job.targetA.Thing is Building_Radio)
                 {
                     wind.PlaySustainerOrSound(DefDatabase<SoundDef>.GetNamed("Estate_RadioSeeking"));
                 }
@@ -105,12 +100,12 @@ namespace IndustrialAge.Objects
                 // Toil 4:
                 // Play music.
 
-                Toil toilPlayMusic = new Toil
+                var toilPlayMusic = new Toil
                 {
                     defaultCompleteMode = ToilCompleteMode.Instant,
                     initAction = delegate
                     {
-                        Gramophone.PlayMusic(this.pawn);
+                        Gramophone.PlayMusic(pawn);
                     }
                 };
                 yield return toilPlayMusic;
@@ -125,7 +120,7 @@ namespace IndustrialAge.Objects
                 yield return Toils_Bed.ClaimBedIfNonMedical(TargetIndex.C, TargetIndex.None);
                 yield return Toils_Bed.GotoBed(TargetIndex.C);
                 toil = Toils_LayDown.LayDown(TargetIndex.C, true, false, true, true);
-                toil.AddFailCondition(() => !this.pawn.Awake());
+                toil.AddFailCondition(() => !pawn.Awake());
 
             }
             else
@@ -140,12 +135,15 @@ namespace IndustrialAge.Objects
             }
             toil.AddPreTickAction(delegate
             {
-                this.ListenTickAction();
-                if (this.job.targetA.Thing is Building_Radio) report = "Listening to the radio.";
+                ListenTickAction();
+                if (job.targetA.Thing is Building_Radio)
+                {
+                    report = "Listening to the radio.";
+                }
             });
             toil.AddFinishAction(delegate
             {
-                JoyUtility.TryGainRecRoomThought(this.pawn);
+                JoyUtility.TryGainRecRoomThought(pawn);
             });
             toil.defaultCompleteMode = ToilCompleteMode.Delay;
             toil.defaultDuration = base.job.def.joyDuration;
@@ -160,11 +158,11 @@ namespace IndustrialAge.Objects
                 base.EndJobWith(JobCondition.Incompletable);
                 return;
             }
-            this.pawn.rotationTracker.FaceCell(base.TargetA.Cell);
-            this.pawn.GainComfortFromCellIfPossible();
-            float statValue = base.TargetThingA.GetStatValue(StatDefOf.JoyGainFactor, true);
-            float extraJoyGainFactor = statValue;
-            JoyUtility.JoyTickCheckEnd(this.pawn, JoyTickFullJoyAction.EndJob, extraJoyGainFactor);
+            pawn.rotationTracker.FaceCell(base.TargetA.Cell);
+            pawn.GainComfortFromCellIfPossible();
+            var statValue = base.TargetThingA.GetStatValue(StatDefOf.JoyGainFactor, true);
+            var extraJoyGainFactor = statValue;
+            JoyUtility.JoyTickCheckEnd(pawn, JoyTickFullJoyAction.EndJob, extraJoyGainFactor);
         }
 
     }

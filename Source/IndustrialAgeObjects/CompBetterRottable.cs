@@ -10,7 +10,7 @@ namespace IndustrialAge.Objects
     {
         public override string CompInspectStringExtra()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             switch (base.Stage)
             {
                 case RotStage.Fresh:
@@ -23,23 +23,23 @@ namespace IndustrialAge.Objects
                     sb.AppendLine("RotStateDessicated".Translate());
                     break;
             }
-            float num = (float) this.PropsRot.TicksToRotStart - base.RotProgress;
+            var num = (float) PropsRot.TicksToRotStart - base.RotProgress;
             if (num > 0f)
             {
-                float num2 = GenTemperature.GetTemperatureForCell(this.parent.PositionHeld, this.parent.Map);
-                List<Thing> thingList = GridsUtility.GetThingList(this.parent.PositionHeld, this.parent.Map);
-                for (int i = 0; i < thingList.Count; i++)
+                var num2 = GenTemperature.GetTemperatureForCell(parent.PositionHeld, parent.Map);
+                List<Thing> thingList = GridsUtility.GetThingList(parent.PositionHeld, parent.Map);
+                for (var i = 0; i < thingList.Count; i++)
                 {
                     if (thingList[i] is Building_Refrigerator)
                     {
-                        Building_Refrigerator building_Refrigerator = thingList[i] as Building_Refrigerator;
+                        var building_Refrigerator = thingList[i] as Building_Refrigerator;
                         num2 = building_Refrigerator.CurrentTemp;
                         break;
                     }
                 }
                 num2 = (float) Mathf.RoundToInt(num2);
-                float num3 = GenTemperature.RotRateAtTemperature(num2);
-                int ticksUntilRotAtCurrentTemp = base.TicksUntilRotAtCurrentTemp;
+                var num3 = GenTemperature.RotRateAtTemperature(num2);
+                var ticksUntilRotAtCurrentTemp = base.TicksUntilRotAtCurrentTemp;
                 if (num3 < 0.001f)
                 {
                     sb.Append("CurrentlyFrozen".Translate() + ".");
@@ -67,14 +67,14 @@ namespace IndustrialAge.Objects
 
         public override void CompTickRare()
         {
-            if (this.parent.MapHeld != null && this.parent.Map != null)
+            if (parent.MapHeld != null && parent.Map != null)
             {
-                float rotProgress = this.RotProgress;
-                float num = 1f;
-                float temperatureForCell =
-                    GenTemperature.GetTemperatureForCell(this.parent.PositionHeld, this.parent.MapHeld);
-                List<Thing> list = this.parent.MapHeld.thingGrid.ThingsListAtFast(this.parent.PositionHeld);
-                for (int i = 0; i < list.Count; i++)
+                var rotProgress = RotProgress;
+                var num = 1f;
+                var temperatureForCell =
+                    GenTemperature.GetTemperatureForCell(parent.PositionHeld, parent.MapHeld);
+                List<Thing> list = parent.MapHeld.thingGrid.ThingsListAtFast(parent.PositionHeld);
+                for (var i = 0; i < list.Count; i++)
                 {
                     if (list[i] is Building_Refrigerator)
                     {
@@ -85,35 +85,35 @@ namespace IndustrialAge.Objects
                 }
 
                 num *= GenTemperature.RotRateAtTemperature(temperatureForCell);
-                this.RotProgress += Mathf.Round(num * 250f);
-                if (this.Stage == RotStage.Rotting && this.PropsRot.rotDestroys)
+                RotProgress += Mathf.Round(num * 250f);
+                if (Stage == RotStage.Rotting && PropsRot.rotDestroys)
                 {
-                    if (this.parent.IsInAnyStorage() && this.parent.SpawnedOrAnyParentSpawned)
+                    if (parent.IsInAnyStorage() && parent.SpawnedOrAnyParentSpawned)
                     {
                         Messages.Message("MessageRottedAwayInStorage".Translate(new object[]
                             {
-                                this.parent.Label
-                            }).CapitalizeFirst(), new TargetInfo(this.parent.PositionHeld, this.parent.MapHeld, false),
+                                parent.Label
+                            }).CapitalizeFirst(), new TargetInfo(parent.PositionHeld, parent.MapHeld, false),
                             MessageTypeDefOf.NegativeEvent, true);
                         LessonAutoActivator.TeachOpportunity(ConceptDefOf.SpoilageAndFreezers,
                             OpportunityType.GoodToKnow);
                     }
-                    this.parent.Destroy(DestroyMode.Vanish);
+                    parent.Destroy(DestroyMode.Vanish);
                     return;
                 }
-                bool flag = Mathf.FloorToInt(rotProgress / 60000f) != Mathf.FloorToInt(this.RotProgress / 60000f);
+                var flag = Mathf.FloorToInt(rotProgress / 60000f) != Mathf.FloorToInt(RotProgress / 60000f);
                 if (flag && ShouldTakeRotDamage())
                 {
-                    if (this.Stage == RotStage.Rotting && this.PropsRot.rotDamagePerDay > 0f)
+                    if (Stage == RotStage.Rotting && PropsRot.rotDamagePerDay > 0f)
                     {
-                        this.parent.TakeDamage(new DamageInfo(DamageDefOf.Rotting,
-                            (float) GenMath.RoundRandom(this.PropsRot.rotDamagePerDay), 0f, -1f, null, null, null,
+                        parent.TakeDamage(new DamageInfo(DamageDefOf.Rotting,
+                            (float) GenMath.RoundRandom(PropsRot.rotDamagePerDay), 0f, -1f, null, null, null,
                             DamageInfo.SourceCategory.ThingOrUnknown, null));
                     }
-                    else if (this.Stage == RotStage.Dessicated && this.PropsRot.dessicatedDamagePerDay > 0f)
+                    else if (Stage == RotStage.Dessicated && PropsRot.dessicatedDamagePerDay > 0f)
                     {
-                        this.parent.TakeDamage(new DamageInfo(DamageDefOf.Rotting,
-                            (float) GenMath.RoundRandom(this.PropsRot.dessicatedDamagePerDay), 0f, -1f, null, null,
+                        parent.TakeDamage(new DamageInfo(DamageDefOf.Rotting,
+                            (float) GenMath.RoundRandom(PropsRot.dessicatedDamagePerDay), 0f, -1f, null, null,
                             null, DamageInfo.SourceCategory.ThingOrUnknown, null));
                     }
                 }
@@ -122,7 +122,7 @@ namespace IndustrialAge.Objects
 
         private bool ShouldTakeRotDamage()
         {
-            return !(this.parent.ParentHolder is Thing thing) || thing.def.category != ThingCategory.Building ||
+            return !(parent.ParentHolder is Thing thing) || thing.def.category != ThingCategory.Building ||
                    !thing.def.building.preventDeteriorationInside;
         }
     }

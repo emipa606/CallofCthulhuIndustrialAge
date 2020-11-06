@@ -16,25 +16,21 @@ namespace IndustrialAge.Objects
     {
         private const int HeatPushInterval = 60;
 
-        public CompProperties_HeatPusher Props
-        {
-            get
-            {
-                return (CompProperties_HeatPusher)this.props;
-            }
-        }
+        public CompProperties_HeatPusher Props => (CompProperties_HeatPusher)props;
 
         protected virtual bool ShouldPushHeatNow
         {
             get
             {
-                CompRefuelable b = this.parent.GetComp<CompRefuelable>();
-                CompFlickable f = this.parent.GetComp<CompFlickable>();
+                CompRefuelable b = parent.GetComp<CompRefuelable>();
+                CompFlickable f = parent.GetComp<CompFlickable>();
 
-                if ((f != null && f.SwitchIsOn))
+                if (f != null && f.SwitchIsOn)
                 {
-                    if ((b != null && b.HasFuel))
+                    if (b != null && b.HasFuel)
+                    {
                         return true;
+                    }
                 }
                 return false;
             }
@@ -43,13 +39,13 @@ namespace IndustrialAge.Objects
         public override void CompTick()
         {
             base.CompTick();
-            if (this.parent.IsHashIntervalTick(60) && this.ShouldPushHeatNow)
+            if (parent.IsHashIntervalTick(HeatPushInterval) && ShouldPushHeatNow)
             {
-                CompProperties_HeatPusher props = this.Props;
-                float temperature = this.parent.Position.GetTemperature(this.parent.Map);
+                CompProperties_HeatPusher props = Props;
+                var temperature = parent.Position.GetTemperature(parent.Map);
                 if (temperature < props.heatPushMaxTemperature && temperature > props.heatPushMinTemperature)
                 {
-                    GenTemperature.PushHeat(this.parent.Position, this.parent.Map, props.heatPerSecond);
+                    GenTemperature.PushHeat(parent.Position, parent.Map, props.heatPerSecond);
                 }
             }
         }

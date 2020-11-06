@@ -41,12 +41,12 @@ namespace IndustrialAge.Objects
                 RecipeDef recipeMakeWax = DefDatabase<RecipeDef>.AllDefs.FirstOrDefault((RecipeDef d) => d.defName == "Jecrell_MakeWax");
                 if (recipeMakeWax != null)
                 {
-                    ThingFilter newFilter = new ThingFilter();
+                    var newFilter = new ThingFilter();
                     newFilter.CopyAllowancesFrom(recipeMakeWax.fixedIngredientFilter);
                     newFilter.SetAllow(ThingCategoryDef.Named("ROM_StrangeMeatRaw"), true);
                     recipeMakeWax.fixedIngredientFilter = newFilter;
                     
-                    ThingFilter newFilter2 = new ThingFilter();
+                    var newFilter2 = new ThingFilter();
                     newFilter2.CopyAllowancesFrom(recipeMakeWax.defaultIngredientFilter);
                     newFilter2.SetAllow(ThingCategoryDef.Named("ROM_StrangeMeatRaw"), true);
                     recipeMakeWax.defaultIngredientFilter = newFilter;
@@ -55,7 +55,7 @@ namespace IndustrialAge.Objects
                     {
                         if (temp.filter != null)
                         {
-                            ThingFilter newFilter3 = new ThingFilter();
+                            var newFilter3 = new ThingFilter();
                             newFilter3.CopyAllowancesFrom(temp.filter);
                             newFilter3.SetAllow(ThingCategoryDef.Named("ROM_StrangeMeatRaw"), true);
                             temp.filter = newFilter3;

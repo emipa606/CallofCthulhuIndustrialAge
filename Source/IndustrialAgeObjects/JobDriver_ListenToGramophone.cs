@@ -36,14 +36,17 @@ namespace IndustrialAge.Objects
             
             this.EndOnDespawnedOrNull(TargetIndex.A, JobCondition.Incompletable);   //If we don't exist, exit.
 
-            if (this.job.targetA.Thing is Building_Radio) report = "Listening to the radio.";
+            if (job.targetA.Thing is Building_Radio)
+            {
+                report = "Listening to the radio.";
+            }
 
 
             //yield return Toils_Reserve.Reserve(TargetIndex.A, base.CurJob.def.joyMaxParticipants); //Can we reserve?
 
             //yield return Toils_Reserve.Reserve(TargetIndex.B, 1);   //Reserve
 
-            bool flag = base.TargetC.HasThing && base.TargetC.Thing is Building_Bed;   
+            var flag = base.TargetC.HasThing && base.TargetC.Thing is Building_Bed;   
             Toil toil;
             if (flag)   //If we have a bed, do something else.
             {
@@ -52,7 +55,7 @@ namespace IndustrialAge.Objects
                 yield return Toils_Bed.ClaimBedIfNonMedical(TargetIndex.C, TargetIndex.None);
                 yield return Toils_Bed.GotoBed(TargetIndex.C);
                 toil = Toils_LayDown.LayDown(TargetIndex.C, true, false, true, true);
-                toil.AddFailCondition(() => !this.pawn.Awake());
+                toil.AddFailCondition(() => !pawn.Awake());
                 
             }
             else
@@ -67,12 +70,16 @@ namespace IndustrialAge.Objects
             }
             toil.AddPreTickAction(delegate
             {
-                if (this.job.targetA.Thing is Building_Radio) report = "Listening to the radio.";
-                this.ListenTickAction();
+                if (job.targetA.Thing is Building_Radio)
+                {
+                    report = "Listening to the radio.";
+                }
+
+                ListenTickAction();
             });
             toil.AddFinishAction(delegate
             {
-                JoyUtility.TryGainRecRoomThought(this.pawn);
+                JoyUtility.TryGainRecRoomThought(pawn);
             });
             toil.defaultCompleteMode = ToilCompleteMode.Delay;
             toil.defaultDuration = base.job.def.joyDuration * 2;
@@ -82,17 +89,17 @@ namespace IndustrialAge.Objects
 
         protected virtual void ListenTickAction()
         {
-            Building_Gramophone gramo = base.TargetA.Thing as Building_Gramophone;
+            var gramo = base.TargetA.Thing as Building_Gramophone;
             if (!gramo.IsOn())
             {
                 base.EndJobWith(JobCondition.Incompletable);
                 return;
             }
-            this.pawn.rotationTracker.FaceCell(base.TargetA.Cell);
-            this.pawn.GainComfortFromCellIfPossible();
-            float statValue = base.TargetThingA.GetStatValue(StatDefOf.JoyGainFactor, true);
-            float extraJoyGainFactor = statValue;
-            JoyUtility.JoyTickCheckEnd(this.pawn, JoyTickFullJoyAction.EndJob, extraJoyGainFactor);
+            pawn.rotationTracker.FaceCell(base.TargetA.Cell);
+            pawn.GainComfortFromCellIfPossible();
+            var statValue = base.TargetThingA.GetStatValue(StatDefOf.JoyGainFactor, true);
+            var extraJoyGainFactor = statValue;
+            JoyUtility.JoyTickCheckEnd(pawn, JoyTickFullJoyAction.EndJob, extraJoyGainFactor);
         }
 
     }

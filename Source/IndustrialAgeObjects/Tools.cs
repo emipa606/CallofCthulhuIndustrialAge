@@ -47,23 +47,23 @@ namespace RimWorld
         {
             get
             {
-                if (!this.parent.Spawned)
+                if (!parent.Spawned)
                 {
                     return false;
                 }
-                CompRefuelable compRefuelable = this.parent.TryGetComp<CompRefuelable>();
+                CompRefuelable compRefuelable = parent.TryGetComp<CompRefuelable>();
                 if (compRefuelable != null && !compRefuelable.HasFuel)
                 {
                     return false;
                 }
-                CompFlickable compFlickable = this.parent.TryGetComp<CompFlickable>();
+                CompFlickable compFlickable = parent.TryGetComp<CompFlickable>();
                 return compFlickable == null || compFlickable.SwitchIsOn;
             }
         }
 
         public override void PostExposeData()
         {
-            Scribe_Values.Look<bool>(ref this.fireOnInt, "fireOn", false, false);
+            Scribe_Values.Look(ref fireOnInt, "fireOn", false, false);
         }
 
     }
@@ -78,7 +78,7 @@ namespace RimWorld
 
         public CompProperties_Fire2Overlay()
         {
-            this.compClass = typeof(Comp2FireOverlay);
+            compClass = typeof(Comp2FireOverlay);
         }
     }
 
@@ -92,32 +92,26 @@ namespace RimWorld
         public float fireSize_fromXML;
 
 
-        public CompProperties_Fire2Overlay Props
-        {
-            get
-            {
-                return (CompProperties_Fire2Overlay)this.props;
-            }
-        }
+        public CompProperties_Fire2Overlay Props => (CompProperties_Fire2Overlay)props;
 
         public override void PostSpawnSetup(bool bla)
         {
 
-            this.fireOverlay = ThingCompUtility.TryGetComp<Comp2FireOverlay>(this.parent);
+            fireOverlay = ThingCompUtility.TryGetComp<Comp2FireOverlay>(parent);
         }
 
         public override void PostDraw()
         {
             base.PostDraw();
-            Vector3 drawPos = this.parent.DrawPos;
-            Vector2 drawSize = new Vector2(this.fireOverlay.Props.flameSize, this.fireOverlay.Props.flameSize);
+            Vector3 drawPos = parent.DrawPos;
+            var drawSize = new Vector2(fireOverlay.Props.flameSize, fireOverlay.Props.flameSize);
 
-            drawPos += this.fireOverlay.Props.offset;
+            drawPos += fireOverlay.Props.offset;
 
-            if (this.ShouldBeFireNow)
+            if (ShouldBeFireNow)
             {
-                this.FireGraphic2 = GraphicDatabase.Get<Graphic_Flicker>("Things/Special/Candle", ShaderDatabase.TransparentPostLight, drawSize, Color.white);
-                this.FireGraphic2.Draw(Vector3Utility.RotatedBy(drawPos, this.parent.Rotation.AsAngle), Rot4.North, this.parent);
+                FireGraphic2 = GraphicDatabase.Get<Graphic_Flicker>("Things/Special/Candle", ShaderDatabase.TransparentPostLight, drawSize, Color.white);
+                FireGraphic2.Draw(Vector3Utility.RotatedBy(drawPos, parent.Rotation.AsAngle), Rot4.North, parent);
             }
         }
     }
@@ -134,7 +128,7 @@ namespace RimWorld
 
         public CompProperties_Fire3Overlay()
         {
-            this.compClass = typeof(Comp3FireOverlay);
+            compClass = typeof(Comp3FireOverlay);
         }
     }
 
@@ -147,33 +141,27 @@ namespace RimWorld
         public Comp3FireOverlay fireOverlay;
         public float fireSize_fromXML;
 
-        public CompProperties_Fire3Overlay Props
-        {
-            get
-            {
-                return (CompProperties_Fire3Overlay)this.props;
-            }
-        }
+        public CompProperties_Fire3Overlay Props => (CompProperties_Fire3Overlay)props;
 
 
         public override void PostSpawnSetup(bool bla)
         {
 
-            this.fireOverlay = ThingCompUtility.TryGetComp<Comp3FireOverlay>(this.parent);
+            fireOverlay = ThingCompUtility.TryGetComp<Comp3FireOverlay>(parent);
         }
 
         public override void PostDraw()
         {
             base.PostDraw();
-            Vector3 drawPos = this.parent.DrawPos;
-            Vector2 drawSize = new Vector2(this.fireOverlay.Props.flameSize, this.fireOverlay.Props.flameSize);
+            Vector3 drawPos = parent.DrawPos;
+            var drawSize = new Vector2(fireOverlay.Props.flameSize, fireOverlay.Props.flameSize);
 
-            drawPos += this.fireOverlay.Props.offset;
+            drawPos += fireOverlay.Props.offset;
 
-            if (this.ShouldBeFireNow)
+            if (ShouldBeFireNow)
             {
-                this.FireGraphic3 = GraphicDatabase.Get<Graphic_Flicker>("Things/Special/Candle", ShaderDatabase.TransparentPostLight, drawSize, Color.white);
-                this.FireGraphic3.Draw(Vector3Utility.RotatedBy(drawPos, this.parent.Rotation.AsAngle), Rot4.North, this.parent);
+                FireGraphic3 = GraphicDatabase.Get<Graphic_Flicker>("Things/Special/Candle", ShaderDatabase.TransparentPostLight, drawSize, Color.white);
+                FireGraphic3.Draw(Vector3Utility.RotatedBy(drawPos, parent.Rotation.AsAngle), Rot4.North, parent);
             }
         }
     }
@@ -190,7 +178,7 @@ namespace RimWorld
 
         public CompProperties_Fire4Overlay()
         {
-            this.compClass = typeof(Comp4FireOverlay);
+            compClass = typeof(Comp4FireOverlay);
         }
     }
 
@@ -204,33 +192,27 @@ namespace RimWorld
         public float fireSize_fromXML;
 
 
-        public CompProperties_Fire4Overlay Props
-        {
-            get
-            {
-                return (CompProperties_Fire4Overlay)this.props;
-            }
-        }
+        public CompProperties_Fire4Overlay Props => (CompProperties_Fire4Overlay)props;
 
 
         public override void PostSpawnSetup(bool bla)
         {
 
-            this.fireOverlay = ThingCompUtility.TryGetComp<Comp4FireOverlay>(this.parent);
+            fireOverlay = ThingCompUtility.TryGetComp<Comp4FireOverlay>(parent);
         }
 
         public override void PostDraw()
         {
             base.PostDraw();
-            Vector3 drawPos = this.parent.DrawPos;
-            Vector2 drawSize = new Vector2(this.fireOverlay.Props.flameSize, this.fireOverlay.Props.flameSize);
+            Vector3 drawPos = parent.DrawPos;
+            var drawSize = new Vector2(fireOverlay.Props.flameSize, fireOverlay.Props.flameSize);
 
-            drawPos += this.fireOverlay.Props.offset;
+            drawPos += fireOverlay.Props.offset;
 
-            if (this.ShouldBeFireNow)
+            if (ShouldBeFireNow)
             {
-                this.FireGraphic4 = GraphicDatabase.Get<Graphic_Flicker>("Things/Special/Candle", ShaderDatabase.TransparentPostLight, drawSize, Color.white);
-                this.FireGraphic4.Draw(Vector3Utility.RotatedBy(drawPos, this.parent.Rotation.AsAngle), Rot4.North, this.parent);
+                FireGraphic4 = GraphicDatabase.Get<Graphic_Flicker>("Things/Special/Candle", ShaderDatabase.TransparentPostLight, drawSize, Color.white);
+                FireGraphic4.Draw(Vector3Utility.RotatedBy(drawPos, parent.Rotation.AsAngle), Rot4.North, parent);
             }
         }
     }

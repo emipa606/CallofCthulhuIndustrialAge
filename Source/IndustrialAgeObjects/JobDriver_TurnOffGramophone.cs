@@ -40,7 +40,10 @@ namespace IndustrialAge.Objects
             //Check it out. Can we go there?
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
-            if (this.job.targetA.Thing is Building_Radio) report = "Turning off radio."; 
+            if (job.targetA.Thing is Building_Radio)
+            {
+                report = "Turning off radio.";
+            }
 
             // Toil 1:
             // Reserve Target (TargetPack A is selected (It has the info where the target cell is))
@@ -53,12 +56,12 @@ namespace IndustrialAge.Objects
             // Toil 3:
             // Turn off music.
 
-            Toil toilStopMusic = new Toil
+            var toilStopMusic = new Toil
             {
                 defaultCompleteMode = ToilCompleteMode.Instant,
                 initAction = delegate
                 {
-                    Building_Gramophone gramophone = this.job.targetA.Thing as Building_Gramophone;
+                    var gramophone = job.targetA.Thing as Building_Gramophone;
                     gramophone.StopMusic();
                 }
             };

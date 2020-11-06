@@ -57,24 +57,43 @@ namespace Cthulhu
         public static bool loadedFactions = false;
 
 
-        public static bool IsMorning(Map map) =>
-            GenLocalDate.HourInteger(map) > 6 && GenLocalDate.HourInteger(map) < 10; public static bool IsEvening(Map map) => GenLocalDate.HourInteger(map) > 18 && GenLocalDate.HourInteger(map) < 22; public static bool IsNight(Map map) => GenLocalDate.HourInteger(map) > 22;
+        public static bool IsMorning(Map map)
+        {
+            return GenLocalDate.HourInteger(map) > 6 && GenLocalDate.HourInteger(map) < 10;
+        }
+
+        public static bool IsEvening(Map map)
+        {
+            return GenLocalDate.HourInteger(map) > 18 && GenLocalDate.HourInteger(map) < 22;
+        }
+
+        public static bool IsNight(Map map)
+        {
+            return GenLocalDate.HourInteger(map) > 22;
+        }
+
         public static T GetMod<T>(string s) where T : Mod
         {
             //Call of Cthulhu - Cosmic Horrors
             T result = default;
             foreach (Mod ResolvedMod in LoadedModManager.ModHandles)
             {
-                if (ResolvedMod.Content.Name == s) result = ResolvedMod as T;
+                if (ResolvedMod.Content.Name == s)
+                {
+                    result = ResolvedMod as T;
+                }
             }
             return result;
         }
 
         public static bool IsCosmicHorror(Pawn thing)
         {
-            if (!IsCosmicHorrorsLoaded()) return false;
+            if (!IsCosmicHorrorsLoaded())
+            {
+                return false;
+            }
 
-            Type type = Type.GetType("CosmicHorror.CosmicHorrorPawn");
+            var type = Type.GetType("CosmicHorror.CosmicHorrorPawn");
             if (type != null)
             {
                 if (thing.GetType() == type)
@@ -107,20 +126,39 @@ namespace Cthulhu
 
         public static bool CapableOfViolence(Pawn pawn, bool allowDowned = false)
         {
-            if (pawn == null) return false;
-            if (pawn.Dead) return false;
-            if (pawn.Downed && !allowDowned) return false;
-            if (pawn.story.DisabledWorkTagsBackstoryAndTraits.OverlapsWithOnAnyWorkType(WorkTags.Violent)) return false;
+            if (pawn == null)
+            {
+                return false;
+            }
+
+            if (pawn.Dead)
+            {
+                return false;
+            }
+
+            if (pawn.Downed && !allowDowned)
+            {
+                return false;
+            }
+
+            if (pawn.story.DisabledWorkTagsBackstoryAndTraits.OverlapsWithOnAnyWorkType(WorkTags.Violent))
+            {
+                return false;
+            }
+
             return true;
         }
 
         public static bool IsActorAvailable(Pawn preacher, bool downedAllowed = false)
         {
-            StringBuilder s = new StringBuilder();
+            var s = new StringBuilder();
             s.Append("ActorAvailble Checks Initiated");
             s.AppendLine();
             if (preacher == null)
+            {
                 return ResultFalseWithReport(s);
+            }
+
             s.Append("ActorAvailble: Passed null Check");
             s.AppendLine();
             //if (!preacher.Spawned)
@@ -128,23 +166,38 @@ namespace Cthulhu
             //s.Append("ActorAvailble: Passed not-spawned check");
             //s.AppendLine();
             if (preacher.Dead)
+            {
                 return ResultFalseWithReport(s);
+            }
+
             s.Append("ActorAvailble: Passed not-dead");
             s.AppendLine();
             if (preacher.Downed && !downedAllowed)
+            {
                 return ResultFalseWithReport(s);
+            }
+
             s.Append("ActorAvailble: Passed downed check & downedAllowed = " + downedAllowed.ToString());
             s.AppendLine();
             if (preacher.Drafted)
+            {
                 return ResultFalseWithReport(s);
+            }
+
             s.Append("ActorAvailble: Passed drafted check");
             s.AppendLine();
             if (preacher.InAggroMentalState)
+            {
                 return ResultFalseWithReport(s);
+            }
+
             s.Append("ActorAvailble: Passed drafted check");
             s.AppendLine();
             if (preacher.InMentalState)
+            {
                 return ResultFalseWithReport(s);
+            }
+
             s.Append("ActorAvailble: Passed InMentalState check");
             s.AppendLine();
             s.Append("ActorAvailble Checks Passed");
@@ -163,7 +216,10 @@ namespace Cthulhu
         {
             string sanityLossDef;
             sanityLossDef = AltSanityLossDef;
-            if (IsCosmicHorrorsLoaded()) sanityLossDef = SanityLossDef;
+            if (IsCosmicHorrorsLoaded())
+            {
+                sanityLossDef = SanityLossDef;
+            }
 
             Hediff pawnSanityHediff = pawn.health.hediffSet.GetFirstHediffOfDef(DefDatabase<HediffDef>.GetNamed(sanityLossDef));
             if (pawnSanityHediff != null)
@@ -176,8 +232,8 @@ namespace Cthulhu
 
         public static void ApplyTaleDef(string defName, Map map)
         {
-            Pawn randomPawn = map.mapPawns.FreeColonists.RandomElement<Pawn>();
-            TaleDef taleToAdd = TaleDef.Named(defName);
+            Pawn randomPawn = map.mapPawns.FreeColonists.RandomElement();
+            var taleToAdd = TaleDef.Named(defName);
             TaleRecorder.RecordTale(taleToAdd, new object[]
                     {
                         randomPawn,
@@ -186,7 +242,7 @@ namespace Cthulhu
 
         public static void ApplyTaleDef(string defName, Pawn pawn)
         {
-            TaleDef taleToAdd = TaleDef.Named(defName);
+            var taleToAdd = TaleDef.Named(defName);
             if ((pawn.IsColonist || pawn.HostFaction == Faction.OfPlayer) && taleToAdd != null)
             {
                 TaleRecorder.RecordTale(taleToAdd, new object[]
@@ -199,7 +255,7 @@ namespace Cthulhu
 
         public static bool HasSanityLoss(Pawn pawn)
         {
-            string sanityLossDef = (!IsCosmicHorrorsLoaded()) ? AltSanityLossDef : SanityLossDef;
+            var sanityLossDef = (!IsCosmicHorrorsLoaded()) ? AltSanityLossDef : SanityLossDef;
             var pawnSanityHediff = pawn.health.hediffSet.GetFirstHediffOfDef(DefDatabase<HediffDef>.GetNamed(sanityLossDef));
 
             return pawnSanityHediff != null;
@@ -207,14 +263,22 @@ namespace Cthulhu
 
         public static void ApplySanityLoss(Pawn pawn, float sanityLoss = 0.3f, float sanityLossMax = 1.0f)
         {
-            if (pawn == null) return;
-            string sanityLossDef = (!IsCosmicHorrorsLoaded()) ? AltSanityLossDef : SanityLossDef;
+            if (pawn == null)
+            {
+                return;
+            }
+
+            var sanityLossDef = (!IsCosmicHorrorsLoaded()) ? AltSanityLossDef : SanityLossDef;
 
             var pawnSanityHediff = pawn.health.hediffSet.GetFirstHediffOfDef(DefDatabase<HediffDef>.GetNamed(sanityLossDef));
             if (pawnSanityHediff != null)
             {
-                if (pawnSanityHediff.Severity > sanityLossMax) sanityLossMax = pawnSanityHediff.Severity;
-                float result = pawnSanityHediff.Severity;
+                if (pawnSanityHediff.Severity > sanityLossMax)
+                {
+                    sanityLossMax = pawnSanityHediff.Severity;
+                }
+
+                var result = pawnSanityHediff.Severity;
                 result += sanityLoss;
                 result = Mathf.Clamp(result, 0.0f, sanityLossMax);
                 pawnSanityHediff.Severity = result;
@@ -230,21 +294,35 @@ namespace Cthulhu
         }
 
 
-        public static int GetSocialSkill(Pawn p) => p.skills.GetSkill(SkillDefOf.Social).Level;
+        public static int GetSocialSkill(Pawn p)
+        {
+            return p.skills.GetSkill(SkillDefOf.Social).Level;
+        }
 
-        public static int GetResearchSkill(Pawn p) => p.skills.GetSkill(SkillDefOf.Intellectual).Level;
+        public static int GetResearchSkill(Pawn p)
+        {
+            return p.skills.GetSkill(SkillDefOf.Intellectual).Level;
+        }
 
         public static bool IsCosmicHorrorsLoaded()
         {
 
-            if (!modCheck) ModCheck();
+            if (!modCheck)
+            {
+                ModCheck();
+            }
+
             return loadedCosmicHorrors;
         }
 
 
         public static bool IsIndustrialAgeLoaded()
         {
-            if (!modCheck) ModCheck();
+            if (!modCheck)
+            {
+                ModCheck();
+            }
+
             return loadedIndustrialAge;
         }
 
@@ -252,7 +330,11 @@ namespace Cthulhu
 
         public static bool IsCultsLoaded()
         {
-            if (!modCheck) ModCheck();
+            if (!modCheck)
+            {
+                ModCheck();
+            }
+
             return loadedCults;
         }
 
@@ -263,7 +345,7 @@ namespace Cthulhu
                 _ = cell.RandomAdjacentCell8Way();
                 if (map != null)
                 {
-                    for (int i = 0; i < 100; i++)
+                    for (var i = 0; i < 100; i++)
                     {
                         IntVec3 temp = cell.RandomAdjacentCell8Way();
                         if (temp.Walkable(map))
@@ -284,7 +366,11 @@ namespace Cthulhu
             loadedIndustrialAge = false;
             foreach (ModContentPack ResolvedMod in LoadedModManager.RunningMods)
             {
-                if (loadedCosmicHorrors && loadedIndustrialAge && loadedCults) break; //Save some loading
+                if (loadedCosmicHorrors && loadedIndustrialAge && loadedCults)
+                {
+                    break; //Save some loading
+                }
+
                 if (ResolvedMod.Name.Contains("Call of Cthulhu - Cosmic Horrors"))
                 {
                     DebugReport("Loaded - Call of Cthulhu - Cosmic Horrors");
@@ -320,8 +406,9 @@ namespace Cthulhu
             }
         }
 
-        public static void ErrorReport(string x) => Log.Error(Prefix + x);
-
-
+        public static void ErrorReport(string x)
+        {
+            Log.Error(Prefix + x);
+        }
     }
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Patch>
   <!-- There is no existing RoomRequirement class that accepts multiple kinds of things AND requires multiple instances of them.
         Vanilla uses RoomRequirement_ThingCount to require 2 or more braziers, but there is no "RoomRequirement_ThingCountAnyOf" to "require 2 braziers and/or chandeliers".

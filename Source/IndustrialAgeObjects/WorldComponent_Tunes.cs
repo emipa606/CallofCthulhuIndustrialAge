@@ -21,14 +21,18 @@ namespace IndustrialAge.Objects
         {
             TuneDef result;
             if (TuneDefCache == null)
+            {
                 TuneDefCache = new List<TuneDef>();
+            }
 
             foreach (TuneDef current in TuneDefCache)
+            {
                 if (current == tune)
                 {
                     result = current;
                     return result;
                 }
+            }
 
             TuneDefCache.Add(tune);
             result = tune;
@@ -58,7 +62,7 @@ namespace IndustrialAge.Objects
 
         public override void ExposeData()
         {
-            Scribe_Collections.Look<TuneDef>(ref this.TuneDefCache, "TuneDefCache", LookMode.Def, new object[0]);
+            Scribe_Collections.Look(ref TuneDefCache, "TuneDefCache", LookMode.Def, new object[0]);
             base.ExposeData();
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {

@@ -18,27 +18,19 @@ namespace IndustrialAge.Objects
 	    private bool operatingAtHighPower;
 	    private StorageSettings curStorageSettings;
 
-        private CompPowerTrader powerTrader;
-        private CompGlower glower;
+        public CompPowerTrader PowerTrader { get; set; }
 
-        public CompPowerTrader PowerTrader
-        {
-            get => powerTrader;
-            set => powerTrader = value;
-        }
-
-        public CompGlower Glower
-        {
-            get => glower;
-            set => glower = value;
-        }
+        public CompGlower Glower { get; set; }
 
         public float IdealTemp
         {
             get
             {
                 if (idealTemp == float.MinValue)
+                {
                     idealTemp = IdealTempDefault;
+                }
+
                 return idealTemp;
             }
             set => idealTemp = value;
@@ -49,8 +41,9 @@ namespace IndustrialAge.Objects
             get
             {
                 if (currentTemp == float.MinValue)
+                {
                     currentTemp = PositionHeld.GetTemperature(MapHeld);
-                ;
+                };
                 return currentTemp;
             }
             set => currentTemp = value;
@@ -59,18 +52,23 @@ namespace IndustrialAge.Objects
         public override void SpawnSetup(Map map, bool bla)
         {
             base.SpawnSetup(map, bla);
-            this.powerTrader = GetComp<CompPowerTrader>();
-            this.glower = GetComp<CompGlower>();
+            PowerTrader = GetComp<CompPowerTrader>();
+            Glower = GetComp<CompGlower>();
             curStorageSettings = new StorageSettings();
             curStorageSettings.CopyFrom(def.building.fixedStorageSettings);
             foreach (var thingDef in DefDatabase<ThingDef>.AllDefs.Where(x => x.HasComp(typeof(CompRottable))))
             {
                 if (!curStorageSettings.filter.Allows(thingDef))
+                {
                     curStorageSettings.filter.SetAllow(thingDef, true);
+                }
             }
         }
 
-        StorageSettings IStoreSettingsParent.GetParentStoreSettings() => curStorageSettings;
+        StorageSettings IStoreSettingsParent.GetParentStoreSettings()
+        {
+            return curStorageSettings;
+        }
 
         public override void TickRare()
         {
@@ -84,22 +82,22 @@ namespace IndustrialAge.Objects
 	    const float temperatureChangeRate = 0.116923077f;
 	    const float energyPerSecond = 12f;
 
-	    public float BasePowerConsumption => -powerTrader.Props.basePowerConsumption;
+	    public float BasePowerConsumption => -PowerTrader.Props.basePowerConsumption;
 	    
 	    private void ResolveTemperature()
         {
-	        if (!this.Spawned || powerTrader == null || !powerTrader.PowerOn)
+	        if (!Spawned || PowerTrader == null || !PowerTrader.PowerOn)
 	        {
 		        EqualizeWithRoomTemperature();
 		        return;
 	        }
 
-	        this.glower.UpdateLit(MapHeld);
+	        Glower.UpdateLit(MapHeld);
 
             IntVec3 intVec = PositionHeld;
-	        float moddedTemperatureChangeRate = temperatureChangeRate;
-            float energyLimit = energyPerSecond * moddedTemperatureChangeRate * 4.16666651f;
-            var usingHighPower = IsUsingHighPower(energyLimit, out float energyUsed);
+	        var moddedTemperatureChangeRate = temperatureChangeRate;
+            var energyLimit = energyPerSecond * moddedTemperatureChangeRate * 4.16666651f;
+            var usingHighPower = IsUsingHighPower(energyLimit, out var energyUsed);
             if (usingHighPower)
             {
 	            GenTemperature.PushHeat(intVec, MapHeld, -energyLimit * 1.25f);
@@ -117,15 +115,17 @@ namespace IndustrialAge.Objects
 		        CurrentTemp += CurrentTemp > IdealTemp ? -moddedTemperatureChangeRate : moddedTemperatureChangeRate;
 	        }
 		    if (CurrentTemp.ToStringTemperature("F0") == IdealTemp.ToStringTemperature("F0"))
-		        usingHighPower = false;
-	        
+            {
+                usingHighPower = false;
+            }
+
             operatingAtHighPower = usingHighPower;
-	        powerTrader.PowerOutput = energyUsed;
+	        PowerTrader.PowerOutput = energyUsed;
         }
 
 	    private void EqualizeWithRoomTemperature()
 	    {
-		    float roomTemperature = PositionHeld.GetTemperature(MapHeld);
+		    var roomTemperature = PositionHeld.GetTemperature(MapHeld);
 		    if (CurrentTemp > roomTemperature)
 		    {
 			    CurrentTemp += -temperatureChangeRate;
@@ -138,8 +138,8 @@ namespace IndustrialAge.Objects
 
 	    private bool IsUsingHighPower(float energyLimit, out float energyUsed)
 	    {
-		    float b = energyLimit;
-		    float a = IdealTemp - CurrentTemp;
+		    var b = energyLimit;
+		    var a = IdealTemp - CurrentTemp;
             if (energyLimit > 0f)
 		    {
 			    energyUsed = Mathf.Min(a, b);
@@ -176,7 +176,7 @@ namespace IndustrialAge.Objects
         
 		private float RoundedToCurrentTempModeOffset(float celsiusTemp)
 		{
-			float num = GenTemperature.CelsiusToOffset(celsiusTemp, Prefs.TemperatureMode);
+			var num = GenTemperature.CelsiusToOffset(celsiusTemp, Prefs.TemperatureMode);
 			num = Mathf.RoundToInt(num);
 			return GenTemperature.ConvertTemperatureOffset(num, Prefs.TemperatureMode, TemperatureDisplayMode.Celsius);
 		}
@@ -187,7 +187,7 @@ namespace IndustrialAge.Objects
 			{
 				yield return c;
 			}
-			float offset2 = RoundedToCurrentTempModeOffset(-10f);
+			var offset2 = RoundedToCurrentTempModeOffset(-10f);
 			yield return new Command_Action
 			{
 				action = delegate
@@ -199,7 +199,7 @@ namespace IndustrialAge.Objects
 				hotKey = KeyBindingDefOf.Misc5,
 				icon = ContentFinder<Texture2D>.Get("UI/Commands/TempLower", true)
 			};
-			float offset3 = RoundedToCurrentTempModeOffset(-1f);
+			var offset3 = RoundedToCurrentTempModeOffset(-1f);
 			yield return new Command_Action
 			{
 				action = delegate
@@ -224,7 +224,7 @@ namespace IndustrialAge.Objects
 				hotKey = KeyBindingDefOf.Misc1,
 				icon = ContentFinder<Texture2D>.Get("UI/Commands/TempReset", true)
 			};
-			float offset4 = RoundedToCurrentTempModeOffset(1f);
+			var offset4 = RoundedToCurrentTempModeOffset(1f);
 			yield return new Command_Action
 			{
 				action = delegate
@@ -236,7 +236,7 @@ namespace IndustrialAge.Objects
 				hotKey = KeyBindingDefOf.Misc2,
 				icon = ContentFinder<Texture2D>.Get("UI/Commands/TempRaise", true)
 			};
-			float offset = RoundedToCurrentTempModeOffset(10f);
+			var offset = RoundedToCurrentTempModeOffset(10f);
 			yield return new Command_Action
 			{
 				action = delegate
@@ -272,7 +272,7 @@ namespace IndustrialAge.Objects
 
 		public override string GetInspectString()
 		{
-			StringBuilder stringBuilder = new StringBuilder();
+			var stringBuilder = new StringBuilder();
 			stringBuilder.Append("Temperature".Translate() + ": ");
 			stringBuilder.AppendLine(CurrentTemp.ToStringTemperature("F0"));
 			stringBuilder.Append("TargetTemperature".Translate() + ": ");

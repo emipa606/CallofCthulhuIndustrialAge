@@ -24,15 +24,7 @@ namespace IndustrialAge.Objects
             return true;
         }
 
-        //How long will it take to wind up the gramophone?
-        private readonly int duration = 400;
-        protected int Duration
-        {
-            get
-            {
-                return duration;
-            }
-        }
+        protected int Duration { get; } = 400;
 
         private string report = "";
         public override string GetReport()
@@ -51,7 +43,10 @@ namespace IndustrialAge.Objects
             //Check it out. Can we go there?
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
 
-            if (this.job.targetA.Thing is Building_Radio) report = "Playing the radio.";
+            if (job.targetA.Thing is Building_Radio)
+            {
+                report = "Playing the radio.";
+            }
 
             // Toil 1:
             // Reserve Target (TargetPack A is selected (It has the info where the target cell is))
@@ -63,17 +58,24 @@ namespace IndustrialAge.Objects
 
             // Toil 3:
             // Wind up the gramophone
-            Toil toil = new Toil
+            var toil = new Toil
             {
                 defaultCompleteMode = ToilCompleteMode.Delay,
-                defaultDuration = this.Duration
+                defaultDuration = Duration
             };
             toil.WithProgressBarToilDelay(TargetIndex.A, false, -0.5f);
-            if (this.job.targetA.Thing is Building_Radio) toil.PlaySustainerOrSound(DefDatabase<SoundDef>.GetNamed("Estate_RadioSeeking"));
-            else toil.PlaySustainerOrSound(DefDatabase<SoundDef>.GetNamed("Estate_GramophoneWindup"));
+            if (job.targetA.Thing is Building_Radio)
+            {
+                toil.PlaySustainerOrSound(DefDatabase<SoundDef>.GetNamed("Estate_RadioSeeking"));
+            }
+            else
+            {
+                toil.PlaySustainerOrSound(DefDatabase<SoundDef>.GetNamed("Estate_GramophoneWindup"));
+            }
+
             toil.initAction = delegate
             {
-                Building_Gramophone gramophone = this.job.targetA.Thing as Building_Gramophone;
+                var gramophone = job.targetA.Thing as Building_Gramophone;
                 gramophone.StopMusic();
             };
             yield return toil;
@@ -81,13 +83,13 @@ namespace IndustrialAge.Objects
             // Toil 4:
             // Play music.
 
-            Toil toilPlayMusic = new Toil
+            var toilPlayMusic = new Toil
             {
                 defaultCompleteMode = ToilCompleteMode.Instant,
                 initAction = delegate
                 {
-                    Building_Gramophone gramophone = this.job.targetA.Thing as Building_Gramophone;
-                    gramophone.PlayMusic(this.pawn);
+                    var gramophone = job.targetA.Thing as Building_Gramophone;
+                    gramophone.PlayMusic(pawn);
                 }
             };
             yield return toilPlayMusic;

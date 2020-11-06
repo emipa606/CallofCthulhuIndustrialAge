@@ -28,19 +28,22 @@ namespace IndustrialAge.Objects
         {
             this.EndOnDespawnedOrNull(TargetIndex.A, JobCondition.Incompletable);
             yield return Toils_Reserve.Reserve(TargetIndex.A, base.job.def.joyMaxParticipants);
-            if (this.TargetB != null)
+            if (TargetB != null)
+            {
                 yield return Toils_Reserve.Reserve(TargetIndex.B, 1);
+            }
+
             yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.OnCell);
-            Toil toil = new Toil();
+            var toil = new Toil();
             var soundDef = Find.World.GetComponent<WorldComponent_Tunes>().TuneDefCache.FindAll(x => x.instrumentDefs.Contains(TargetThingA.def)).RandomElement();
             toil.PlaySustainerOrSound(soundDef);
             toil.tickAction = delegate
             {
-                this.pawn.rotationTracker.FaceCell(this.TargetA.Cell);
-                this.pawn.GainComfortFromCellIfPossible();
-                float statValue = this.TargetThingA.GetStatValue(StatDefOf.JoyGainFactor, true);
-                float extraJoyGainFactor = statValue;
-                JoyUtility.JoyTickCheckEnd(this.pawn, JoyTickFullJoyAction.EndJob, extraJoyGainFactor);
+                pawn.rotationTracker.FaceCell(TargetA.Cell);
+                pawn.GainComfortFromCellIfPossible();
+                var statValue = TargetThingA.GetStatValue(StatDefOf.JoyGainFactor, true);
+                var extraJoyGainFactor = statValue;
+                JoyUtility.JoyTickCheckEnd(pawn, JoyTickFullJoyAction.EndJob, extraJoyGainFactor);
             };
             toil.defaultCompleteMode = ToilCompleteMode.Delay;
             toil.defaultDuration = base.job.def.joyDuration;
@@ -50,10 +53,10 @@ namespace IndustrialAge.Objects
                 {
                     try
                     {
-                        if (Cthulhu.Utility.HasSanityLoss(this.pawn))
+                        if (Cthulhu.Utility.HasSanityLoss(pawn))
                         {
-                            Cthulhu.Utility.ApplySanityLoss(this.pawn, -sanityRestoreRate, 1);
-                            Messages.Message(this.pawn.ToString() + " has restored some sanity using the " + this.TargetA.Thing.def.label + ".", new TargetInfo(this.pawn.Position, this.pawn.Map), MessageTypeDefOf.NeutralEvent);// .Standard);
+                            Cthulhu.Utility.ApplySanityLoss(pawn, -sanityRestoreRate, 1);
+                            Messages.Message(pawn.ToString() + " has restored some sanity using the " + TargetA.Thing.def.label + ".", new TargetInfo(pawn.Position, pawn.Map), MessageTypeDefOf.NeutralEvent);// .Standard);
                         }
                     }
                     catch
@@ -62,7 +65,7 @@ namespace IndustrialAge.Objects
                     }
                 }
 
-                JoyUtility.TryGainRecRoomThought(this.pawn);
+                JoyUtility.TryGainRecRoomThought(pawn);
             });
             yield return toil;
             yield break;

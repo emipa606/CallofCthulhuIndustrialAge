@@ -18,8 +18,8 @@ namespace IndustrialAge.Objects
 
         public override string ToString()
         {
-            StringBuilder s = new StringBuilder();
-            s.Append(base.LabelCap + " - " + this.artist);
+            var s = new StringBuilder();
+            s.Append(base.LabelCap + " - " + artist);
             return s.ToString();
         }
 
@@ -27,7 +27,7 @@ namespace IndustrialAge.Objects
         {
             get
             {
-                if (Int32.TryParse(version, out int x))
+                if (int.TryParse(version, out var x))
                 {
                     return x;
                 }

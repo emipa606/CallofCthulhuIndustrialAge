@@ -65,10 +65,10 @@ namespace IndustrialAge.Objects
             on
         }
 
-        public TuneDef CurrentTune { get { return currentTuneDef; } set { currentTuneDef = value; } }
-        public TuneDef NextTune { get { return nextTuneDef; } set { nextTuneDef = value; } }
-        public TuneDef PreviousTune { get { return prevTuneDef; } set { prevTuneDef = value; } }
-        public State CurrentState { get { return state; } set { state = value; } }
+        public TuneDef CurrentTune { get => currentTuneDef; set => currentTuneDef = value; }
+        public TuneDef NextTune { get => nextTuneDef; set => nextTuneDef = value; }
+        public TuneDef PreviousTune { get => prevTuneDef; set => prevTuneDef = value; }
+        public State CurrentState { get => state; set => state = value; }
 
         public bool IsOn()
         {
@@ -80,13 +80,7 @@ namespace IndustrialAge.Objects
         }
 
 
-        public IEnumerable<IntVec3> ListenableCells
-        {
-            get
-            {
-                return ListenableCellsAround(base.Position, base.Map);
-            }
-        }
+        public IEnumerable<IntVec3> ListenableCells => ListenableCellsAround(base.Position, base.Map);
 
         //What song are we playing?
         private enum Song
@@ -125,7 +119,7 @@ namespace IndustrialAge.Objects
 
             // Get refferences to the components CompPowerTrader and CompGlower
             //SetMusicPlayer();
-            listenableCells = ListenableCellsAround(this.Position, map);
+            listenableCells = ListenableCellsAround(Position, map);
         }
 
         /// <summary>
@@ -135,14 +129,14 @@ namespace IndustrialAge.Objects
         {
             base.ExposeData();
             // Save and load the work variables, so they don't default after loading
-            Scribe_Values.Look<bool>(ref isRadio, "isRadio", false);
-            Scribe_Values.Look<bool>(ref autoPlay, "autoPlay", false);
-            Scribe_Values.Look<State>(ref state, "state", State.off);
-            Scribe_Values.Look<int>(ref counter, "counter", 0);
-            Scribe_Defs.Look<TuneDef>(ref prevTuneDef, "prevTuneDef");
-            Scribe_Defs.Look<TuneDef>(ref currentTuneDef, "currentTuneDef");
-            Scribe_Defs.Look<TuneDef>(ref nextTuneDef, "nextTuneDef");
-            Scribe_Collections.Look<TuneDef>(ref playlist, "playlist", LookMode.Def, new object[0]);
+            Scribe_Values.Look(ref isRadio, "isRadio", false);
+            Scribe_Values.Look(ref autoPlay, "autoPlay", false);
+            Scribe_Values.Look(ref state, "state", State.off);
+            Scribe_Values.Look(ref counter, "counter", 0);
+            Scribe_Defs.Look(ref prevTuneDef, "prevTuneDef");
+            Scribe_Defs.Look(ref currentTuneDef, "currentTuneDef");
+            Scribe_Defs.Look(ref nextTuneDef, "nextTuneDef");
+            Scribe_Collections.Look(ref playlist, "playlist", LookMode.Def, new object[0]);
 
             // Set the old value to the phase value
             stateOld = state;
@@ -181,7 +175,9 @@ namespace IndustrialAge.Objects
         public override void TickRare()
         {
             if (destroyedFlag) // Do nothing further, when destroyed (just a safety)
+            {
                 return;
+            }
 
             // Don't forget the base work
             base.TickRare();
@@ -198,7 +194,9 @@ namespace IndustrialAge.Objects
         public override void Tick()
         {
             if (destroyedFlag) // Do nothing further, when destroyed (just a safety)
+            {
                 return;
+            }
 
             base.Tick();
 
@@ -233,7 +231,10 @@ namespace IndustrialAge.Objects
                 }
             }
 
-            if (duration == -1f) return; //If duration isn't initialized, don't bother checking.
+            if (duration == -1f)
+            {
+                return; //If duration isn't initialized, don't bother checking.
+            }
 
 
 
@@ -267,7 +268,11 @@ namespace IndustrialAge.Objects
                         }
                         else
                         {
-                            if (autoPlay) autoPlay = false;
+                            if (autoPlay)
+                            {
+                                autoPlay = false;
+                            }
+
                             StopMusic();
                         }
                     }
@@ -290,22 +295,29 @@ namespace IndustrialAge.Objects
         /// <returns></returns>
         public override string GetInspectString()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
 
             // Add the inspections string from the base
             if (base.GetInspectString() != "")
+            {
                 stringBuilder.Append(base.GetInspectString());
+            }
 
             // Add your own strings (caution: string shouldn't be more than 5 lines (including base)!)
             //stringBuilder.Append("Power output: " + powerComp.powerOutput + " W");
             //stringBuilder.AppendLine();
-            if(stringBuilder.Length > 0)
-            stringBuilder.AppendLine();
+            if (stringBuilder.Length > 0)
+            {
+                stringBuilder.AppendLine();
+            }
+
             stringBuilder.Append(txtStatus + " ");  // <= TRANSLATION
 
             // State -> Off: Add text 'Off' (Translation from active language file)
             if (state == State.off)
+            {
                 stringBuilder.Append(txtOff);   // <= TRANSLATION
+            }
 
             // State -> On: Add text 'On' (Translation from active language file)
             if (state == State.on)
@@ -338,7 +350,7 @@ namespace IndustrialAge.Objects
             //If there is no tuneDef set to play, then let's randomly select one from the library.
             if (currentTuneDef == null)
             {
-                currentTuneDef = tuneScape.TuneDefCache.Where(x => !x.instrumentOnly).RandomElement<TuneDef>();
+                currentTuneDef = tuneScape.TuneDefCache.Where(x => !x.instrumentOnly).RandomElement();
             }
 
             //We're off? Let's change that.
@@ -360,7 +372,11 @@ namespace IndustrialAge.Objects
             if (powerTrader == null)
             {
                 powerTrader = this.TryGetComp<CompPowerTrader>();
-                if (powerTrader != null) return true;
+                if (powerTrader != null)
+                {
+                    return true;
+                }
+
                 return false;
             }
             return true;
@@ -405,10 +421,18 @@ namespace IndustrialAge.Objects
         /// <returns></returns>
         private bool TryCreatePlaylist()
         {
-            if (tuneScape.TuneDefCache == null) return false;
-            if (!tuneScape.TuneDefCache.Any(x => !x.instrumentOnly)) return false;
-            List<TuneDef> tempList = tuneScape.TuneDefCache.ToList<TuneDef>();
-            playlist = new List<TuneDef>(tempList.InRandomOrder<TuneDef>());
+            if (tuneScape.TuneDefCache == null)
+            {
+                return false;
+            }
+
+            if (!tuneScape.TuneDefCache.Any(x => !x.instrumentOnly))
+            {
+                return false;
+            }
+
+            var tempList = tuneScape.TuneDefCache.ToList();
+            playlist = new List<TuneDef>(tempList.InRandomOrder());
             return true;
         }
 
@@ -429,11 +453,15 @@ namespace IndustrialAge.Objects
                 }
             }
             TuneDef result = null;
-            for (int i = 0; i < 999; i++)
+            for (var i = 0; i < 999; i++)
             {
-                if (playlist.TryRandomElement<TuneDef>(out result))
+                if (playlist.TryRandomElement(out result))
                 {
-                    if (result == CurrentTune) continue;
+                    if (result == CurrentTune)
+                    {
+                        continue;
+                    }
+
                     break;
                 }
             }
@@ -447,7 +475,10 @@ namespace IndustrialAge.Objects
 
         public virtual void StartMusic(TuneDef parmDef = null)
         {
-            if (state == State.off) state = State.on;
+            if (state == State.off)
+            {
+                state = State.on;
+            }
 
             //Establish duration
             //Cthulhu.Utility.DebugReport("Cur Time:" + Time.time.ToString());
@@ -455,13 +486,17 @@ namespace IndustrialAge.Objects
             //Cthulhu.Utility.DebugReport(currentTuneDef.ToString() + " Fin Time:" + duration.ToString());
 
             //Clear old song
-            this.playingSong = null;
+            playingSong = null;
 
             //Put on new song
-            SoundInfo soundInfo = SoundInfo.InMap(this, MaintenanceType.None);
-            SoundDef soundDef = currentTuneDef as SoundDef;
-            if (parmDef != null) soundDef = parmDef as SoundDef;
-            this.playingSong = SoundStarter.TrySpawnSustainer(soundDef, soundInfo);
+            var soundInfo = SoundInfo.InMap(this, MaintenanceType.None);
+            var soundDef = currentTuneDef as SoundDef;
+            if (parmDef != null)
+            {
+                soundDef = parmDef as SoundDef;
+            }
+
+            playingSong = SoundStarter.TrySpawnSustainer(soundDef, soundInfo);
         }
 
         public void StopMusic()
@@ -473,9 +508,9 @@ namespace IndustrialAge.Objects
                 duration = -1f;
                 //Let's stop the music.
                 //Music command.
-                if (this.playingSong != null)
+                if (playingSong != null)
                 {
-                    this.playingSong.End();
+                    playingSong.End();
                 }
             }
         }
@@ -502,7 +537,7 @@ namespace IndustrialAge.Objects
             {
                 foreach (IntVec3 current in r.Cells)
                 {
-                    if (current.InHorDistOf(pos, 7.9f)) //Check within a 7.9 radius
+                    if (current.InHorDistOf(pos, ListenRadius)) //Check within a 7.9 radius
                     {
                         listenableCells.Add(current);
                     }
@@ -523,20 +558,24 @@ namespace IndustrialAge.Objects
 
             if (isRadio && powerTrader != null)
             {
-                Command_Toggle toggleDef = new Command_Toggle
+                var toggleDef = new Command_Toggle
                 {
                     hotKey = KeyBindingDefOf.Command_TogglePower,
                     icon = ContentFinder<Texture2D>.Get("UI/Icons/Commands/Autoplay", true),
                     defaultLabel = "Autoplay",
                     defaultDesc = "Enables automatic playing of music through the radio.",
-                    isActive = (() => this.autoPlay),
+                    isActive = () => autoPlay,
                     toggleAction = delegate
                     {
-                        this.autoPlay = !this.autoPlay;
+                        autoPlay = !autoPlay;
                     },
                     disabled = true
                 };
-                if (powerTrader.PowerOn) toggleDef.disabled = false;
+                if (powerTrader.PowerOn)
+                {
+                    toggleDef.disabled = false;
+                }
+
                 yield return toggleDef;
             }
             yield break;
@@ -551,7 +590,7 @@ namespace IndustrialAge.Objects
         {
             if (!myPawn.CanReserve(this, 16))
             {
-                FloatMenuOption item = new FloatMenuOption("CannotUseReserved".Translate(), null, MenuOptionPriority.Default, null, null, 0f, null);
+                var item = new FloatMenuOption("CannotUseReserved".Translate(), null, MenuOptionPriority.Default, null, null, 0f, null);
                 return new List<FloatMenuOption>
                 {
                     item
@@ -559,7 +598,7 @@ namespace IndustrialAge.Objects
             }
             if (!myPawn.CanReach(this, PathEndMode.InteractionCell, Danger.Some, false, TraverseMode.ByPawn))
             {
-                FloatMenuOption item2 = new FloatMenuOption("CannotUseNoPath".Translate(), null, MenuOptionPriority.Default, null, null, 0f, null);
+                var item2 = new FloatMenuOption("CannotUseNoPath".Translate(), null, MenuOptionPriority.Default, null, null, 0f, null);
                 return new List<FloatMenuOption>
                 {
                     item2
@@ -567,7 +606,7 @@ namespace IndustrialAge.Objects
             }
             if (!myPawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
             {
-                FloatMenuOption item3 = new FloatMenuOption("CannotUseReason".Translate(new object[]
+                var item3 = new FloatMenuOption("CannotUseReason".Translate(new object[]
                 {
                     "IncapableOfCapacity".Translate(new object[]
                     {
@@ -581,7 +620,7 @@ namespace IndustrialAge.Objects
             }
 
 
-            List<FloatMenuOption> list = new List<FloatMenuOption>();
+            var list = new List<FloatMenuOption>();
             IntVec3 vec = myPawn.Position;
             Building t2 = null;
             if (IsOn() == true)
@@ -607,11 +646,11 @@ namespace IndustrialAge.Objects
                         }
                     }
                 }
-                list.Add(new FloatMenuOption("Listen to " + this.Label, action0, MenuOptionPriority.Default, null, null, 0f, null));
+                list.Add(new FloatMenuOption("Listen to " + Label, action0, MenuOptionPriority.Default, null, null, 0f, null));
 
                 void action0a()
                 {
-                    Job job = new Job(DefDatabase<JobDef>.GetNamed("TurnOffGramophone"), this)
+                    var job = new Job(DefDatabase<JobDef>.GetNamed("TurnOffGramophone"), this)
                     {
                         targetA = this
                     };
@@ -620,7 +659,7 @@ namespace IndustrialAge.Objects
                         //Lala
                     }
                 }
-                list.Add(new FloatMenuOption("Turn off " + this.Label, action0a, MenuOptionPriority.Default, null, null, 0f, null));
+                list.Add(new FloatMenuOption("Turn off " + Label, action0a, MenuOptionPriority.Default, null, null, 0f, null));
             }
 
 
@@ -633,7 +672,7 @@ namespace IndustrialAge.Objects
                     {
                         void actionDef()
                         {
-                            Job job = new Job(DefDatabase<JobDef>.GetNamed("PlayGramophone"), this)
+                            var job = new Job(DefDatabase<JobDef>.GetNamed("PlayGramophone"), this)
                             {
                                 targetA = this
                             };

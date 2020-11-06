@@ -14,14 +14,14 @@ namespace IndustrialAge.Objects
         public static bool TryFindBestListenCell(Thing toListen, Pawn pawn, bool desireSit, out IntVec3 result, out Building chair)
         {
             IntVec3 intVec = IntVec3.Invalid;
-            Building_Gramophone musicBuilding = toListen as Building_Gramophone;
+            var musicBuilding = toListen as Building_Gramophone;
             IEnumerable<IntVec3> cells = musicBuilding.ListenableCells;
             var random = new Random();
             IEnumerable<IntVec3> cellsRandom = cells.OrderBy(order => random.Next()).ToList();
 
             foreach (IntVec3 current in cellsRandom)
             {
-                bool flag = false;
+                var flag = false;
                 Building building = null;
                 if (desireSit)
                 {
@@ -54,7 +54,7 @@ namespace IndustrialAge.Objects
             {
                 return false;
             }
-            Building_Gramophone musicBuilding = toListen as Building_Gramophone;
+            var musicBuilding = toListen as Building_Gramophone;
             IEnumerable<IntVec3> cells = musicBuilding.ListenableCells;
             foreach (IntVec3 current in cells)
             {
