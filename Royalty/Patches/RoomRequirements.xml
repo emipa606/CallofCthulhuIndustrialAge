@@ -31,7 +31,7 @@
         </value>
       </li>
       <li Class="PatchOperationAdd">
-        <xpath>/Defs/RoyalTitleDef[defName = "Esquire" or defName = "Acolyte" or defName = "Knight" or defName = "Praetor"]/throneRoomRequirements/li[contains(@Class, "RoomRequirement_ThingCountAnyOf") or contains(@Class, "RoomRequirement_ThingAnyOfCount")]/things[li = "Brazier"]</xpath>
+        <xpath>/Defs/RoyalTitleDef/throneRoomRequirements/li[contains(@Class, "RoomRequirement_ThingCountAnyOf") or contains(@Class, "RoomRequirement_ThingAnyOfCount")]/things[li = "Brazier"]</xpath>
         <value>
           <li>Jecrell_Chandelier</li>
           <li>Jecrell_Candelabra</li>
