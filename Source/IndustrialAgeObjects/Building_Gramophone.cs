@@ -1,23 +1,25 @@
 ﻿// ----------------------------------------------------------------------
 // These are basic usings. Always let them be here.
 // ----------------------------------------------------------------------
-using System;
+
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-
+using RimWorld;
+using UnityEngine;
+using Verse;
+using Verse.AI;
+using Verse.Sound;
 // ----------------------------------------------------------------------
 // These are RimWorld-specific usings. Activate/Deactivate what you need:
 // ----------------------------------------------------------------------
-using UnityEngine;         // Always needed
+// Always needed
 //using VerseBase;         // Material/Graphics handling functions are found here
-using Verse;               // RimWorld universal objects are here (like 'Building')
-using Verse.AI;          // Needed when you do something with the AI
-using Verse.Sound;       // Needed when you do something with Sound
-using Verse.Noise;       // Needed when you do something with Noises
-using RimWorld;            // RimWorld specific functions are found here (like 'Building_Battery')
-using RimWorld.Planet;
+// RimWorld universal objects are here (like 'Building')
+// Needed when you do something with the AI
+// Needed when you do something with Sound
+// Needed when you do something with Noises
+// RimWorld specific functions are found here (like 'Building_Battery')
 
 // RimWorld specific functions for world creation
 //using RimWorld.SquadAI;  // RimWorld specific functions for squad brains 
@@ -25,39 +27,15 @@ using RimWorld.Planet;
 namespace IndustrialAge.Objects
 {
     /// <summary>
-    /// This is the main class for the Gramophone.
-    /// Major coding credits go to mrofa and Haplo.
-    /// I am but an amateur working on the shoulders of
-    /// giants.
+    ///     This is the main class for the Gramophone.
+    ///     Major coding credits go to mrofa and Haplo.
+    ///     I am but an amateur working on the shoulders of
+    ///     giants.
     /// </summary>
     /// <author>Jecrell</author>
     /// <permission>Free to use by all.</permission>
     public class Building_Gramophone : Building
     {
-        // ===================== Variables =====================
-
-        // Work variable
-        private int counter = 0;                  // 60Ticks = 1s // 20000Ticks = 1 Day
-        private float duration = -1f;
-        private State state = State.off;      // Actual phase
-        private State stateOld = State.on;    // Save-variable
-        private const float ListenRadius = 7.9f;
-        private static List<IntVec3> listenableCells = new List<IntVec3>();
-        private TuneDef prevTuneDef;
-        private TuneDef currentTuneDef;
-        private TuneDef nextTuneDef;
-        private CompPowerTrader powerTrader;
-        private List<TuneDef> playlist = new List<TuneDef>();
-        private readonly WorldComponent_Tunes tuneScape = Find.World.GetComponent<WorldComponent_Tunes>();
-        public bool isRadio = false;
-        private bool autoPlay = false;
-        private int rareTickWorker = 250;
-
-        protected Sustainer playingSong;
-
-        // Variables to set a specific value
-        private const int counterWoundMax = 20000;  // Active-Time
-
         //Is our music player on or off?
         public enum State
         {
@@ -65,10 +43,75 @@ namespace IndustrialAge.Objects
             on
         }
 
-        public TuneDef CurrentTune { get => currentTuneDef; set => currentTuneDef = value; }
-        public TuneDef NextTune { get => nextTuneDef; set => nextTuneDef = value; }
-        public TuneDef PreviousTune { get => prevTuneDef; set => prevTuneDef = value; }
-        public State CurrentState { get => state; set => state = value; }
+        private const float ListenRadius = 7.9f;
+
+        // Variables to set a specific value
+        private const int counterWoundMax = 20000; // Active-Time
+        private static List<IntVec3> listenableCells = new List<IntVec3>();
+
+        private readonly SoundDef songCharleston = SoundDef.Named("Estate_GS_Charleston");
+        private readonly SoundDef songInTheMood = SoundDef.Named("Estate_GS_InTheMood");
+        private readonly SoundDef songKingPorterStomp = SoundDef.Named("Estate_GS_KingPorterStomp");
+        private readonly WorldComponent_Tunes tuneScape = Find.World.GetComponent<WorldComponent_Tunes>();
+        private readonly string txtOff = "Off";
+        private readonly string txtOn = "On";
+
+
+        private readonly string txtPlaying = "Now Playing:";
+
+        // Component references (will be set in 'SpawnSetup()')
+        // CompMusicPlayer  - This makes it possible for your building to play music. You can start and stop the music.
+        //private CompMusicPlayer musicComp;
+
+        private readonly string txtStatus = "Status";
+
+        private bool autoPlay;
+        // ===================== Variables =====================
+
+        // Work variable
+        private int counter; // 60Ticks = 1s // 20000Ticks = 1 Day
+        private TuneDef currentTuneDef;
+
+        // Destroyed flag. Most of the time not really needed, but sometimes...
+        private bool destroyedFlag;
+        private float duration = -1f;
+        public bool isRadio;
+        private TuneDef nextTuneDef;
+
+        protected Sustainer playingSong;
+        private List<TuneDef> playlist = new List<TuneDef>();
+        private CompPowerTrader powerTrader;
+        private TuneDef prevTuneDef;
+        private int rareTickWorker = 250;
+        private State state = State.off; // Actual phase
+        private State stateOld = State.on; // Save-variable
+
+        public TuneDef CurrentTune
+        {
+            get => currentTuneDef;
+            set => currentTuneDef = value;
+        }
+
+        public TuneDef NextTune
+        {
+            get => nextTuneDef;
+            set => nextTuneDef = value;
+        }
+
+        public TuneDef PreviousTune
+        {
+            get => prevTuneDef;
+            set => prevTuneDef = value;
+        }
+
+        public State CurrentState
+        {
+            get => state;
+            set => state = value;
+        }
+
+
+        public IEnumerable<IntVec3> ListenableCells => ListenableCellsAround(Position, Map);
 
         public bool IsOn()
         {
@@ -76,41 +119,12 @@ namespace IndustrialAge.Objects
             {
                 return true;
             }
+
             return false;
         }
 
-
-        public IEnumerable<IntVec3> ListenableCells => ListenableCellsAround(base.Position, base.Map);
-
-        //What song are we playing?
-        private enum Song
-        {
-            Stop = 0,
-            Charleston,
-            InTheMood,
-            KingPorterStomp,
-        }
-
-        private readonly SoundDef songCharleston = SoundDef.Named("Estate_GS_Charleston");
-        private readonly SoundDef songInTheMood = SoundDef.Named("Estate_GS_InTheMood");
-        private readonly SoundDef songKingPorterStomp = SoundDef.Named("Estate_GS_KingPorterStomp");
-
-        // Component references (will be set in 'SpawnSetup()')
-        // CompMusicPlayer  - This makes it possible for your building to play music. You can start and stop the music.
-        //private CompMusicPlayer musicComp;
-
-        private readonly string txtStatus = "Status";
-        private readonly string txtOff = "Off";
-        private readonly string txtOn = "On";
-
-
-        private readonly string txtPlaying = "Now Playing:";
-
-        // Destroyed flag. Most of the time not really needed, but sometimes...
-        private bool destroyedFlag = false;
-
         /// <summary>
-        /// Do something after the object is spawned
+        ///     Do something after the object is spawned
         /// </summary>
         public override void SpawnSetup(Map map, bool flip)
         {
@@ -123,38 +137,40 @@ namespace IndustrialAge.Objects
         }
 
         /// <summary>
-        /// To save and load actual values (savegame-data)
+        ///     To save and load actual values (savegame-data)
         /// </summary>
         public override void ExposeData()
         {
             base.ExposeData();
             // Save and load the work variables, so they don't default after loading
-            Scribe_Values.Look(ref isRadio, "isRadio", false);
-            Scribe_Values.Look(ref autoPlay, "autoPlay", false);
-            Scribe_Values.Look(ref state, "state", State.off);
-            Scribe_Values.Look(ref counter, "counter", 0);
+            Scribe_Values.Look(ref isRadio, "isRadio");
+            Scribe_Values.Look(ref autoPlay, "autoPlay");
+            Scribe_Values.Look(ref state, "state");
+            Scribe_Values.Look(ref counter, "counter");
             Scribe_Defs.Look(ref prevTuneDef, "prevTuneDef");
             Scribe_Defs.Look(ref currentTuneDef, "currentTuneDef");
             Scribe_Defs.Look(ref nextTuneDef, "nextTuneDef");
-            Scribe_Collections.Look(ref playlist, "playlist", LookMode.Def, new object[0]);
+            Scribe_Collections.Look(ref playlist, "playlist", LookMode.Def);
 
             // Set the old value to the phase value
             stateOld = state;
 
             // Get refferences to the components CompPowerTrader and CompGlower
             //SetMusicPlayer();
-            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            if (Scribe.mode != LoadSaveMode.PostLoadInit)
             {
-                autoPlay = false;
-                StopMusic();
+                return;
             }
+
+            autoPlay = false;
+            StopMusic();
         }
 
 
         // ===================== Destroy =====================
 
         /// <summary>
-        /// Clean up when this is destroyed
+        ///     Clean up when this is destroyed
         /// </summary>
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
@@ -165,132 +181,10 @@ namespace IndustrialAge.Objects
             base.Destroy(mode);
         }
 
-        #region Ticker
-        // ===================== Ticker =====================
-
-        /// <summary>
-        /// This is used, when the Ticker in the XML is set to 'Rare'
-        /// This is a tick thats done once every 250 normal Ticks
-        /// </summary>
-        public override void TickRare()
-        {
-            if (destroyedFlag) // Do nothing further, when destroyed (just a safety)
-            {
-                return;
-            }
-
-            // Don't forget the base work
-            base.TickRare();
-
-            // Call work function
-            DoTickerWork(250);
-        }
-
-
-        /// <summary>
-        /// This is used, when the Ticker in the XML is set to 'Normal'
-        /// This Tick is done often (60 times per second)
-        /// </summary>
-        public override void Tick()
-        {
-            if (destroyedFlag) // Do nothing further, when destroyed (just a safety)
-            {
-                return;
-            }
-
-            base.Tick();
-
-            // Call work function
-            DoTickerWork(1);
-        }
-
-        // ===================== Main Work Function =====================
-
-        /// <summary>
-        /// This will be called from one of the Ticker-Functions.
-        /// </summary>
-        /// <param name="tickerAmount"></param>
-        private void DoTickerWork(int tickerAmount)
-        {
-            // set the old variable
-            stateOld = state;
-
-            rareTickWorker -= 1;
-            if (isRadio && rareTickWorker <= 0)
-            {
-                rareTickWorker = 250;
-                if (!TryResolvePowerTrader())
-                {
-                    Log.Error("Radio Error: Cannot resolve power trader comp.");
-                    return;
-                }
-                if (!powerTrader.PowerOn)
-                {
-                    //Cthulhu.Utility.DebugReport("Radio: Power Off Called");
-                    StopMusic();
-                }
-            }
-
-            if (duration == -1f)
-            {
-                return; //If duration isn't initialized, don't bother checking.
-            }
-
-
-
-
-            //Are we on? Okay. Let's play!
-            if (state == State.on)
-            {
-
-                //Should we turn off?
-                if (Time.time >= duration) //Is the current time greater than the duration?
-                {
-                    //Are we a radio?
-                    if (isRadio)
-                    {
-                        if (!TryResolvePowerTrader())
-                        {
-                            Log.Error("Radio Error: Cannot resolve power trader comp.");
-                            return;
-                        }
-                        if (powerTrader.PowerOn)
-                        {
-                            //Do we have autoplay on?
-                            if (autoPlay)
-                            {
-                                SwitchTracks();
-                            }
-                            else
-                            {
-                                StopMusic();
-                            }
-                        }
-                        else
-                        {
-                            if (autoPlay)
-                            {
-                                autoPlay = false;
-                            }
-
-                            StopMusic();
-                        }
-                    }
-                    else
-                    {
-                        StopMusic();
-                    }
-                }
-            }
-
-        }
-
-        #endregion Ticker
-
         // ===================== Inspections =====================
 
         /// <summary>
-        /// This string will be shown when the object is selected (focus)
+        ///     This string will be shown when the object is selected (focus)
         /// </summary>
         /// <returns></returns>
         public override string GetInspectString()
@@ -311,23 +205,23 @@ namespace IndustrialAge.Objects
                 stringBuilder.AppendLine();
             }
 
-            stringBuilder.Append(txtStatus + " ");  // <= TRANSLATION
+            stringBuilder.Append(txtStatus + " "); // <= TRANSLATION
 
             // State -> Off: Add text 'Off' (Translation from active language file)
             if (state == State.off)
             {
-                stringBuilder.Append(txtOff);   // <= TRANSLATION
+                stringBuilder.Append(txtOff); // <= TRANSLATION
             }
 
             // State -> On: Add text 'On' (Translation from active language file)
             if (state == State.on)
             {
-                stringBuilder.Append(txtOn);    // <= TRANSLATION
+                stringBuilder.Append(txtOn); // <= TRANSLATION
 
                 stringBuilder.AppendLine();
                 stringBuilder.Append(txtPlaying + " ");
 
-                stringBuilder.Append(currentTuneDef.ToString());
+                stringBuilder.Append(currentTuneDef);
             }
 
             // return the complete string
@@ -342,7 +236,7 @@ namespace IndustrialAge.Objects
         public virtual void PlayMusic(Pawn activator)
         {
             //No one there? We can't start without an audience.
-            if (activator == null || this == null)
+            if (activator == null)
             {
                 return;
             }
@@ -354,13 +248,14 @@ namespace IndustrialAge.Objects
             }
 
             //We're off? Let's change that.
-            if (state == State.off)
+            if (state != State.off)
             {
-
-                state = State.on;
-
-                StartMusic();
+                return;
             }
+
+            state = State.on;
+
+            StartMusic();
         }
 
         // ============= COMPS ===================//
@@ -369,17 +264,18 @@ namespace IndustrialAge.Objects
         private bool TryResolvePowerTrader()
         {
             //Do we need to set up a power trader?
-            if (powerTrader == null)
+            if (powerTrader != null)
             {
-                powerTrader = this.TryGetComp<CompPowerTrader>();
-                if (powerTrader != null)
-                {
-                    return true;
-                }
-
-                return false;
+                return true;
             }
-            return true;
+
+            powerTrader = this.TryGetComp<CompPowerTrader>();
+            if (powerTrader != null)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         // ============= PLAYLIST CONTROLS ================= //
@@ -387,20 +283,19 @@ namespace IndustrialAge.Objects
         private void SwitchTracks()
         {
             //Let's declare some variables.
-            TuneDef curTune;
-            TuneDef nextTune;
 
             //Let's pick out the next tune.
-            if (!TryResolveNextTrack(out TuneDef resolvedNextTune))
+            if (!TryResolveNextTrack(out var resolvedNextTune))
             {
                 Log.Error("Could not resolve next track.");
                 return;
             }
+
             NextTune = resolvedNextTune;
 
             //Let's seal up the current variables in  nice clean envelope.
-            curTune = CurrentTune;
-            nextTune = NextTune;
+            var curTune = CurrentTune;
+            var nextTune = NextTune;
 
             //Stop the music.
             StopMusic();
@@ -411,12 +306,10 @@ namespace IndustrialAge.Objects
 
             //Start the music.
             StartMusic();
-
-
         }
 
         /// <summary>
-        /// Triggered from resolve next track, if no playlist exists, this method creates it.
+        ///     Triggered from resolve next track, if no playlist exists, this method creates it.
         /// </summary>
         /// <returns></returns>
         private bool TryCreatePlaylist()
@@ -437,13 +330,13 @@ namespace IndustrialAge.Objects
         }
 
         /// <summary>
-        /// Handles the upcoming track.
+        ///     Handles the upcoming track.
         /// </summary>
-        /// <param name="def"></param>
+        /// <param name="tuneDef"></param>
         /// <returns></returns>
-        private bool TryResolveNextTrack(out TuneDef def)
+        private bool TryResolveNextTrack(out TuneDef tuneDef)
         {
-            def = null;
+            tuneDef = null;
             if (playlist.Count == 0)
             {
                 if (!TryCreatePlaylist())
@@ -452,25 +345,30 @@ namespace IndustrialAge.Objects
                     return false;
                 }
             }
+
             TuneDef result = null;
             for (var i = 0; i < 999; i++)
             {
-                if (playlist.TryRandomElement(out result))
+                if (!playlist.TryRandomElement(out result))
                 {
-                    if (result == CurrentTune)
-                    {
-                        continue;
-                    }
-
-                    break;
+                    continue;
                 }
+
+                if (result == CurrentTune)
+                {
+                    continue;
+                }
+
+                break;
             }
-            if (result != null)
+
+            if (result == null)
             {
-                def = result;
-                return true;
+                return false;
             }
-            return false;
+
+            tuneDef = result;
+            return true;
         }
 
         public virtual void StartMusic(TuneDef parmDef = null)
@@ -489,36 +387,39 @@ namespace IndustrialAge.Objects
             playingSong = null;
 
             //Put on new song
-            var soundInfo = SoundInfo.InMap(this, MaintenanceType.None);
+            var soundInfo = SoundInfo.InMap(this);
             var soundDef = currentTuneDef as SoundDef;
             if (parmDef != null)
             {
-                soundDef = parmDef as SoundDef;
+                soundDef = parmDef;
             }
 
-            playingSong = SoundStarter.TrySpawnSustainer(soundDef, soundInfo);
+            playingSong = soundDef.TrySpawnSustainer(soundInfo);
         }
 
         public void StopMusic()
         {
             //Probably want to change songs right? Well let's turn off our current song.
-            if (state == State.on)
+            if (state != State.on)
             {
-                state = State.off;
-                duration = -1f;
-                //Let's stop the music.
-                //Music command.
-                if (playingSong != null)
-                {
-                    playingSong.End();
-                }
+                return;
+            }
+
+            state = State.off;
+            duration = -1f;
+            //Let's stop the music.
+            //Music command.
+            if (playingSong != null)
+            {
+                playingSong.End();
             }
         }
 
         /// <summary>
-        /// Checks for cells in a 7.9 radius around for listening.
+        ///     Checks for cells in a 7.9 radius around for listening.
         /// </summary>
         /// <param name="pos"></param>
+        /// <param name="map"></param>
         /// <returns></returns>
         public static List<IntVec3> ListenableCellsAround(IntVec3 pos, Map map)
         {
@@ -528,20 +429,23 @@ namespace IndustrialAge.Objects
             {
                 return listenableCells;
             }
-            Region region = pos.GetRegion(map);
+
+            var region = pos.GetRegion(map);
             if (region == null)
             {
                 return listenableCells;
             }
-            RegionTraverser.BreadthFirstTraverse(region, (Region from, Region r) => r.door == null, delegate (Region r)
+
+            RegionTraverser.BreadthFirstTraverse(region, (_, r) => r.door == null, delegate(Region r)
             {
-                foreach (IntVec3 current in r.Cells)
+                foreach (var current in r.Cells)
                 {
                     if (current.InHorDistOf(pos, ListenRadius)) //Check within a 7.9 radius
                     {
                         listenableCells.Add(current);
                     }
                 }
+
                 return false;
             }, 12);
             return listenableCells; //Return the cells we find.
@@ -549,40 +453,38 @@ namespace IndustrialAge.Objects
 
         public override IEnumerable<Gizmo> GetGizmos()
         {
-            IEnumerator<Gizmo> enumerator = base.GetGizmos().GetEnumerator();
+            using var enumerator = base.GetGizmos().GetEnumerator();
             while (enumerator.MoveNext())
             {
-                Gizmo current = enumerator.Current;
+                var current = enumerator.Current;
                 yield return current;
             }
 
-            if (isRadio && powerTrader != null)
+            if (!isRadio || powerTrader == null)
             {
-                var toggleDef = new Command_Toggle
-                {
-                    hotKey = KeyBindingDefOf.Command_TogglePower,
-                    icon = ContentFinder<Texture2D>.Get("UI/Icons/Commands/Autoplay", true),
-                    defaultLabel = "Autoplay",
-                    defaultDesc = "Enables automatic playing of music through the radio.",
-                    isActive = () => autoPlay,
-                    toggleAction = delegate
-                    {
-                        autoPlay = !autoPlay;
-                    },
-                    disabled = true
-                };
-                if (powerTrader.PowerOn)
-                {
-                    toggleDef.disabled = false;
-                }
-
-                yield return toggleDef;
+                yield break;
             }
-            yield break;
+
+            var toggleDef = new Command_Toggle
+            {
+                hotKey = KeyBindingDefOf.Command_TogglePower,
+                icon = ContentFinder<Texture2D>.Get("UI/Icons/Commands/Autoplay"),
+                defaultLabel = "Autoplay",
+                defaultDesc = "Enables automatic playing of music through the radio.",
+                isActive = () => autoPlay,
+                toggleAction = delegate { autoPlay = !autoPlay; },
+                disabled = true
+            };
+            if (powerTrader.PowerOn)
+            {
+                toggleDef.disabled = false;
+            }
+
+            yield return toggleDef;
         }
 
         /// <summary>
-        /// All the menu options for the Gramophone.
+        ///     All the menu options for the Gramophone.
         /// </summary>
         /// <param name="myPawn"></param>
         /// <returns></returns>
@@ -590,29 +492,27 @@ namespace IndustrialAge.Objects
         {
             if (!myPawn.CanReserve(this, 16))
             {
-                var item = new FloatMenuOption("CannotUseReserved".Translate(), null, MenuOptionPriority.Default, null, null, 0f, null);
+                var item = new FloatMenuOption("CannotUseReserved".Translate(), null);
                 return new List<FloatMenuOption>
                 {
                     item
                 };
             }
-            if (!myPawn.CanReach(this, PathEndMode.InteractionCell, Danger.Some, false, TraverseMode.ByPawn))
+
+            if (!myPawn.CanReach(this, PathEndMode.InteractionCell, Danger.Some))
             {
-                var item2 = new FloatMenuOption("CannotUseNoPath".Translate(), null, MenuOptionPriority.Default, null, null, 0f, null);
+                var item2 = new FloatMenuOption("CannotUseNoPath".Translate(), null);
                 return new List<FloatMenuOption>
                 {
                     item2
                 };
             }
+
             if (!myPawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
             {
-                var item3 = new FloatMenuOption("CannotUseReason".Translate(new object[]
-                {
-                    "IncapableOfCapacity".Translate(new object[]
-                    {
-                        PawnCapacityDefOf.Manipulation.label
-                    })
-                }), null, MenuOptionPriority.Default, null, null, 0f, null);
+                var item3 = new FloatMenuOption(
+                    "CannotUseReason".Translate("IncapableOfCapacity".Translate(PawnCapacityDefOf.Manipulation.label)),
+                    null);
                 return new List<FloatMenuOption>
                 {
                     item3
@@ -621,14 +521,12 @@ namespace IndustrialAge.Objects
 
 
             var list = new List<FloatMenuOption>();
-            IntVec3 vec = myPawn.Position;
-            Building t2 = null;
-            if (IsOn() == true)
+            if (IsOn())
             {
                 void action0()
                 {
                     Job job = null;
-                    if (ListenBuildingUtility.TryFindBestListenCell(this, myPawn, true, out vec, out t2))
+                    if (ListenBuildingUtility.TryFindBestListenCell(this, myPawn, true, out var vec, out var t2))
                     {
                         job = new Job(DefDatabase<JobDef>.GetNamed("ListenToGramophone"), this, vec, t2);
                     }
@@ -636,17 +534,21 @@ namespace IndustrialAge.Objects
                     {
                         job = new Job(DefDatabase<JobDef>.GetNamed("ListenToGramophone"), this, vec, t2);
                     }
-                    if (job != null)
+
+                    if (job == null)
                     {
-                        job.targetB = vec;
-                        job.targetC = t2;
-                        if (myPawn.jobs.TryTakeOrderedJob(job))
-                        {
-                            //Lala
-                        }
+                        return;
+                    }
+
+                    job.targetB = vec;
+                    job.targetC = t2;
+                    if (myPawn.jobs.TryTakeOrderedJob(job))
+                    {
+                        //Lala
                     }
                 }
-                list.Add(new FloatMenuOption("Listen to " + Label, action0, MenuOptionPriority.Default, null, null, 0f, null));
+
+                list.Add(new FloatMenuOption("Listen to " + Label, action0));
 
                 void action0a()
                 {
@@ -659,35 +561,171 @@ namespace IndustrialAge.Objects
                         //Lala
                     }
                 }
-                list.Add(new FloatMenuOption("Turn off " + Label, action0a, MenuOptionPriority.Default, null, null, 0f, null));
+
+                list.Add(new FloatMenuOption("Turn off " + Label, action0a));
             }
 
 
-            if (tuneScape != null)
+            if (tuneScape == null)
             {
-                var tuneDefs = tuneScape.TuneDefCache.Where(x => !x.instrumentOnly);
-                if (tuneDefs.Any())
+                return list;
+            }
+
+            var tuneDefs = tuneScape.TuneDefCache.Where(x => !x.instrumentOnly);
+            if (!tuneDefs.Any())
+            {
+                return list;
+            }
+
+            foreach (var tuneDef in tuneDefs)
+            {
+                void actionDef()
                 {
-                    foreach (TuneDef def in tuneDefs)
+                    var job = new Job(DefDatabase<JobDef>.GetNamed("PlayGramophone"), this)
                     {
-                        void actionDef()
-                        {
-                            var job = new Job(DefDatabase<JobDef>.GetNamed("PlayGramophone"), this)
-                            {
-                                targetA = this
-                            };
-                            currentTuneDef = def;
-                            if (myPawn.jobs.TryTakeOrderedJob(job))
-                            {
-                                //Lala
-                            }
-                        }
-                        list.Add(new FloatMenuOption("Play " + def.LabelCap, actionDef, MenuOptionPriority.Default, null, null, 0f, null));
+                        targetA = this
+                    };
+                    currentTuneDef = tuneDef;
+                    if (myPawn.jobs.TryTakeOrderedJob(job))
+                    {
+                        //Lala
                     }
                 }
+
+                list.Add(new FloatMenuOption("Play " + tuneDef.LabelCap, actionDef));
             }
+
             return list;
         }
 
+        // ===================== Ticker =====================
+
+        /// <summary>
+        ///     This is used, when the Ticker in the XML is set to 'Rare'
+        ///     This is a tick thats done once every 250 normal Ticks
+        /// </summary>
+        public override void TickRare()
+        {
+            if (destroyedFlag) // Do nothing further, when destroyed (just a safety)
+            {
+                return;
+            }
+
+            // Don't forget the base work
+            base.TickRare();
+
+            // Call work function
+            DoTickerWork(250);
+        }
+
+
+        /// <summary>
+        ///     This is used, when the Ticker in the XML is set to 'Normal'
+        ///     This Tick is done often (60 times per second)
+        /// </summary>
+        public override void Tick()
+        {
+            if (destroyedFlag) // Do nothing further, when destroyed (just a safety)
+            {
+                return;
+            }
+
+            base.Tick();
+
+            // Call work function
+            DoTickerWork(1);
+        }
+
+        // ===================== Main Work Function =====================
+
+        /// <summary>
+        ///     This will be called from one of the Ticker-Functions.
+        /// </summary>
+        /// <param name="tickerAmount"></param>
+        private void DoTickerWork(int tickerAmount)
+        {
+            // set the old variable
+            stateOld = state;
+
+            rareTickWorker -= 1;
+            if (isRadio && rareTickWorker <= 0)
+            {
+                rareTickWorker = 250;
+                if (!TryResolvePowerTrader())
+                {
+                    Log.Error("Radio Error: Cannot resolve power trader comp.");
+                    return;
+                }
+
+                if (!powerTrader.PowerOn)
+                {
+                    //Cthulhu.Utility.DebugReport("Radio: Power Off Called");
+                    StopMusic();
+                }
+            }
+
+            if (duration == -1f)
+            {
+                return; //If duration isn't initialized, don't bother checking.
+            }
+
+
+            //Are we on? Okay. Let's play!
+            if (state != State.on)
+            {
+                return;
+            }
+
+            //Should we turn off?
+            if (!(Time.time >= duration))
+            {
+                return;
+            }
+
+            //Are we a radio?
+            if (isRadio)
+            {
+                if (!TryResolvePowerTrader())
+                {
+                    Log.Error("Radio Error: Cannot resolve power trader comp.");
+                    return;
+                }
+
+                if (powerTrader.PowerOn)
+                {
+                    //Do we have autoplay on?
+                    if (autoPlay)
+                    {
+                        SwitchTracks();
+                    }
+                    else
+                    {
+                        StopMusic();
+                    }
+                }
+                else
+                {
+                    if (autoPlay)
+                    {
+                        autoPlay = false;
+                    }
+
+                    StopMusic();
+                }
+            }
+            else
+            {
+                StopMusic();
+            }
+        }
+
+        //What song are we playing?
+        private enum Song
+        {
+            Stop = 0,
+            Charleston,
+            InTheMood,
+            KingPorterStomp
+        }
     }
 }

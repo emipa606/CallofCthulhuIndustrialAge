@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -10,38 +9,44 @@ namespace IndustrialAge.Objects
 {
     public class ListenBuildingUtility
     {
-
-        public static bool TryFindBestListenCell(Thing toListen, Pawn pawn, bool desireSit, out IntVec3 result, out Building chair)
+        public static bool TryFindBestListenCell(Thing toListen, Pawn pawn, bool desireSit, out IntVec3 result,
+            out Building chair)
         {
-            IntVec3 intVec = IntVec3.Invalid;
-            var musicBuilding = toListen as Building_Gramophone;
-            IEnumerable<IntVec3> cells = musicBuilding.ListenableCells;
-            var random = new Random();
-            IEnumerable<IntVec3> cellsRandom = cells.OrderBy(order => random.Next()).ToList();
-
-            foreach (IntVec3 current in cellsRandom)
+            var unused = IntVec3.Invalid;
+            if (toListen is Building_Gramophone musicBuilding)
             {
-                var flag = false;
-                Building building = null;
-                if (desireSit)
+                var cells = musicBuilding.ListenableCells;
+                var random = new Random();
+                IEnumerable<IntVec3> cellsRandom = cells.OrderBy(_ => random.Next()).ToList();
+
+                foreach (var current in cellsRandom)
                 {
-                    building = current.GetEdifice(pawn.Map);
-                    if (building != null && building.def.building.isSittable && pawn.CanReserve(building, 1))
+                    var isSittable = false;
+                    Building building = null;
+                    if (desireSit)
                     {
-                        flag = true;
+                        building = current.GetEdifice(pawn.Map);
+                        if (building != null && building.def.building.isSittable && pawn.CanReserve(building))
+                        {
+                            isSittable = true;
+                        }
                     }
-                }
-                else if (!current.IsForbidden(pawn) && pawn.CanReserve(current, 1))
-                {
-                    flag = true;
-                }
-                if (flag)
-                {
+                    else if (!current.IsForbidden(pawn) && pawn.CanReserve(current))
+                    {
+                        isSittable = true;
+                    }
+
+                    if (!isSittable)
+                    {
+                        continue;
+                    }
+
                     result = current;
                     chair = building;
                     return true;
                 }
             }
+
             result = IntVec3.Invalid;
             chair = null;
             return false;
@@ -50,21 +55,26 @@ namespace IndustrialAge.Objects
         // RimWorld.WatchBuildingUtility
         public static bool CanListenFromBed(Pawn pawn, Building_Bed bed, Thing toListen)
         {
-            if (!pawn.Position.Standable(pawn.Map) || (pawn.Position.GetEdifice(pawn.Map) is Building_Bed))
+            if (!pawn.Position.Standable(pawn.Map) || pawn.Position.GetEdifice(pawn.Map) is Building_Bed)
             {
                 return false;
             }
-            var musicBuilding = toListen as Building_Gramophone;
-            IEnumerable<IntVec3> cells = musicBuilding.ListenableCells;
-            foreach (IntVec3 current in cells)
+
+            if (!(toListen is Building_Gramophone musicBuilding))
+            {
+                return false;
+            }
+
+            var cells = musicBuilding.ListenableCells;
+            foreach (var current in cells)
             {
                 if (current == pawn.Position)
                 {
                     return true;
                 }
             }
+
             return false;
         }
     }
-
 }

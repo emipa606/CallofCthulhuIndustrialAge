@@ -1,8 +1,4 @@
 ﻿using RimWorld;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Verse;
 
 namespace IndustrialAge.Objects
@@ -16,22 +12,25 @@ namespace IndustrialAge.Objects
     {
         private const int HeatPushInterval = 60;
 
-        public CompProperties_HeatPusher Props => (CompProperties_HeatPusher)props;
+        public CompProperties_HeatPusher Props => (CompProperties_HeatPusher) props;
 
         protected virtual bool ShouldPushHeatNow
         {
             get
             {
-                CompRefuelable b = parent.GetComp<CompRefuelable>();
-                CompFlickable f = parent.GetComp<CompFlickable>();
+                var b = parent.GetComp<CompRefuelable>();
+                var f = parent.GetComp<CompFlickable>();
 
-                if (f != null && f.SwitchIsOn)
+                if (f == null || !f.SwitchIsOn)
                 {
-                    if (b != null && b.HasFuel)
-                    {
-                        return true;
-                    }
+                    return false;
                 }
+
+                if (b is {HasFuel: true})
+                {
+                    return true;
+                }
+
                 return false;
             }
         }
@@ -39,14 +38,17 @@ namespace IndustrialAge.Objects
         public override void CompTick()
         {
             base.CompTick();
-            if (parent.IsHashIntervalTick(HeatPushInterval) && ShouldPushHeatNow)
+            if (!parent.IsHashIntervalTick(HeatPushInterval) || !ShouldPushHeatNow)
             {
-                CompProperties_HeatPusher props = Props;
-                var temperature = parent.Position.GetTemperature(parent.Map);
-                if (temperature < props.heatPushMaxTemperature && temperature > props.heatPushMinTemperature)
-                {
-                    GenTemperature.PushHeat(parent.Position, parent.Map, props.heatPerSecond);
-                }
+                return;
+            }
+
+            var compPropertiesHeatPusher = Props;
+            var temperature = parent.Position.GetTemperature(parent.Map);
+            if (temperature < compPropertiesHeatPusher.heatPushMaxTemperature &&
+                temperature > compPropertiesHeatPusher.heatPushMinTemperature)
+            {
+                GenTemperature.PushHeat(parent.Position, parent.Map, compPropertiesHeatPusher.heatPerSecond);
             }
         }
     }

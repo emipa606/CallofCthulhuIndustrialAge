@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace IndustrialAge.Objects
 {
-    class ThingWithComps_Glower : ThingWithComps
+    internal class ThingWithComps_Glower : ThingWithComps
     {
-        public Building_StreetLamp master = null;
+        public Building_StreetLamp master;
 
         public override void Draw()
         {
@@ -24,14 +20,14 @@ namespace IndustrialAge.Objects
 
         public void CheckNeedsDestruction()
         {
-            if (master != null && Spawned)
+            if (master == null || !Spawned)
             {
-                if (!master.Spawned)
-                {
-                    Destroy(0);
-                    return;
-                }
+                return;
+            }
 
+            if (!master.Spawned)
+            {
+                Destroy();
             }
         }
 
@@ -42,8 +38,8 @@ namespace IndustrialAge.Objects
                 return;
             }
 
-            CompFlickable masterflickable = master.TryGetComp<CompFlickable>();
-            CompFlickable flickable = this.TryGetComp<CompFlickable>();
+            var masterflickable = master.TryGetComp<CompFlickable>();
+            var flickable = this.TryGetComp<CompFlickable>();
 
             if (masterflickable.SwitchIsOn != flickable.SwitchIsOn)
             {
@@ -54,7 +50,7 @@ namespace IndustrialAge.Objects
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_References.Look(ref master, "master", false);
+            Scribe_References.Look(ref master, "master");
         }
     }
 }

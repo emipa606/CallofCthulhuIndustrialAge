@@ -1,36 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using UnityEngine;
-//using VerseBase;
-using Verse;
+﻿using System.Collections.Generic;
 using Verse.AI;
-using Verse.Sound;
-using RimWorld;
+//using VerseBase;
 //using RimWorld.Planet;
 //using RimWorld.SquadAI;
 
 
 namespace IndustrialAge.Objects
 {
-
     public class JobDriver_TurnOffGramophone : JobDriver
     {
+        private string report = "";
 
         public override bool TryMakePreToilReservations(bool debug)
         {
             return true;
         }
 
-        private string report = "";
         public override string GetReport()
         {
             if (report != "")
             {
                 return base.ReportStringProcessed(report);
             }
+
             return base.GetReport();
         }
 
@@ -47,7 +39,7 @@ namespace IndustrialAge.Objects
 
             // Toil 1:
             // Reserve Target (TargetPack A is selected (It has the info where the target cell is))
-            yield return Toils_Reserve.Reserve(TargetIndex.A, 1);
+            yield return Toils_Reserve.Reserve(TargetIndex.A);
 
             // Toil 2:
             // Go to the thing.
@@ -62,12 +54,10 @@ namespace IndustrialAge.Objects
                 initAction = delegate
                 {
                     var gramophone = job.targetA.Thing as Building_Gramophone;
-                    gramophone.StopMusic();
+                    gramophone?.StopMusic();
                 }
             };
             yield return toilStopMusic;
-
-            yield break;
         }
     }
 }

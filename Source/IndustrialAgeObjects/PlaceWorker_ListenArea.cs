@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using Verse;
 
 namespace IndustrialAge.Objects
@@ -9,7 +7,7 @@ namespace IndustrialAge.Objects
     {
         public override void DrawGhost(ThingDef def, IntVec3 center, Rot4 rot, Color ghostCol, Thing thing = null)
         {
-            Map visibleMap = Find.CurrentMap;
+            var visibleMap = Find.CurrentMap;
             GenDraw.DrawFieldEdges(Building_Gramophone.ListenableCellsAround(center, visibleMap));
         }
     }

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
   <name>Industrial Age - Objects and Furniture (Continued)</name>
   <packageId>Mlie.CallofCthulhuIndustrialAge</packageId>
@@ -8,6 +8,7 @@
     <li>1.0</li>
     <li>1.1</li>
     <li>1.2</li>
+    <li>1.3</li>
   </supportedVersions>
   <modDependencies>
     <li>
@@ -26,6 +27,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=777197241
 - This is an unofficial port
 - This will be removed when/if Jecrell comes back
 - Added wax-patch based on crec4ets mod
+- Made royal chandelier suitable for thronerooms, via SoongJr
 
 [img]https://i.imgur.com/7Gzt3Rg.png[/img]
 
@@ -38,7 +40,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=777197241
 	
 [img]https://i.imgur.com/NOW7jU1.png[/img]
 
-Adds new furniture and appliances to your game from the time period of the late 1800's and early 1900s themed after the industrial era.
+Adds new furniture and appliances to your game from the time period of the late 1800&apos;s and early 1900s themed after the industrial era.
 	
 [h1]Adds the following objects:[/h1]
 [list]
@@ -73,11 +75,15 @@ These are the most excellent rim dwellers who support me:
 Brachiaraidos, Cory Bonifay, CrankyPeanut, E_T, Finwej, Jan Koutsky, Jonathan, K. Bolden, Kiya Nicoll, Matt Harris, Paul Fenwick, Toc Anastar, Grendalloffen, Martin K. Bonde, Harvey Mclellan, Shane M. aka ShotgunFace, Bentley Alsup, Eric Idema, MasterScootie, GoSu, Josh McCabe, spook, Clifford Campbell, J, Michael Paugh, John Kanady, Luis Figueroa, Midgeman, Nate Haug, Richard Paul, SilentWeirdo, Audrin Navarro, Calhoun Cattell, Михаил Юрченко, Nemuri Hime, Calum, Keith Thoma, Dick Jones, Patrick, Tim Stillson, Nathan Getman, Sharp Spook, Emily Shaw, Populous25, Steven James, Zalson, Mark, Marcus Sireanu, Drachken, Nicholas Bateman, Baron Xot, Justin Andres, Luis Salvatierra, Christopher, TinyFloatingTurtle, George Chong Chuang Ming, John Boehr, Oliver White, roxxploxx, Robin Hager, That Guy, Allic, Karol Rybak, Austin Harbert, Yewty, Evan Hwang, Ryan Brock, Jonathan Holzinger, MC, Alexander, Alex Mederer, Kevin Reagan, Toss Antilles, Chelsea Archambeau, Aron Glasser, Dan Winn, Fredric Sundberg, Sarah Banks, ted stevens
 
 
-[h1]
-Pssst~~ 
-Still there? 
-Jecrell here, lead programmer of the Call of Cthulhu mod series. 
-
-Want to buy me a coffee? Fuel my madness for mods here below. 
-https://patreon.com/jecrell[/h1]</description>
+[img]https://i.imgur.com/Rs6T6cr.png[/img]
+[list]
+[*] See if the the error persists if you just have this mod and its requirements active.
+[*] If not, try adding your other mods until it happens again.
+[*] Post your error-log using [url=https://steamcommunity.com/workshop/filedetails/?id=818773962]HugsLib[/url] and command Ctrl+F12
+[*] For best support, please use the Discord-channel for error-reporting.
+[*] Do not report errors by making a discussion-thread, I get no notification of that.
+[*] If you have the solution for a problem, please post it to the GitHub repository.
+[/list]
+</description>
 </ModMetaData>
+

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using RimWorld;
 using Verse;
 using Verse.AI;
-using RimWorld;
 
 namespace IndustrialAge.Objects
 {
@@ -16,33 +12,40 @@ namespace IndustrialAge.Objects
             {
                 return false;
             }
-            if (inBed)
-            {
-                Building_Bed layingDownBed = pawn.CurrentBed();
 
-                return ListenBuildingUtility.CanListenFromBed(pawn, layingDownBed, t);
+            if (!inBed)
+            {
+                return true;
             }
-            return true;
+
+            var layingDownBed = pawn.CurrentBed();
+
+            return ListenBuildingUtility.CanListenFromBed(pawn, layingDownBed, t);
         }
 
         protected override Job TryGivePlayJob(Pawn pawn, Thing t)
         {
-            if (!ListenBuildingUtility.TryFindBestListenCell(t, pawn, def.desireSit, out IntVec3 vec, out Building t2))
+            if (!ListenBuildingUtility.TryFindBestListenCell(t, pawn, def.desireSit, out var vec, out var t2))
             {
                 if (!ListenBuildingUtility.TryFindBestListenCell(t, pawn, false, out vec, out t2))
                 {
                     return null;
                 }
             }
-            if (t2 != null)
+
+            if (t2 == null)
             {
-                if (vec == t2.Position)
-                {
-                    if (!pawn.Map.reservationManager.CanReserve(pawn, t2))
-                    {
-                        return null;
-                    }
-                }
+                return new Job(def.jobDef, t, vec, (Building) null);
+            }
+
+            if (vec != t2.Position)
+            {
+                return new Job(def.jobDef, t, vec, t2);
+            }
+
+            if (!pawn.Map.reservationManager.CanReserve(pawn, t2))
+            {
+                return null;
             }
 
             return new Job(def.jobDef, t, vec, t2);

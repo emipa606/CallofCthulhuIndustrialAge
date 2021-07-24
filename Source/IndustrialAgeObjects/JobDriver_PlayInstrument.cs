@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-
-using UnityEngine;
-//using VerseBase;
+using Cthulhu;
+using RimWorld;
 using Verse;
 using Verse.AI;
-using Verse.Sound;
-using RimWorld;
+//using VerseBase;
 
 namespace IndustrialAge.Objects
 {
@@ -26,50 +21,50 @@ namespace IndustrialAge.Objects
         [DebuggerHidden]
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            this.EndOnDespawnedOrNull(TargetIndex.A, JobCondition.Incompletable);
-            yield return Toils_Reserve.Reserve(TargetIndex.A, base.job.def.joyMaxParticipants);
+            this.EndOnDespawnedOrNull(TargetIndex.A);
+            yield return Toils_Reserve.Reserve(TargetIndex.A, job.def.joyMaxParticipants);
             if (TargetB != null)
             {
-                yield return Toils_Reserve.Reserve(TargetIndex.B, 1);
+                yield return Toils_Reserve.Reserve(TargetIndex.B);
             }
 
             yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.OnCell);
             var toil = new Toil();
-            var soundDef = Find.World.GetComponent<WorldComponent_Tunes>().TuneDefCache.FindAll(x => x.instrumentDefs.Contains(TargetThingA.def)).RandomElement();
+            var soundDef = Find.World.GetComponent<WorldComponent_Tunes>().TuneDefCache
+                .FindAll(x => x.instrumentDefs.Contains(TargetThingA.def)).RandomElement();
             toil.PlaySustainerOrSound(soundDef);
             toil.tickAction = delegate
             {
                 pawn.rotationTracker.FaceCell(TargetA.Cell);
                 pawn.GainComfortFromCellIfPossible();
-                var statValue = TargetThingA.GetStatValue(StatDefOf.JoyGainFactor, true);
-                var extraJoyGainFactor = statValue;
-                JoyUtility.JoyTickCheckEnd(pawn, JoyTickFullJoyAction.EndJob, extraJoyGainFactor);
+                var statValue = TargetThingA.GetStatValue(StatDefOf.JoyGainFactor);
+                JoyUtility.JoyTickCheckEnd(pawn, JoyTickFullJoyAction.EndJob, statValue);
             };
             toil.defaultCompleteMode = ToilCompleteMode.Delay;
-            toil.defaultDuration = base.job.def.joyDuration;
+            toil.defaultDuration = job.def.joyDuration;
             toil.AddFinishAction(delegate
             {
-                if (Cthulhu.Utility.IsCosmicHorrorsLoaded())
+                if (Utility.IsCosmicHorrorsLoaded())
                 {
                     try
                     {
-                        if (Cthulhu.Utility.HasSanityLoss(pawn))
+                        if (Utility.HasSanityLoss(pawn))
                         {
-                            Cthulhu.Utility.ApplySanityLoss(pawn, -sanityRestoreRate, 1);
-                            Messages.Message(pawn.ToString() + " has restored some sanity using the " + TargetA.Thing.def.label + ".", new TargetInfo(pawn.Position, pawn.Map), MessageTypeDefOf.NeutralEvent);// .Standard);
+                            Utility.ApplySanityLoss(pawn, -sanityRestoreRate);
+                            Messages.Message(
+                                pawn + " has restored some sanity using the " + TargetA.Thing.def.label + ".",
+                                new TargetInfo(pawn.Position, pawn.Map), MessageTypeDefOf.NeutralEvent); // .Standard);
                         }
                     }
                     catch
                     {
-                        Log.Message("Error loading Sanity Hediff.");    
+                        Log.Message("Error loading Sanity Hediff.");
                     }
                 }
 
                 JoyUtility.TryGainRecRoomThought(pawn);
             });
             yield return toil;
-            yield break;
         }
     }
-
 }

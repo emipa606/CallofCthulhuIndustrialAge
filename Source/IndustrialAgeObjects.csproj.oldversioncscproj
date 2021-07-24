@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A36BEEB2-7379-475B-B537-827E34571962}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IndustrialAge.Objects</RootNamespace>
+    <AssemblyName>IndustrialAgeObjects</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\1.2\Assemblies</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\1.2\Assemblies</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Building_Radio.cs" />
+    <Compile Include="Building_StreetLamp.cs" />
+    <Compile Include="Building_Woodstove.cs" />
+    <Compile Include="CompBetterRottable.cs" />
+    <Compile Include="Building_Gramophone.cs" />
+    <Compile Include="Building_Refrigerator.cs" />
+    <Compile Include="CompHeatPusherRefuelable.cs" />
+    <Compile Include="CthulhuUtility.cs" />
+    <Compile Include="Graphic_CustomFlicker.cs" />
+    <Compile Include="JobDriver_AutoPlayListenGramophone.cs" />
+    <Compile Include="JobDriver_PlayInstrument.cs" />
+    <Compile Include="TexButton.cs" />
+    <Compile Include="ThingWithComps_Glower.cs" />
+    <Compile Include="Tools.cs" />
+    <Compile Include="JobDriver_ListenToGramophone.cs" />
+    <Compile Include="JobDriver_PlayGramophone.cs" />
+    <Compile Include="JobDriver_TurnOffGramophone.cs" />
+    <Compile Include="JoyGiver_ListenToBuilding.cs" />
+    <Compile Include="ListenBuildingUtility.cs" />
+    <Compile Include="PlaceWorker_ListenArea.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TuneDef.cs" />
+    <Compile Include="WorldComponent_ArkhamEstate.cs" />
+    <Compile Include="WorldComponent_Tunes.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Lib.Harmony">
+      <Version>2.0.4</Version>
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Krafs.Rimworld.Ref">
+      <Version>1.2.2900</Version>
+      <ExcludeAssets>runtime</ExcludeAssets>
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

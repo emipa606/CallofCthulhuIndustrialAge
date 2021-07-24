@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using RimWorld;
-using Verse;
+﻿using System.Collections.Generic;
 using RimWorld.Planet;
+using Verse;
 
 namespace IndustrialAge.Objects
 {
-    class WorldComponent_Tunes : WorldComponent
+    internal class WorldComponent_Tunes : WorldComponent
     {
-        private bool AreTunesReady = false;
+        private bool AreTunesReady;
         public List<TuneDef> TuneDefCache = new List<TuneDef>();
 
         public WorldComponent_Tunes(World world) : base(world)
@@ -25,33 +21,36 @@ namespace IndustrialAge.Objects
                 TuneDefCache = new List<TuneDef>();
             }
 
-            foreach (TuneDef current in TuneDefCache)
+            foreach (var current in TuneDefCache)
             {
-                if (current == tune)
+                if (current != tune)
                 {
-                    result = current;
-                    return result;
+                    continue;
                 }
+
+                result = current;
+                return result;
             }
 
             TuneDefCache.Add(tune);
             result = tune;
             return result;
         }
-        
 
 
         public void GenerateTunesList()
         {
-            if (!AreTunesReady)
+            if (AreTunesReady)
             {
-                foreach (TuneDef current in DefDatabase<TuneDef>.AllDefs)
-                {
-                    GetCache(current);
-                }
-                AreTunesReady = true;
+                return;
             }
-            return;
+
+            foreach (var current in DefDatabase<TuneDef>.AllDefs)
+            {
+                GetCache(current);
+            }
+
+            AreTunesReady = true;
         }
 
         public override void WorldComponentTick()
@@ -62,13 +61,12 @@ namespace IndustrialAge.Objects
 
         public override void ExposeData()
         {
-            Scribe_Collections.Look(ref TuneDefCache, "TuneDefCache", LookMode.Def, new object[0]);
+            Scribe_Collections.Look(ref TuneDefCache, "TuneDefCache", LookMode.Def);
             base.ExposeData();
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 GenerateTunesList();
             }
         }
-
     }
 }

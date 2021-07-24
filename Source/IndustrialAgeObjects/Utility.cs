@@ -1,60 +1,33 @@
-﻿// ----------------------------------------------------------------------
-// These are basic usings. Always let them be here.
-// ----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System;
 using System.Text;
+using RimWorld;
+using UnityEngine;
+using Verse;
 
-// ----------------------------------------------------------------------
-// These are RimWorld-specific usings. Activate/Deactivate what you need:
-// ----------------------------------------------------------------------
-using UnityEngine;         // Always needed
-//using VerseBase;         // Material/Graphics handling functions are found here
-using Verse;               // RimWorld universal objects are here (like 'Building')
-using Verse.AI;          // Needed when you do something with the AI
-using Verse.AI.Group;
-using Verse.Sound;       // Needed when you do something with Sound
-using Verse.Noise;       // Needed when you do something with Noises
-using RimWorld;            // RimWorld specific functions are found here (like 'Building_Battery')
-using RimWorld.Planet;   // RimWorld specific functions for world creation
-using System.Reflection;
-//using RimWorld.SquadAI;  // RimWorld specific functions for squad brains 
-
-/// <summary>
-/// Utility File for use between Cthulhu mods.
-/// Last Update: 5/5/2017
-/// </summary>
 namespace Cthulhu
 {
-    public static class ModProps
+    public static class Utility
     {
-        public const string main = "Industrial Age";
-        public const string mod = "Objects and Furniture";
-        public const string version = "1.19.0";
-    }
+        public enum SanLossSev
+        {
+            None = 0,
+            Hidden,
+            Initial,
+            Minor,
+            Major,
+            Extreme
+        }
 
-    public static class SanityLossSeverity
-    {
-        public const float Initial = 0.1f;
-        public const float Minor = 0.25f;
-        public const float Major = 0.5f;
-        public const float Severe = 0.7f;
-        public const float Extreme = 0.95f;
-    }
-
-    static public class Utility
-    {
-        public enum SanLossSev { None = 0, Hidden, Initial, Minor, Major, Extreme };
         public const string SanityLossDef = "ROM_SanityLoss";
         public const string AltSanityLossDef = "Cults_SanityLoss";
 
-        public static bool modCheck = false;
-        public static bool loadedCosmicHorrors = false;
-        public static bool loadedIndustrialAge = false;
-        public static bool loadedCults = false;
-        public static bool loadedFactions = false;
+        public static bool modCheck;
+        public static bool loadedCosmicHorrors;
+        public static bool loadedIndustrialAge;
+        public static bool loadedCults;
+        public static bool loadedFactions;
+
+        public static string Prefix => ModProps.main + " :: " + ModProps.mod + " " + ModProps.version + " :: ";
 
 
         public static bool IsMorning(Map map)
@@ -76,13 +49,14 @@ namespace Cthulhu
         {
             //Call of Cthulhu - Cosmic Horrors
             T result = default;
-            foreach (Mod ResolvedMod in LoadedModManager.ModHandles)
+            foreach (var ResolvedMod in LoadedModManager.ModHandles)
             {
                 if (ResolvedMod.Content.Name == s)
                 {
                     result = ResolvedMod as T;
                 }
             }
+
             return result;
         }
 
@@ -94,13 +68,16 @@ namespace Cthulhu
             }
 
             var type = Type.GetType("CosmicHorror.CosmicHorrorPawn");
-            if (type != null)
+            if (type == null)
             {
-                if (thing.GetType() == type)
-                {
-                    return true;
-                }
+                return false;
             }
+
+            if (thing.GetType() == type)
+            {
+                return true;
+            }
+
             return false;
         }
 
@@ -177,7 +154,7 @@ namespace Cthulhu
                 return ResultFalseWithReport(s);
             }
 
-            s.Append("ActorAvailble: Passed downed check & downedAllowed = " + downedAllowed.ToString());
+            s.Append("ActorAvailble: Passed downed check & downedAllowed = " + downedAllowed);
             s.AppendLine();
             if (preacher.Drafted)
             {
@@ -201,43 +178,41 @@ namespace Cthulhu
             s.Append("ActorAvailble: Passed InMentalState check");
             s.AppendLine();
             s.Append("ActorAvailble Checks Passed");
-            Cthulhu.Utility.DebugReport(s.ToString());
+            DebugReport(s.ToString());
             return true;
         }
 
         public static bool ResultFalseWithReport(StringBuilder s)
         {
             s.Append("ActorAvailble: Result = Unavailable");
-            Cthulhu.Utility.DebugReport(s.ToString());
+            DebugReport(s.ToString());
             return false;
         }
 
         public static float CurrentSanityLoss(Pawn pawn)
         {
-            string sanityLossDef;
-            sanityLossDef = AltSanityLossDef;
+            var sanityLossDef = AltSanityLossDef;
             if (IsCosmicHorrorsLoaded())
             {
                 sanityLossDef = SanityLossDef;
             }
 
-            Hediff pawnSanityHediff = pawn.health.hediffSet.GetFirstHediffOfDef(DefDatabase<HediffDef>.GetNamed(sanityLossDef));
+            var pawnSanityHediff =
+                pawn.health.hediffSet.GetFirstHediffOfDef(DefDatabase<HediffDef>.GetNamed(sanityLossDef));
             if (pawnSanityHediff != null)
             {
                 return pawnSanityHediff.Severity;
             }
+
             return 0f;
         }
 
 
         public static void ApplyTaleDef(string defName, Map map)
         {
-            Pawn randomPawn = map.mapPawns.FreeColonists.RandomElement();
+            var randomPawn = map.mapPawns.FreeColonists.RandomElement();
             var taleToAdd = TaleDef.Named(defName);
-            TaleRecorder.RecordTale(taleToAdd, new object[]
-                    {
-                        randomPawn,
-                    });
+            TaleRecorder.RecordTale(taleToAdd, randomPawn);
         }
 
         public static void ApplyTaleDef(string defName, Pawn pawn)
@@ -245,18 +220,16 @@ namespace Cthulhu
             var taleToAdd = TaleDef.Named(defName);
             if ((pawn.IsColonist || pawn.HostFaction == Faction.OfPlayer) && taleToAdd != null)
             {
-                TaleRecorder.RecordTale(taleToAdd, new object[]
-                {
-                    pawn,
-                });
+                TaleRecorder.RecordTale(taleToAdd, pawn);
             }
         }
 
 
         public static bool HasSanityLoss(Pawn pawn)
         {
-            var sanityLossDef = (!IsCosmicHorrorsLoaded()) ? AltSanityLossDef : SanityLossDef;
-            var pawnSanityHediff = pawn.health.hediffSet.GetFirstHediffOfDef(DefDatabase<HediffDef>.GetNamed(sanityLossDef));
+            var sanityLossDef = !IsCosmicHorrorsLoaded() ? AltSanityLossDef : SanityLossDef;
+            var pawnSanityHediff =
+                pawn.health.hediffSet.GetFirstHediffOfDef(DefDatabase<HediffDef>.GetNamed(sanityLossDef));
 
             return pawnSanityHediff != null;
         }
@@ -268,9 +241,10 @@ namespace Cthulhu
                 return;
             }
 
-            var sanityLossDef = (!IsCosmicHorrorsLoaded()) ? AltSanityLossDef : SanityLossDef;
+            var sanityLossDef = !IsCosmicHorrorsLoaded() ? AltSanityLossDef : SanityLossDef;
 
-            var pawnSanityHediff = pawn.health.hediffSet.GetFirstHediffOfDef(DefDatabase<HediffDef>.GetNamed(sanityLossDef));
+            var pawnSanityHediff =
+                pawn.health.hediffSet.GetFirstHediffOfDef(DefDatabase<HediffDef>.GetNamed(sanityLossDef));
             if (pawnSanityHediff != null)
             {
                 if (pawnSanityHediff.Severity > sanityLossMax)
@@ -285,11 +259,10 @@ namespace Cthulhu
             }
             else if (sanityLoss > 0)
             {
-                Hediff sanityLossHediff = HediffMaker.MakeHediff(DefDatabase<HediffDef>.GetNamed(sanityLossDef), pawn, null);
+                var sanityLossHediff = HediffMaker.MakeHediff(DefDatabase<HediffDef>.GetNamed(sanityLossDef), pawn);
 
                 sanityLossHediff.Severity = sanityLoss;
-                pawn.health.AddHediff(sanityLossHediff, null, null);
-
+                pawn.health.AddHediff(sanityLossHediff);
             }
         }
 
@@ -306,7 +279,6 @@ namespace Cthulhu
 
         public static bool IsCosmicHorrorsLoaded()
         {
-
             if (!modCheck)
             {
                 ModCheck();
@@ -325,7 +297,6 @@ namespace Cthulhu
 
             return loadedIndustrialAge;
         }
-
 
 
         public static bool IsCultsLoaded()
@@ -347,7 +318,7 @@ namespace Cthulhu
                 {
                     for (var i = 0; i < 100; i++)
                     {
-                        IntVec3 temp = cell.RandomAdjacentCell8Way();
+                        var temp = cell.RandomAdjacentCell8Way();
                         if (temp.Walkable(map))
                         {
                             resultCell = temp;
@@ -356,6 +327,7 @@ namespace Cthulhu
                     }
                 }
             }
+
             resultCell = IntVec3.Invalid;
             return false;
         }
@@ -364,7 +336,7 @@ namespace Cthulhu
         {
             loadedCosmicHorrors = false;
             loadedIndustrialAge = false;
-            foreach (ModContentPack ResolvedMod in LoadedModManager.RunningMods)
+            foreach (var ResolvedMod in LoadedModManager.RunningMods)
             {
                 if (loadedCosmicHorrors && loadedIndustrialAge && loadedCults)
                 {
@@ -376,27 +348,28 @@ namespace Cthulhu
                     DebugReport("Loaded - Call of Cthulhu - Cosmic Horrors");
                     loadedCosmicHorrors = true;
                 }
+
                 if (ResolvedMod.Name.Contains("Call of Cthulhu - Industrial Age"))
                 {
                     DebugReport("Loaded - Call of Cthulhu - Industrial Age");
                     loadedIndustrialAge = true;
                 }
+
                 if (ResolvedMod.Name.Contains("Call of Cthulhu - Cults"))
                 {
                     DebugReport("Loaded - Call of Cthulhu - Cults");
                     loadedCults = true;
                 }
+
                 if (ResolvedMod.Name.Contains("Call of Cthulhu - Factions"))
                 {
                     DebugReport("Loaded - Call of Cthulhu - Factions");
                     loadedFactions = true;
                 }
             }
-            modCheck = true;
-            return;
-        }
 
-        public static string Prefix => ModProps.main + " :: " + ModProps.mod + " " + ModProps.version + " :: ";
+            modCheck = true;
+        }
 
         public static void DebugReport(string x)
         {
