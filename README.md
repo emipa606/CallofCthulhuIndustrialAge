@@ -25,7 +25,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=777197241
 ![Image](https://i.imgur.com/NOW7jU1.png)
 
 
-Adds new furniture and appliances to your game from the time period of the late 1800&apos;s and early 1900s themed after the industrial era.
+Adds new furniture and appliances to your game from the time period of the late 1800's and early 1900s themed after the industrial era.
 	
 # Adds the following objects:
 
@@ -76,6 +76,8 @@ Brachiaraidos, Cory Bonifay, CrankyPeanut, E_T, Finwej, Jan Koutsky, Jonathan, K
 -  For best support, please use the Discord-channel for error-reporting.
 -  Do not report errors by making a discussion-thread, I get no notification of that.
 -  If you have the solution for a problem, please post it to the GitHub repository.
+
+
 
 
 
