@@ -2,53 +2,47 @@
 using Verse;
 using Verse.AI;
 
-namespace IndustrialAge.Objects
+namespace IndustrialAge.Objects;
+
+public class JoyGiver_ListenToBuilding : JoyGiver_InteractBuilding
 {
-    public class JoyGiver_ListenToBuilding : JoyGiver_InteractBuilding
+    public override bool CanInteractWith(Pawn pawn, Thing t, bool inBed)
     {
-        protected override bool CanInteractWith(Pawn pawn, Thing t, bool inBed)
+        if (!base.CanInteractWith(pawn, t, inBed))
         {
-            if (!base.CanInteractWith(pawn, t, inBed))
-            {
-                return false;
-            }
-
-            if (!inBed)
-            {
-                return true;
-            }
-
-            var layingDownBed = pawn.CurrentBed();
-
-            return ListenBuildingUtility.CanListenFromBed(pawn, layingDownBed, t);
+            return false;
         }
 
-        protected override Job TryGivePlayJob(Pawn pawn, Thing t)
+        if (!inBed)
         {
-            if (!ListenBuildingUtility.TryFindBestListenCell(t, pawn, def.desireSit, out var vec, out var t2))
-            {
-                if (!ListenBuildingUtility.TryFindBestListenCell(t, pawn, false, out vec, out t2))
-                {
-                    return null;
-                }
-            }
+            return true;
+        }
 
-            if (t2 == null)
-            {
-                return new Job(def.jobDef, t, vec, (Building) null);
-            }
+        var layingDownBed = pawn.CurrentBed();
 
-            if (vec != t2.Position)
-            {
-                return new Job(def.jobDef, t, vec, t2);
-            }
+        return ListenBuildingUtility.CanListenFromBed(pawn, layingDownBed, t);
+    }
 
-            if (!pawn.Map.reservationManager.CanReserve(pawn, t2))
+    public override Job TryGivePlayJob(Pawn pawn, Thing t)
+    {
+        if (!ListenBuildingUtility.TryFindBestListenCell(t, pawn, def.desireSit, out var vec, out var t2))
+        {
+            if (!ListenBuildingUtility.TryFindBestListenCell(t, pawn, false, out vec, out t2))
             {
                 return null;
             }
+        }
 
+        if (t2 == null)
+        {
+            return new Job(def.jobDef, t, vec, (Building)null);
+        }
+
+        if (vec != t2.Position)
+        {
             return new Job(def.jobDef, t, vec, t2);
         }
+
+        return !pawn.Map.reservationManager.CanReserve(pawn, t2) ? null : new Job(def.jobDef, t, vec, t2);
     }
 }

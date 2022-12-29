@@ -4,92 +4,86 @@ using RimWorld;
 using Verse.AI;
 //using VerseBase;
 
-namespace IndustrialAge.Objects
-{
-    public class JobDriver_ListenToGramophone : JobDriver
-    {
-        private string report = "";
+namespace IndustrialAge.Objects;
 
-        public override bool TryMakePreToilReservations(bool debug)
+public class JobDriver_ListenToGramophone : JobDriver
+{
+    private string report = "";
+
+    public override bool TryMakePreToilReservations(bool debug)
+    {
+        return true;
+    }
+
+    public override string GetReport()
+    {
+        return report != "" ? base.ReportStringProcessed(report) : base.GetReport();
+    }
+
+    [DebuggerHidden]
+    public override IEnumerable<Toil> MakeNewToils()
+    {
+        //Fail Checks
+
+        this.EndOnDespawnedOrNull(TargetIndex.A); //If we don't exist, exit.
+
+        if (job.targetA.Thing is Building_Radio)
         {
-            return true;
+            report = "Listening to the radio.";
         }
 
-        public override string GetReport()
+
+        //yield return Toils_Reserve.Reserve(TargetIndex.A, base.CurJob.def.joyMaxParticipants); //Can we reserve?
+
+        //yield return Toils_Reserve.Reserve(TargetIndex.B, 1);   //Reserve
+
+        Toil toil;
+        if (TargetC is { HasThing: true, Thing: Building_Bed }) //If we have a bed, do something else.
         {
-            if (report != "")
+            this.KeepLyingDown(TargetIndex.C);
+            yield return Toils_Reserve.Reserve(TargetIndex.C, ((Building_Bed)TargetC.Thing).SleepingSlotsCount);
+            yield return Toils_Bed.ClaimBedIfNonMedical(TargetIndex.C);
+            yield return Toils_Bed.GotoBed(TargetIndex.C);
+            toil = Toils_LayDown.LayDown(TargetIndex.C, true, false);
+            toil.AddFailCondition(() => !pawn.Awake());
+        }
+        else
+        {
+            if (TargetC.HasThing)
             {
-                return base.ReportStringProcessed(report);
+                yield return Toils_Reserve.Reserve(TargetIndex.C);
             }
 
-            return base.GetReport();
+            yield return Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell);
+            toil = new Toil();
         }
 
-        [DebuggerHidden]
-        protected override IEnumerable<Toil> MakeNewToils()
+        toil.AddPreTickAction(delegate
         {
-            //Fail Checks
-
-            this.EndOnDespawnedOrNull(TargetIndex.A); //If we don't exist, exit.
-
             if (job.targetA.Thing is Building_Radio)
             {
                 report = "Listening to the radio.";
             }
 
+            ListenTickAction();
+        });
+        toil.AddFinishAction(delegate { JoyUtility.TryGainRecRoomThought(pawn); });
+        toil.defaultCompleteMode = ToilCompleteMode.Delay;
+        toil.defaultDuration = job.def.joyDuration * 2;
+        yield return toil;
+    }
 
-            //yield return Toils_Reserve.Reserve(TargetIndex.A, base.CurJob.def.joyMaxParticipants); //Can we reserve?
-
-            //yield return Toils_Reserve.Reserve(TargetIndex.B, 1);   //Reserve
-
-            Toil toil;
-            if (TargetC.HasThing && TargetC.Thing is Building_Bed) //If we have a bed, do something else.
-            {
-                this.KeepLyingDown(TargetIndex.C);
-                yield return Toils_Reserve.Reserve(TargetIndex.C, ((Building_Bed) TargetC.Thing).SleepingSlotsCount);
-                yield return Toils_Bed.ClaimBedIfNonMedical(TargetIndex.C);
-                yield return Toils_Bed.GotoBed(TargetIndex.C);
-                toil = Toils_LayDown.LayDown(TargetIndex.C, true, false);
-                toil.AddFailCondition(() => !pawn.Awake());
-            }
-            else
-            {
-                if (TargetC.HasThing)
-                {
-                    yield return Toils_Reserve.Reserve(TargetIndex.C);
-                }
-
-                yield return Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell);
-                toil = new Toil();
-            }
-
-            toil.AddPreTickAction(delegate
-            {
-                if (job.targetA.Thing is Building_Radio)
-                {
-                    report = "Listening to the radio.";
-                }
-
-                ListenTickAction();
-            });
-            toil.AddFinishAction(delegate { JoyUtility.TryGainRecRoomThought(pawn); });
-            toil.defaultCompleteMode = ToilCompleteMode.Delay;
-            toil.defaultDuration = job.def.joyDuration * 2;
-            yield return toil;
-        }
-
-        protected virtual void ListenTickAction()
+    protected virtual void ListenTickAction()
+    {
+        if (TargetA.Thing is Building_Gramophone gramo && !gramo.IsOn())
         {
-            if (TargetA.Thing is Building_Gramophone gramo && !gramo.IsOn())
-            {
-                EndJobWith(JobCondition.Incompletable);
-                return;
-            }
-
-            pawn.rotationTracker.FaceCell(TargetA.Cell);
-            pawn.GainComfortFromCellIfPossible();
-            var statValue = TargetThingA.GetStatValue(StatDefOf.JoyGainFactor);
-            JoyUtility.JoyTickCheckEnd(pawn, JoyTickFullJoyAction.EndJob, statValue);
+            EndJobWith(JobCondition.Incompletable);
+            return;
         }
+
+        pawn.rotationTracker.FaceCell(TargetA.Cell);
+        pawn.GainComfortFromCellIfPossible();
+        var statValue = TargetThingA.GetStatValue(StatDefOf.JoyGainFactor);
+        JoyUtility.JoyTickCheckEnd(pawn, JoyTickFullJoyAction.EndJob, statValue);
     }
 }

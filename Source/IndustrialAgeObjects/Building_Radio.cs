@@ -1,13 +1,12 @@
 ﻿using Verse;
 
-namespace IndustrialAge.Objects
+namespace IndustrialAge.Objects;
+
+public class Building_Radio : Building_Gramophone
 {
-    public class Building_Radio : Building_Gramophone
+    public override void SpawnSetup(Map map, bool bla)
     {
-        public override void SpawnSetup(Map map, bool bla)
-        {
-            base.SpawnSetup(map, bla);
-            isRadio = true;
-        }
+        base.SpawnSetup(map, bla);
+        isRadio = true;
     }
 }

@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using Verse;
 
-namespace IndustrialAge.Objects
+namespace IndustrialAge.Objects;
+
+[StaticConstructorOnStartup]
+internal class TexButton
 {
-    [StaticConstructorOnStartup]
-    internal class TexButton
-    {
-        public static readonly Texture2D Drop = ContentFinder<Texture2D>.Get("UI/Buttons/Drop");
-    }
+    public static readonly Texture2D Drop = ContentFinder<Texture2D>.Get("UI/Buttons/Drop");
 }

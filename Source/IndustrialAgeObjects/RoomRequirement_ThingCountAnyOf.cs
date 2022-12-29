@@ -2,62 +2,61 @@
 using RimWorld;
 using Verse;
 
-namespace IndustrialAge
+namespace IndustrialAge;
+
+public class RoomRequirement_ThingCountAnyOf : RoomRequirement_ThingAnyOf
 {
-    public class RoomRequirement_ThingCountAnyOf : RoomRequirement_ThingAnyOf
+    public int count;
+
+    public override bool Met(Room r, Pawn p = null)
     {
-        public int count;
+        return Count(r) >= count;
+    }
 
-        public override bool Met(Room r, Pawn p = null)
+    public int Count(Room r)
+    {
+        var thingCount = 0;
+        foreach (var def in things)
         {
-            return Count(r) >= count;
+            thingCount += r.ThingCount(def);
         }
 
-        public int Count(Room r)
-        {
-            var thingCount = 0;
-            foreach (var def in things)
-            {
-                thingCount += r.ThingCount(def);
-            }
+        return thingCount;
+    }
 
-            return thingCount;
+    public override string Label(Room r = null)
+    {
+        var useLabelKey = !labelKey.NullOrEmpty();
+        string text = (useLabelKey ? labelKey : "Estate_RoomRequirementTotal").Translate(count);
+        // after the introductory label, print all required things (indented so they are grouped visually):
+        foreach (var def in things)
+        {
+            text = string.Concat(new object[]
+            {
+                text,
+                "\n    ",
+                def.label.CapitalizeFirst()
+            });
+            // if a room is defined, also add the number of items it already does have:
+            if (r != null)
+            {
+                text = $"{text} ({r.ThingCount(def)})";
+            }
         }
 
-        public override string Label(Room r = null)
-        {
-            var useLabelKey = !labelKey.NullOrEmpty();
-            string text = (useLabelKey ? labelKey : "Estate_RoomRequirementTotal").Translate(count);
-            // after the introductory label, print all required things (indented so they are grouped visually):
-            foreach (var def in things)
-            {
-                text = string.Concat(new object[]
-                {
-                    text,
-                    "\n    ",
-                    def.label.CapitalizeFirst()
-                });
-                // if a room is defined, also add the number of items it already does have:
-                if (r != null)
-                {
-                    text = string.Concat(text, " (", r.ThingCount(def), ")");
-                }
-            }
+        return text;
+    }
 
-            return text;
+    public override IEnumerable<string> ConfigErrors()
+    {
+        foreach (var text in base.ConfigErrors())
+        {
+            yield return text;
         }
 
-        public override IEnumerable<string> ConfigErrors()
+        if (count <= 0)
         {
-            foreach (var text in base.ConfigErrors())
-            {
-                yield return text;
-            }
-
-            if (count <= 0)
-            {
-                yield return "count must be larger than 0";
-            }
+            yield return "count must be larger than 0";
         }
     }
 }

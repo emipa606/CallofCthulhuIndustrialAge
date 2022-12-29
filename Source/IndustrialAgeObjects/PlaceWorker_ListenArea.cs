@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 using Verse;
 
-namespace IndustrialAge.Objects
+namespace IndustrialAge.Objects;
+
+public class PlaceWorker_ListenArea : PlaceWorker
 {
-    public class PlaceWorker_ListenArea : PlaceWorker
+    public override void DrawGhost(ThingDef def, IntVec3 center, Rot4 rot, Color ghostCol, Thing thing = null)
     {
-        public override void DrawGhost(ThingDef def, IntVec3 center, Rot4 rot, Color ghostCol, Thing thing = null)
-        {
-            var visibleMap = Find.CurrentMap;
-            GenDraw.DrawFieldEdges(Building_Gramophone.ListenableCellsAround(center, visibleMap));
-        }
+        var visibleMap = Find.CurrentMap;
+        GenDraw.DrawFieldEdges(Building_Gramophone.ListenableCellsAround(center, visibleMap));
     }
 }

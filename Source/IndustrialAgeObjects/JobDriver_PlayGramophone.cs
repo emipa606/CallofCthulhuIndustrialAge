@@ -6,84 +6,77 @@ using Verse.AI;
 //using RimWorld.SquadAI;
 
 
-namespace IndustrialAge.Objects
+namespace IndustrialAge.Objects;
+
+public class JobDriver_PlayGramophone : JobDriver
 {
-    public class JobDriver_PlayGramophone : JobDriver
+    private string report = "";
+
+    protected int Duration { get; } = 400;
+
+    public override bool TryMakePreToilReservations(bool debug)
     {
-        private string report = "";
+        return true;
+    }
 
-        protected int Duration { get; } = 400;
+    public override string GetReport()
+    {
+        return report != "" ? base.ReportStringProcessed(report) : base.GetReport();
+    }
 
-        public override bool TryMakePreToilReservations(bool debug)
+    //What should we do?
+    public override IEnumerable<Toil> MakeNewToils()
+    {
+        //Check it out. Can we go there?
+        this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
+
+        if (job.targetA.Thing is Building_Radio)
         {
-            return true;
+            report = "Playing the radio.";
         }
 
-        public override string GetReport()
+        // Toil 1:
+        // Reserve Target (TargetPack A is selected (It has the info where the target cell is))
+        yield return Toils_Reserve.Reserve(TargetIndex.A);
+
+        // Toil 2:
+        // Go to the thing.
+        yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
+
+        // Toil 3:
+        // Wind up the gramophone
+        var toil = new Toil
         {
-            if (report != "")
-            {
-                return base.ReportStringProcessed(report);
-            }
+            defaultCompleteMode = ToilCompleteMode.Delay,
+            defaultDuration = Duration
+        };
+        toil.WithProgressBarToilDelay(TargetIndex.A);
+        toil.PlaySustainerOrSound(job.targetA.Thing is Building_Radio
+            ? DefDatabase<SoundDef>.GetNamed("Estate_RadioSeeking")
+            : DefDatabase<SoundDef>.GetNamed("Estate_GramophoneWindup"));
 
-            return base.GetReport();
-        }
-
-        //What should we do?
-        protected override IEnumerable<Toil> MakeNewToils()
+        toil.initAction = delegate
         {
-            //Check it out. Can we go there?
-            this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
+            var gramophone = job.targetA.Thing as Building_Gramophone;
+            gramophone?.StopMusic();
+        };
+        yield return toil;
 
-            if (job.targetA.Thing is Building_Radio)
-            {
-                report = "Playing the radio.";
-            }
+        // Toil 4:
+        // Play music.
 
-            // Toil 1:
-            // Reserve Target (TargetPack A is selected (It has the info where the target cell is))
-            yield return Toils_Reserve.Reserve(TargetIndex.A);
-
-            // Toil 2:
-            // Go to the thing.
-            yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
-
-            // Toil 3:
-            // Wind up the gramophone
-            var toil = new Toil
-            {
-                defaultCompleteMode = ToilCompleteMode.Delay,
-                defaultDuration = Duration
-            };
-            toil.WithProgressBarToilDelay(TargetIndex.A);
-            toil.PlaySustainerOrSound(job.targetA.Thing is Building_Radio
-                ? DefDatabase<SoundDef>.GetNamed("Estate_RadioSeeking")
-                : DefDatabase<SoundDef>.GetNamed("Estate_GramophoneWindup"));
-
-            toil.initAction = delegate
+        var toilPlayMusic = new Toil
+        {
+            defaultCompleteMode = ToilCompleteMode.Instant,
+            initAction = delegate
             {
                 var gramophone = job.targetA.Thing as Building_Gramophone;
-                gramophone?.StopMusic();
-            };
-            yield return toil;
-
-            // Toil 4:
-            // Play music.
-
-            var toilPlayMusic = new Toil
-            {
-                defaultCompleteMode = ToilCompleteMode.Instant,
-                initAction = delegate
-                {
-                    var gramophone = job.targetA.Thing as Building_Gramophone;
-                    gramophone?.PlayMusic(pawn);
-                }
-            };
-            yield return toilPlayMusic;
-        }
+                gramophone?.PlayMusic(pawn);
+            }
+        };
+        yield return toilPlayMusic;
     }
 }
-
 
 /*
 

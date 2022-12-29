@@ -1,76 +1,75 @@
 ﻿using RimWorld;
 using Verse;
 
-namespace IndustrialAge.Objects
-{
-    internal class Building_StreetLamp : Building
-    {
-        private readonly ThingDef glowerDef = ThingDef.Named("Jecrell_GasLampGlower");
-        private CompBreakdownable compBreakdownable;
-        private ThingWithComps_Glower glower;
+namespace IndustrialAge.Objects;
 
-        private void SpawnGlower()
+internal class Building_StreetLamp : Building
+{
+    private readonly ThingDef glowerDef = ThingDef.Named("Jecrell_GasLampGlower");
+    private CompBreakdownable compBreakdownable;
+    private ThingWithComps_Glower glower;
+
+    private void SpawnGlower()
+    {
+        var thing = ThingMaker.MakeThing(glowerDef);
+        var position = Position + GenAdj.CardinalDirections[0]
+                                + GenAdj.CardinalDirections[0];
+        GenPlace.TryPlaceThing(thing, position, Map, ThingPlaceMode.Near);
+        glower = thing as ThingWithComps_Glower;
+        if (glower != null)
         {
-            var thing = ThingMaker.MakeThing(glowerDef);
-            var position = Position + GenAdj.CardinalDirections[0]
-                                    + GenAdj.CardinalDirections[0];
-            GenPlace.TryPlaceThing(thing, position, Map, ThingPlaceMode.Near);
-            glower = thing as ThingWithComps_Glower;
+            glower.master = this;
+        }
+    }
+
+    private void DespawnGlower()
+    {
+        glower.master = null;
+        glower.DeSpawn();
+        glower = null;
+    }
+
+    private void ResolveGlower()
+    {
+        if (compBreakdownable == null)
+        {
+            return;
+        }
+
+        if (compBreakdownable.BrokenDown)
+        {
             if (glower != null)
             {
-                glower.master = this;
-            }
-        }
-
-        private void DespawnGlower()
-        {
-            glower.master = null;
-            glower.DeSpawn();
-            glower = null;
-        }
-
-        private void ResolveGlower()
-        {
-            if (compBreakdownable == null)
-            {
-                return;
+                DespawnGlower();
             }
 
-            if (compBreakdownable.BrokenDown)
-            {
-                if (glower != null)
-                {
-                    DespawnGlower();
-                }
-
-                return;
-            }
-
-            if (glower == null)
-            {
-                SpawnGlower();
-            }
+            return;
         }
 
-        public override void SpawnSetup(Map map, bool bla)
+        if (glower == null)
         {
-            base.SpawnSetup(map, bla);
-            compBreakdownable = this.TryGetComp<CompBreakdownable>();
+            SpawnGlower();
         }
+    }
 
-        public override void Tick()
-        {
-            base.Tick();
-            if (this.IsHashIntervalTick(60))
-            {
-                ResolveGlower();
-            }
-        }
+    public override void SpawnSetup(Map map, bool bla)
+    {
+        base.SpawnSetup(map, bla);
+        compBreakdownable = this.TryGetComp<CompBreakdownable>();
+    }
 
-        public override void ExposeData()
+    public override void Tick()
+    {
+        base.Tick();
+        if (this.IsHashIntervalTick(60))
         {
-            base.ExposeData();
-            Scribe_References.Look(ref glower, "glower");
+            ResolveGlower();
         }
+    }
+
+    public override void ExposeData()
+    {
+        base.ExposeData();
+        Scribe_References.Look(ref glower, "glower");
     }
 }

@@ -1,56 +1,55 @@
 ﻿using RimWorld;
 using Verse;
 
-namespace IndustrialAge.Objects
+namespace IndustrialAge.Objects;
+
+internal class ThingWithComps_Glower : ThingWithComps
 {
-    internal class ThingWithComps_Glower : ThingWithComps
+    public Building_StreetLamp master;
+
+    public override void Draw()
     {
-        public Building_StreetLamp master;
+    }
 
-        public override void Draw()
+    public override void Tick()
+    {
+        base.Tick();
+        CheckNeedsDestruction();
+        CheckNeedsFlick();
+    }
+
+    public void CheckNeedsDestruction()
+    {
+        if (master == null || !Spawned)
         {
+            return;
         }
 
-        public override void Tick()
+        if (!master.Spawned)
         {
-            base.Tick();
-            CheckNeedsDestruction();
-            CheckNeedsFlick();
+            Destroy();
+        }
+    }
+
+    public void CheckNeedsFlick()
+    {
+        if (master == null)
+        {
+            return;
         }
 
-        public void CheckNeedsDestruction()
+        var masterflickable = master.TryGetComp<CompFlickable>();
+        var flickable = this.TryGetComp<CompFlickable>();
+
+        if (masterflickable.SwitchIsOn != flickable.SwitchIsOn)
         {
-            if (master == null || !Spawned)
-            {
-                return;
-            }
-
-            if (!master.Spawned)
-            {
-                Destroy();
-            }
+            flickable.DoFlick();
         }
+    }
 
-        public void CheckNeedsFlick()
-        {
-            if (master == null)
-            {
-                return;
-            }
-
-            var masterflickable = master.TryGetComp<CompFlickable>();
-            var flickable = this.TryGetComp<CompFlickable>();
-
-            if (masterflickable.SwitchIsOn != flickable.SwitchIsOn)
-            {
-                flickable.DoFlick();
-            }
-        }
-
-        public override void ExposeData()
-        {
-            base.ExposeData();
-            Scribe_References.Look(ref master, "master");
-        }
+    public override void ExposeData()
+    {
+        base.ExposeData();
+        Scribe_References.Look(ref master, "master");
     }
 }

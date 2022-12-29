@@ -21,12 +21,11 @@
 // Last Update: 5/5/2017
 // </summary>
 
-namespace Cthulhu
+namespace Cthulhu;
+
+public static class ModProps
 {
-    public static class ModProps
-    {
-        public const string main = "Industrial Age";
-        public const string mod = "Objects and Furniture";
-        public const string version = "1.19.0";
-    }
+    public const string main = "Industrial Age";
+    public const string mod = "Objects and Furniture";
+    public const string version = "1.19.0";
 }

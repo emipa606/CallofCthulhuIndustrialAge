@@ -2,71 +2,70 @@
 using RimWorld.Planet;
 using Verse;
 
-namespace IndustrialAge.Objects
-{
-    internal class WorldComponent_Tunes : WorldComponent
-    {
-        private bool AreTunesReady;
-        public List<TuneDef> TuneDefCache = new List<TuneDef>();
+namespace IndustrialAge.Objects;
 
-        public WorldComponent_Tunes(World world) : base(world)
+internal class WorldComponent_Tunes : WorldComponent
+{
+    private bool AreTunesReady;
+    public List<TuneDef> TuneDefCache = new List<TuneDef>();
+
+    public WorldComponent_Tunes(World world) : base(world)
+    {
+    }
+
+    public TuneDef GetCache(TuneDef tune)
+    {
+        TuneDef result;
+        if (TuneDefCache == null)
         {
+            TuneDefCache = new List<TuneDef>();
         }
 
-        public TuneDef GetCache(TuneDef tune)
+        foreach (var current in TuneDefCache)
         {
-            TuneDef result;
-            if (TuneDefCache == null)
+            if (current != tune)
             {
-                TuneDefCache = new List<TuneDef>();
+                continue;
             }
 
-            foreach (var current in TuneDefCache)
-            {
-                if (current != tune)
-                {
-                    continue;
-                }
-
-                result = current;
-                return result;
-            }
-
-            TuneDefCache.Add(tune);
-            result = tune;
+            result = current;
             return result;
         }
 
+        TuneDefCache.Add(tune);
+        result = tune;
+        return result;
+    }
 
-        public void GenerateTunesList()
+
+    public void GenerateTunesList()
+    {
+        if (AreTunesReady)
         {
-            if (AreTunesReady)
-            {
-                return;
-            }
-
-            foreach (var current in DefDatabase<TuneDef>.AllDefs)
-            {
-                GetCache(current);
-            }
-
-            AreTunesReady = true;
+            return;
         }
 
-        public override void WorldComponentTick()
+        foreach (var current in DefDatabase<TuneDef>.AllDefs)
         {
-            base.WorldComponentTick();
+            GetCache(current);
+        }
+
+        AreTunesReady = true;
+    }
+
+    public override void WorldComponentTick()
+    {
+        base.WorldComponentTick();
+        GenerateTunesList();
+    }
+
+    public override void ExposeData()
+    {
+        Scribe_Collections.Look(ref TuneDefCache, "TuneDefCache", LookMode.Def);
+        base.ExposeData();
+        if (Scribe.mode == LoadSaveMode.PostLoadInit)
+        {
             GenerateTunesList();
-        }
-
-        public override void ExposeData()
-        {
-            Scribe_Collections.Look(ref TuneDefCache, "TuneDefCache", LookMode.Def);
-            base.ExposeData();
-            if (Scribe.mode == LoadSaveMode.PostLoadInit)
-            {
-                GenerateTunesList();
-            }
         }
     }
 }

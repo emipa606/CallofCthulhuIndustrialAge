@@ -1,6 +1,6 @@
 # CallofCthulhuIndustrialAge
 
-![Image](https://i.imgur.com/WAEzk68.png)
+![Image](https://i.imgur.com/buuPQel.png)
 
 Update of jecrells mod
 https://steamcommunity.com/sharedfiles/filedetails/?id=777197241
@@ -10,19 +10,10 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=777197241
 - Added wax-patch based on crec4ets mod
 - Made royal chandelier suitable for thronerooms, via SoongJr
 
-![Image](https://i.imgur.com/7Gzt3Rg.png)
+![Image](https://i.imgur.com/pufA0kM.png)
 
-
-[table]
-	[tr]
-		[td]https://invite.gg/Mlie]![Image](https://i.imgur.com/zdzzBrc.png)
-[/td]
-		[td]https://github.com/emipa606/CallofCthulhuIndustrialAge]![Image](https://i.imgur.com/kTkpTOE.png)
-[/td]
-	[/tr]
-[/table]
 	
-![Image](https://i.imgur.com/NOW7jU1.png)
+![Image](https://i.imgur.com/Z4GOv8H.png)
 
 
 Adds new furniture and appliances to your game from the time period of the late 1800's and early 1900s themed after the industrial era.
@@ -66,7 +57,7 @@ These are the most excellent rim dwellers who support me:
 Brachiaraidos, Cory Bonifay, CrankyPeanut, E_T, Finwej, Jan Koutsky, Jonathan, K. Bolden, Kiya Nicoll, Matt Harris, Paul Fenwick, Toc Anastar, Grendalloffen, Martin K. Bonde, Harvey Mclellan, Shane M. aka ShotgunFace, Bentley Alsup, Eric Idema, MasterScootie, GoSu, Josh McCabe, spook, Clifford Campbell, J, Michael Paugh, John Kanady, Luis Figueroa, Midgeman, Nate Haug, Richard Paul, SilentWeirdo, Audrin Navarro, Calhoun Cattell, Михаил Юрченко, Nemuri Hime, Calum, Keith Thoma, Dick Jones, Patrick, Tim Stillson, Nathan Getman, Sharp Spook, Emily Shaw, Populous25, Steven James, Zalson, Mark, Marcus Sireanu, Drachken, Nicholas Bateman, Baron Xot, Justin Andres, Luis Salvatierra, Christopher, TinyFloatingTurtle, George Chong Chuang Ming, John Boehr, Oliver White, roxxploxx, Robin Hager, That Guy, Allic, Karol Rybak, Austin Harbert, Yewty, Evan Hwang, Ryan Brock, Jonathan Holzinger, MC, Alexander, Alex Mederer, Kevin Reagan, Toss Antilles, Chelsea Archambeau, Aron Glasser, Dan Winn, Fredric Sundberg, Sarah Banks, ted stevens
 
 
-![Image](https://i.imgur.com/Rs6T6cr.png)
+![Image](https://i.imgur.com/PwoNOj4.png)
 
 
 
@@ -80,4 +71,4 @@ Brachiaraidos, Cory Bonifay, CrankyPeanut, E_T, Finwej, Jan Koutsky, Jonathan, K
 
 
 
-
+https://steamcommunity.com/sharedfiles/filedetails/changelog/2249289906]Last updated 2022-12-29
