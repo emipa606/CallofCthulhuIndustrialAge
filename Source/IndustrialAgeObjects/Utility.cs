@@ -353,11 +353,13 @@ public static class Utility
                 loadedCults = true;
             }
 
-            if (ResolvedMod.Name.Contains("Call of Cthulhu - Factions"))
+            if (!ResolvedMod.Name.Contains("Call of Cthulhu - Factions"))
             {
-                DebugReport("Loaded - Call of Cthulhu - Factions");
-                loadedFactions = true;
+                continue;
             }
+
+            DebugReport("Loaded - Call of Cthulhu - Factions");
+            loadedFactions = true;
         }
 
         modCheck = true;

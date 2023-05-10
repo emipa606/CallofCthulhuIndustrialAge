@@ -69,6 +69,4 @@ Brachiaraidos, Cory Bonifay, CrankyPeanut, E_T, Finwej, Jan Koutsky, Jonathan, K
 -  If you have the solution for a problem, please post it to the GitHub repository.
 
 
-
-
-https://steamcommunity.com/sharedfiles/filedetails/changelog/2249289906]Last updated 2022-12-29
+https://steamcommunity.com/sharedfiles/filedetails/changelog/2249289906]Last updated 2023-05-10

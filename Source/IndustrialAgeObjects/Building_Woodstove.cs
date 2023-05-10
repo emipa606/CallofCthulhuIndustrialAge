@@ -114,15 +114,19 @@ public class Building_Woodstove : Building_WorkTable
             return;
         }
 
-        var moteThrown =
-            (MoteThrown)ThingMaker.MakeThing(ThingDef.Named("Mote_Smoke"));
-        moteThrown.Scale = Rand.Range(1.5f, 2.5f) * smokeSize.RandomInRange;
-        moteThrown.exactRotation = Rand.Range(-0.5f, 0.5f);
-        moteThrown.exactPosition = new Vector3(smokePosX + Rand.Range(-0.1f, 0.1f), 0,
+        var position = new Vector3(smokePosX + Rand.Range(-0.1f, 0.1f), 0,
             smokePos.z + Rand.Range(-0.25f, 1.0f));
-        moteThrown.airTimeLeft = 5000f;
-        moteThrown.SetVelocity(Rand.Range(30, 40), Rand.Range(0.008f, 0.012f));
-        GenSpawn.Spawn(moteThrown, smokePos, Map);
+        FleckMaker.ThrowSmoke(position, Map, Rand.Range(1.5f, 2.5f) * smokeSize.RandomInRange);
+
+        //var moteThrown =
+        //    (MoteThrown)ThingMaker.MakeThing(ThingDef.Named("Mote_Smoke"));
+        //moteThrown.Scale = Rand.Range(1.5f, 2.5f) * smokeSize.RandomInRange;
+        //moteThrown.exactRotation = Rand.Range(-0.5f, 0.5f);
+        //moteThrown.exactPosition = new Vector3(smokePosX + Rand.Range(-0.1f, 0.1f), 0,
+        //    smokePos.z + Rand.Range(-0.25f, 1.0f));
+        //moteThrown.airTimeLeft = 5000f;
+        //moteThrown.SetVelocity(Rand.Range(30, 40), Rand.Range(0.008f, 0.012f));
+        //GenSpawn.Spawn(moteThrown, smokePos, Map);
     }
 
     public override void Tick()

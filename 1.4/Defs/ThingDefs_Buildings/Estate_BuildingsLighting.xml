@@ -522,7 +522,7 @@
     <designationCategory>Furniture</designationCategory>
     <modExtensions>
       <li Class="JecsTools.BuildingExtension">
-        <wipeCategories Inherit="False">
+        <wipeCategories>
           <li>OnFurniture</li>
         </wipeCategories>
       </li>
@@ -544,6 +544,13 @@
       <isEdifice>false</isEdifice>
       <canBuildNonEdificesUnder>true</canBuildNonEdificesUnder>
     </building>
+    <modExtensions>
+      <li Class="JecsTools.BuildingExtension">
+        <wipeCategories>
+          <li>OnFurniture</li>
+        </wipeCategories>
+      </li>
+    </modExtensions>
   </ThingDef>
   <ThingDef ParentName="Estate_ArcLampBase">
     <defName>Estate_ArcLamp</defName>
@@ -578,13 +585,6 @@
     <researchPrerequisites>
       <li>Estate_TechArcLamps</li>
     </researchPrerequisites>
-    <modExtensions>
-      <li Class="JecsTools.BuildingExtension">
-        <wipeCategories>
-          <li>OnFurniture</li>
-        </wipeCategories>
-      </li>
-    </modExtensions>
   </ThingDef>
   <ThingDef ParentName="Estate_ArcLampBase">
     <defName>Estate_EdisonLamp</defName>
@@ -622,13 +622,6 @@
     <researchPrerequisites>
       <li>Estate_TechEdisonLights</li>
     </researchPrerequisites>
-    <modExtensions>
-      <li Class="JecsTools.BuildingExtension">
-        <wipeCategories>
-          <li>OnFurniture</li>
-        </wipeCategories>
-      </li>
-    </modExtensions>
   </ThingDef>
   <ThingDef ParentName="Estate_ArcLampBase">
     <defName>Estate_EdisonTube</defName>
@@ -666,12 +659,5 @@
     <researchPrerequisites>
       <li>Estate_TechEdisonLights</li>
     </researchPrerequisites>
-    <modExtensions>
-      <li Class="JecsTools.BuildingExtension">
-        <wipeCategories>
-          <li>OnFurniture</li>
-        </wipeCategories>
-      </li>
-    </modExtensions>
   </ThingDef>
 </Defs>
