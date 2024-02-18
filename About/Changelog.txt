@@ -1,5 +1,9 @@
 # Changelog for CallofCthulhuIndustrialAge
 
+1.4.3 - Wax based lighting-building starts with full fuel
+All lighting buildings can now be painted
+
+
 1.4.2 - Fixed the wipecategory patcherror and the smoke issues
 
 
