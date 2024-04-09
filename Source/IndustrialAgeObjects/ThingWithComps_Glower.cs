@@ -7,10 +7,6 @@ internal class ThingWithComps_Glower : ThingWithComps
 {
     public Building_StreetLamp master;
 
-    public override void Draw()
-    {
-    }
-
     public override void Tick()
     {
         base.Tick();

@@ -31,14 +31,14 @@ public class Graphic_CustomFlicker : Graphic_Collection
         var num2 = 0;
         var num3 = 0;
         var num4 = 1f;
-        //CompFireOverlay compFireOverlay = null;
+        //CompFireOverlay = null;
         if (thing != null)
         {
             num += Mathf.Abs(thing.thingIDNumber ^ 8453458);
             num2 = num / BaseTicksPerFrameChange;
             num3 = Mathf.Abs(num2 ^ (thing.thingIDNumber * 391)) % subGraphics.Length;
             num4 = drawSize.x;
-            //Fire fire = thing as Fire;
+            //Fire = thing as Fire;
             //if (fire != null)
             //{
             //    num4 = fire.fireSize;

@@ -5,8 +5,6 @@
 Update of jecrells mod
 https://steamcommunity.com/sharedfiles/filedetails/?id=777197241
 
-- This is an unofficial port
-- This will be removed when/if Jecrell comes back
 - Added wax-patch based on crec4ets mod
 - Made royal chandelier suitable for thronerooms, via SoongJr
 
@@ -63,10 +61,13 @@ Brachiaraidos, Cory Bonifay, CrankyPeanut, E_T, Finwej, Jan Koutsky, Jonathan, K
 
 -  See if the the error persists if you just have this mod and its requirements active.
 -  If not, try adding your other mods until it happens again.
--  Post your error-log using https://steamcommunity.com/workshop/filedetails/?id=818773962]HugsLib and command Ctrl+F12
+-  Post your error-log using https://steamcommunity.com/workshop/filedetails/?id=818773962]HugsLib or the standalone https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Uploader and command Ctrl+F12
 -  For best support, please use the Discord-channel for error-reporting.
 -  Do not report errors by making a discussion-thread, I get no notification of that.
 -  If you have the solution for a problem, please post it to the GitHub repository.
+-  Use https://github.com/RimSort/RimSort/releases/latest]RimSort to sort your mods
 
 
-https://steamcommunity.com/sharedfiles/filedetails/changelog/2249289906]Last updated 2023-05-10
+
+https://steamcommunity.com/sharedfiles/filedetails/changelog/2249289906]![Image](https://img.shields.io/github/v/release/emipa606/CallofCthulhuIndustrialAge?label=latest%20version&style=plastic&color=9f1111&labelColor=black)
+

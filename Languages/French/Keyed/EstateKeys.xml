@@ -5,4 +5,18 @@
   <Estate_RoomRequirementAllCandelabraMustBeLit>tous les candélabres doivent être allumés</Estate_RoomRequirementAllCandelabraMustBeLit>
   <Estate_RoomRequirementAllRoyalChandeliersMustBeLit>tous les chandeliers royaux doivent être allumés</Estate_RoomRequirementAllRoyalChandeliersMustBeLit>
   <Estate_RoomRequirementTotal>{0} au total de n'importe lequel d'entre eux :</Estate_RoomRequirementTotal>
+  <CCIA.Play>Jouer {0}</CCIA.Play>
+  <CCIA.TurnOff>Désactiver {0}</CCIA.TurnOff>
+  <CCIA.ListenTo>Écouter {0}</CCIA.ListenTo>
+  <CCIA.On>Sur</CCIA.On>
+  <CCIA.Off>Arrêt</CCIA.Off>
+  <CCIA.Status>Statut</CCIA.Status>
+  <CCIA.Autoplay>Jeu automatique</CCIA.Autoplay>
+  <CCIA.AutoplayTT>Permet la lecture automatique de la musique par l'intermédiaire de la radio.</CCIA.AutoplayTT>
+  <CCIA.NowPlaying>En cours de lecture :</CCIA.NowPlaying>
+  <CCIA.Playing>Écouter la radio.</CCIA.Playing>
+  <CCIA.Listening>Écouter la radio.</CCIA.Listening>
+  <CCIA.TurningOff>Éteindre la radio.</CCIA.TurningOff>
+  <CCIA.PlaceUnderRoof>Doit être placé sous le toit</CCIA.PlaceUnderRoof>
+  <CCIA.RestoredSanity>{0} a rétabli un peu de raison en utilisant la {1}</CCIA.RestoredSanity>
 </LanguageData>

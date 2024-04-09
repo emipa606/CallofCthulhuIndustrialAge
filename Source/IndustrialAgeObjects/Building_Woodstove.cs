@@ -69,7 +69,7 @@ public class Building_Woodstove : Building_WorkTable
             glowerComp.Props.glowRadius = 0f;
         }
 
-        Map.mapDrawer.MapMeshDirty(Position, MapMeshFlag.Things);
+        Map.mapDrawer.MapMeshDirty(Position, MapMeshFlagDefOf.Things);
         Map.glowGrid.RegisterGlower(glowerComp);
     }
 
@@ -94,7 +94,7 @@ public class Building_Woodstove : Building_WorkTable
 
         var smokePos = Position + GenAdj.CardinalDirections[Rot4.North.AsInt] +
                        GenAdj.CardinalDirections[Rot4.North.AsInt];
-        var unused = smokePos.ToVector3();
+        _ = smokePos.ToVector3();
         var smokePosX = (float)smokePos.x;
         if (Rotation == Rot4.North || Rotation == Rot4.South)
         {

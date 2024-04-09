@@ -12,7 +12,7 @@ public class ListenBuildingUtility
     public static bool TryFindBestListenCell(Thing toListen, Pawn pawn, bool desireSit, out IntVec3 result,
         out Building chair)
     {
-        var unused = IntVec3.Invalid;
+        _ = IntVec3.Invalid;
         if (toListen is Building_Gramophone musicBuilding)
         {
             var cells = musicBuilding.ListenableCells;

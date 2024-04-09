@@ -5,4 +5,18 @@
   <Estate_RoomRequirementAllCandelabraMustBeLit>所有烛台必须点燃</Estate_RoomRequirementAllCandelabraMustBeLit>
   <Estate_RoomRequirementAllRoyalChandeliersMustBeLit>所有皇家吊灯必须点燃</Estate_RoomRequirementAllRoyalChandeliersMustBeLit>
   <Estate_RoomRequirementTotal>{0}中的任何一个的总数。</Estate_RoomRequirementTotal>
+  <CCIA.Play>播放 {0}</CCIA.Play>
+  <CCIA.TurnOff>关闭 {0}</CCIA.TurnOff>
+  <CCIA.ListenTo>聆听 {0}</CCIA.ListenTo>
+  <CCIA.On>关于</CCIA.On>
+  <CCIA.Off>关闭</CCIA.Off>
+  <CCIA.Status>现状</CCIA.Status>
+  <CCIA.Autoplay>自动播放</CCIA.Autoplay>
+  <CCIA.AutoplayTT>通过收音机自动播放音乐。</CCIA.AutoplayTT>
+  <CCIA.NowPlaying>正在播放</CCIA.NowPlaying>
+  <CCIA.Playing>播放收音机</CCIA.Playing>
+  <CCIA.Listening>听收音机</CCIA.Listening>
+  <CCIA.TurningOff>关闭收音机。</CCIA.TurningOff>
+  <CCIA.PlaceUnderRoof>必须置于屋顶之下</CCIA.PlaceUnderRoof>
+  <CCIA.RestoredSanity>{0}利用{1}恢复了一些理智</CCIA.RestoredSanity>
 </LanguageData>

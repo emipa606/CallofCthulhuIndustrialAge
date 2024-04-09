@@ -5,4 +5,18 @@
   <Estate_RoomRequirementAllCandelabraMustBeLit>alle Kandelaber müssen angezündet sein</Estate_RoomRequirementAllCandelabraMustBeLit>
   <Estate_RoomRequirementAllRoyalChandeliersMustBeLit>alle königlichen Kronleuchter müssen angezündet werden</Estate_RoomRequirementAllRoyalChandeliersMustBeLit>
   <Estate_RoomRequirementTotal>{0} in der Summe von jedem von ihnen:</Estate_RoomRequirementTotal>
+  <CCIA.Play>Spielen {0}</CCIA.Play>
+  <CCIA.TurnOff>Ausschalten {0}</CCIA.TurnOff>
+  <CCIA.ListenTo>Hören Sie sich {0}</CCIA.ListenTo>
+  <CCIA.On>Auf</CCIA.On>
+  <CCIA.Off>Aus</CCIA.Off>
+  <CCIA.Status>Status</CCIA.Status>
+  <CCIA.Autoplay>Autoplay</CCIA.Autoplay>
+  <CCIA.AutoplayTT>Ermöglicht die automatische Wiedergabe von Musik über das Radio.</CCIA.AutoplayTT>
+  <CCIA.NowPlaying>Jetzt spielen:</CCIA.NowPlaying>
+  <CCIA.Playing>Das Radio abspielen.</CCIA.Playing>
+  <CCIA.Listening>Ich höre Radio.</CCIA.Listening>
+  <CCIA.TurningOff>Radio ausschalten.</CCIA.TurningOff>
+  <CCIA.PlaceUnderRoof>Muss unter Dach und Fach gebracht werden</CCIA.PlaceUnderRoof>
+  <CCIA.RestoredSanity>{0} hat mit Hilfe des {1} die Vernunft wiederhergestellt</CCIA.RestoredSanity>
 </LanguageData>

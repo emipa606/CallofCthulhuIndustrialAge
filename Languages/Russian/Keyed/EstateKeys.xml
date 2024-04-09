@@ -5,4 +5,18 @@
   <Estate_RoomRequirementAllCandelabraMustBeLit>все канделябры должны быть зажжены</Estate_RoomRequirementAllCandelabraMustBeLit>
   <Estate_RoomRequirementAllRoyalChandeliersMustBeLit>все королевские люстры должны быть зажжены</Estate_RoomRequirementAllRoyalChandeliersMustBeLit>
   <Estate_RoomRequirementTotal>{0} в сумме любого из них:</Estate_RoomRequirementTotal>
+  <CCIA.Play>Играть {0}</CCIA.Play>
+  <CCIA.TurnOff>Выключите {0}</CCIA.TurnOff>
+  <CCIA.ListenTo>Слушайте {0}</CCIA.ListenTo>
+  <CCIA.On>На сайте</CCIA.On>
+  <CCIA.Off>С сайта</CCIA.Off>
+  <CCIA.Status>Статус</CCIA.Status>
+  <CCIA.Autoplay>Автоигра</CCIA.Autoplay>
+  <CCIA.AutoplayTT>Включает автоматическое воспроизведение музыки через радиоприемник.</CCIA.AutoplayTT>
+  <CCIA.NowPlaying>Сейчас играет:</CCIA.NowPlaying>
+  <CCIA.Playing>Играет радио.</CCIA.Playing>
+  <CCIA.Listening>Слушать радио.</CCIA.Listening>
+  <CCIA.TurningOff>Выключение радио.</CCIA.TurningOff>
+  <CCIA.PlaceUnderRoof>Должен помещаться под крышу</CCIA.PlaceUnderRoof>
+  <CCIA.RestoredSanity>{0} восстановил здравый смысл, используя {1}</CCIA.RestoredSanity>
 </LanguageData>

@@ -73,12 +73,7 @@ public static class Utility
             return false;
         }
 
-        if (thing.GetType() == type)
-        {
-            return true;
-        }
-
-        return false;
+        return thing.GetType() == type;
     }
 
     //public static float GetSanityLossRate(PawnKindDef kindDef)

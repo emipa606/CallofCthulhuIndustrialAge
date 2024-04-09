@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Verse;
 using Verse.AI;
 //using VerseBase;
 //using RimWorld.Planet;
@@ -29,7 +30,7 @@ public class JobDriver_TurnOffGramophone : JobDriver
 
         if (job.targetA.Thing is Building_Radio)
         {
-            report = "Turning off radio.";
+            report = "CCIA.TurningOff".Translate();
         }
 
         // Toil 1:

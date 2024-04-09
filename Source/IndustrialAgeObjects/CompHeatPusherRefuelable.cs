@@ -4,9 +4,9 @@ using Verse;
 namespace IndustrialAge.Objects;
 
 /*
- * 
+ *
  * Nandonalt's CompHeatPusherRefuelable
- * 
+ *
  */
 public class CompHeatPusherRefuelable : ThingComp
 {

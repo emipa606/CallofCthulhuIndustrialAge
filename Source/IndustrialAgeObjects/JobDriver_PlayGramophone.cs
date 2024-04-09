@@ -32,7 +32,7 @@ public class JobDriver_PlayGramophone : JobDriver
 
         if (job.targetA.Thing is Building_Radio)
         {
-            report = "Playing the radio.";
+            report = "CCIA.Playing".Translate();
         }
 
         // Toil 1:
@@ -81,15 +81,15 @@ public class JobDriver_PlayGramophone : JobDriver
 /*
 
 This is the needed XML file to make a real Job from the JobDriver
-     
+
 <?xml version="1.0" encoding="utf-8" ?>
 <JobDefs>
 <!--========= Job ============-->
-	<JobDef>
-	<defName>PlayGramophone</defName>
-	<driverClass>ArkhamEstate.JobDriver_PlayGramophone</driverClass>
-	<reportString>Winding up gramophone.</reportString>
-	</JobDef>
+    <JobDef>
+    <defName>PlayGramophone</defName>
+    <driverClass>ArkhamEstate.JobDriver_PlayGramophone</driverClass>
+    <reportString>Winding up gramophone.</reportString>
+    </JobDef>
 </JobDefs>
-     
+
 */

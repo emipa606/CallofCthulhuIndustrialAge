@@ -52,7 +52,7 @@ public class JobDriver_PlayInstrument : JobDriver
                     {
                         Utility.ApplySanityLoss(pawn, -sanityRestoreRate);
                         Messages.Message(
-                            $"{pawn} has restored some sanity using the {TargetA.Thing.def.label}.",
+                            "CCIA.RestoredSanity".Translate(pawn, TargetA.Thing.def.label),
                             new TargetInfo(pawn.Position, pawn.Map), MessageTypeDefOf.NeutralEvent); // .Standard);
                     }
                 }

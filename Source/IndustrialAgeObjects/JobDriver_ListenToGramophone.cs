@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using RimWorld;
+using Verse;
 using Verse.AI;
 //using VerseBase;
 
@@ -29,7 +30,7 @@ public class JobDriver_ListenToGramophone : JobDriver
 
         if (job.targetA.Thing is Building_Radio)
         {
-            report = "Listening to the radio.";
+            report = "CCIA.Listening".Translate();
         }
 
 
@@ -62,7 +63,7 @@ public class JobDriver_ListenToGramophone : JobDriver
         {
             if (job.targetA.Thing is Building_Radio)
             {
-                report = "Listening to the radio.";
+                report = "CCIA.Listening".Translate();
             }
 
             ListenTickAction();

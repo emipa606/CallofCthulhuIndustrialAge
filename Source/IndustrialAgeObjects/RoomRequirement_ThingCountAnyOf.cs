@@ -28,7 +28,7 @@ public class RoomRequirement_ThingCountAnyOf : RoomRequirement_ThingAnyOf
     {
         var useLabelKey = !labelKey.NullOrEmpty();
         string text = (useLabelKey ? labelKey : "Estate_RoomRequirementTotal").Translate(count);
-        // after the introductory label, print all required things (indented so they are grouped visually):
+        // after the introductory label, print all required things (indented, so they are grouped visually):
         foreach (var def in things)
         {
             text = string.Concat(new object[]

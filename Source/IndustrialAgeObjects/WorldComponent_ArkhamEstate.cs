@@ -4,14 +4,10 @@ using Verse;
 
 namespace IndustrialAge.Objects;
 
-internal class WorldComponent_ArkhamEstate : WorldComponent
+internal class WorldComponent_ArkhamEstate(World world) : WorldComponent(world)
 {
     private bool AreRecipesReady;
     private bool CheckedForRecipes;
-
-    public WorldComponent_ArkhamEstate(World world) : base(world)
-    {
-    }
 
     public override void WorldComponentTick()
     {

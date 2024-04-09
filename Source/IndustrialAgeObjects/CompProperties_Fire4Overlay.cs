@@ -6,7 +6,7 @@ namespace RimWorld;
 /// /////////////Fire Overlay 4
 public class CompProperties_Fire4Overlay : CompProperties
 {
-    public float flameSize = 1f;
+    public readonly float flameSize = 1f;
 
     public Vector3 offset;
 

@@ -4,4 +4,18 @@
   <Estate_RoomRequirementAllCandelabraMustBeLit>all candelabra must be lit</Estate_RoomRequirementAllCandelabraMustBeLit>
   <Estate_RoomRequirementAllRoyalChandeliersMustBeLit>all royal chandeliers must be lit</Estate_RoomRequirementAllRoyalChandeliersMustBeLit>
   <Estate_RoomRequirementTotal>{0} in total of any of these:</Estate_RoomRequirementTotal>
+  <CCIA.Play>Play {0}</CCIA.Play>
+  <CCIA.TurnOff>Turn off {0}</CCIA.TurnOff>
+  <CCIA.ListenTo>Listen to {0}</CCIA.ListenTo>
+  <CCIA.On>On</CCIA.On>
+  <CCIA.Off>Off</CCIA.Off>
+  <CCIA.Status>Status</CCIA.Status>
+  <CCIA.Autoplay>Autoplay</CCIA.Autoplay>
+  <CCIA.AutoplayTT>Enables automatic playing of music through the radio.</CCIA.AutoplayTT>
+  <CCIA.NowPlaying>Now Playing:</CCIA.NowPlaying>
+  <CCIA.Playing>Playing the radio.</CCIA.Playing>
+  <CCIA.Listening>Listening to the radio.</CCIA.Listening>
+  <CCIA.TurningOff>Turning off radio.</CCIA.TurningOff>
+  <CCIA.PlaceUnderRoof>Must Place Under Roof</CCIA.PlaceUnderRoof>
+  <CCIA.RestoredSanity>{0} has restored some sanity using the {1}</CCIA.RestoredSanity>
 </LanguageData>

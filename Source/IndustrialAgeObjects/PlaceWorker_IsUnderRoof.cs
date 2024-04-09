@@ -27,7 +27,7 @@ public class PlaceWorker_IsUnderRoof : PlaceWorker
             return true;
         }
 
-        return new AcceptanceReport("Must Place Under Roof");
+        return new AcceptanceReport("CCIA.PlaceUnderRoof".Translate());
     }
 }
 

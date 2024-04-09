@@ -4,21 +4,17 @@ using Verse;
 
 namespace IndustrialAge.Objects;
 
-internal class WorldComponent_Tunes : WorldComponent
+internal class WorldComponent_Tunes(World world) : WorldComponent(world)
 {
     private bool AreTunesReady;
-    public List<TuneDef> TuneDefCache = new List<TuneDef>();
-
-    public WorldComponent_Tunes(World world) : base(world)
-    {
-    }
+    public List<TuneDef> TuneDefCache = [];
 
     public TuneDef GetCache(TuneDef tune)
     {
         TuneDef result;
         if (TuneDefCache == null)
         {
-            TuneDefCache = new List<TuneDef>();
+            TuneDefCache = [];
         }
 
         foreach (var current in TuneDefCache)

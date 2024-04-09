@@ -47,23 +47,23 @@ public class Building_Gramophone : Building
 
     // Variables to set a specific value
     private const int counterWoundMax = 20000; // Active-Time
-    private static List<IntVec3> listenableCells = new List<IntVec3>();
+    private static List<IntVec3> listenableCells = [];
 
     private readonly SoundDef songCharleston = SoundDef.Named("Estate_GS_Charleston");
     private readonly SoundDef songInTheMood = SoundDef.Named("Estate_GS_InTheMood");
     private readonly SoundDef songKingPorterStomp = SoundDef.Named("Estate_GS_KingPorterStomp");
     private readonly WorldComponent_Tunes tuneScape = Find.World.GetComponent<WorldComponent_Tunes>();
-    private readonly string txtOff = "Off";
-    private readonly string txtOn = "On";
+    private readonly string txtOff = "CCIA.Off".Translate();
+    private readonly string txtOn = "CCIA.On".Translate();
 
 
-    private readonly string txtPlaying = "Now Playing:";
+    private readonly string txtPlaying = "CCIA.NowPlaying".Translate();
 
     // Component references (will be set in 'SpawnSetup()')
     // CompMusicPlayer  - This makes it possible for your building to play music. You can start and stop the music.
     //private CompMusicPlayer musicComp;
 
-    private readonly string txtStatus = "Status";
+    private readonly string txtStatus = "CCIA.Status".Translate();
 
     private bool autoPlay;
     // ===================== Variables =====================
@@ -79,7 +79,7 @@ public class Building_Gramophone : Building
     private TuneDef nextTuneDef;
 
     protected Sustainer playingSong;
-    private List<TuneDef> playlist = new List<TuneDef>();
+    private List<TuneDef> playlist = [];
     private CompPowerTrader powerTrader;
     private TuneDef prevTuneDef;
     private int rareTickWorker = 250;
@@ -315,7 +315,7 @@ public class Building_Gramophone : Building
         }
 
         var tempList = tuneScape.TuneDefCache.ToList();
-        playlist = new List<TuneDef>(tempList.InRandomOrder());
+        playlist = [..tempList.InRandomOrder()];
         return true;
     }
 
@@ -456,8 +456,8 @@ public class Building_Gramophone : Building
         {
             hotKey = KeyBindingDefOf.Command_TogglePower,
             icon = ContentFinder<Texture2D>.Get("UI/Icons/Commands/Autoplay"),
-            defaultLabel = "Autoplay",
-            defaultDesc = "Enables automatic playing of music through the radio.",
+            defaultLabel = "CCIA.Autoplay".Translate(),
+            defaultDesc = "CCIA.AutoplayTT".Translate(),
             isActive = () => autoPlay,
             toggleAction = delegate { autoPlay = !autoPlay; },
             disabled = true
@@ -535,7 +535,7 @@ public class Building_Gramophone : Building
                 }
             }
 
-            list.Add(new FloatMenuOption($"Listen to {Label}", action0));
+            list.Add(new FloatMenuOption("CCIA.ListenTo".Translate(Label), action0));
 
             void action0a()
             {
@@ -549,7 +549,7 @@ public class Building_Gramophone : Building
                 }
             }
 
-            list.Add(new FloatMenuOption($"Turn off {Label}", action0a));
+            list.Add(new FloatMenuOption("CCIA.TurnOff".Translate(Label), action0a));
         }
 
 
@@ -566,6 +566,9 @@ public class Building_Gramophone : Building
 
         foreach (var tuneDef in tuneDefs)
         {
+            list.Add(new FloatMenuOption("CCIA.Play".Translate(tuneDef.LabelCap), actionDef));
+            continue;
+
             void actionDef()
             {
                 var job = new Job(DefDatabase<JobDef>.GetNamed("PlayGramophone"), this)
@@ -578,8 +581,6 @@ public class Building_Gramophone : Building
                     //Lala
                 }
             }
-
-            list.Add(new FloatMenuOption("Play " + tuneDef.LabelCap, actionDef));
         }
 
         return list;
@@ -589,7 +590,7 @@ public class Building_Gramophone : Building
 
     /// <summary>
     ///     This is used, when the Ticker in the XML is set to 'Rare'
-    ///     This is a tick thats done once every 250 normal Ticks
+    ///     This is a tick that's done once every 250 normal Ticks
     /// </summary>
     public override void TickRare()
     {
