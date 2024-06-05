@@ -359,6 +359,7 @@
     <tickerType>Normal</tickerType>
     <drawerType>RealtimeOnly</drawerType>
     <fillPercent>0.15</fillPercent>
+    <disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
     <statBases>
       <Mass>150</Mass>
       <MaxHitPoints>40</MaxHitPoints>
@@ -424,6 +425,7 @@
     <tickerType>Normal</tickerType>
     <drawerType>RealtimeOnly</drawerType>
     <fillPercent>0.15</fillPercent>
+    <disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
     <statBases>
       <Mass>150</Mass>
       <MaxHitPoints>40</MaxHitPoints>
