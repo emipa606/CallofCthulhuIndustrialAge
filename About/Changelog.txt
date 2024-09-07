@@ -1,5 +1,8 @@
 # Changelog for CallofCthulhuIndustrialAge
 
+1.5.2 - Fixed the duplicate streetlamps issue
+
+
 1.5.1 - Fixed shot over warning
 
 

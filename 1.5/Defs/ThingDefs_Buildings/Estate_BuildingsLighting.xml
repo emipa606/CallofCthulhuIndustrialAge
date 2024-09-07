@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <ThingDef ParentName="BuildingBase">
     <defName>Jecrell_Chandelier</defName>
@@ -470,6 +470,9 @@
     <drawerType>RealtimeOnly</drawerType>
     <size>(1,1)</size>
     <selectable>false</selectable>
+    <building>
+      <isEdifice>false</isEdifice>
+    </building>
     <comps>
       <li Class="CompProperties_Glower">
         <glowRadius>12</glowRadius>

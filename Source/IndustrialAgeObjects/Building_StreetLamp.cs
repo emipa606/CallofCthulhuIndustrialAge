@@ -12,9 +12,9 @@ internal class Building_StreetLamp : Building
     private void SpawnGlower()
     {
         var thing = ThingMaker.MakeThing(glowerDef);
-        var position = Position + GenAdj.CardinalDirections[0]
-                                + GenAdj.CardinalDirections[0];
-        GenPlace.TryPlaceThing(thing, position, Map, ThingPlaceMode.Near);
+        //var position = Position + GenAdj.CardinalDirections[0]
+        //                        + GenAdj.CardinalDirections[0];
+        GenPlace.TryPlaceThing(thing, Position, Map, ThingPlaceMode.Direct);
         glower = thing as ThingWithComps_Glower;
         if (glower != null)
         {
