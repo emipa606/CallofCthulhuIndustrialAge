@@ -1,5 +1,8 @@
 # Changelog for CallofCthulhuIndustrialAge
 
+1.5.4 - Fixed small chandelier
+
+
 1.5.3 - Pawns should now use the telescope for recreation
 
 

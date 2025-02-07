@@ -46,6 +46,7 @@
       <Jecrell_Wax>20</Jecrell_Wax>
     </costList>
     <building>
+      <isEdifice>false</isEdifice>
       <paintable>true</paintable>
     </building>
     <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
