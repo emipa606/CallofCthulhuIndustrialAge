@@ -1,9 +1,13 @@
-# [Industrial Age - Objects and Furniture (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=2249289906)
+# [[Legacy] Industrial Age - Objects and Furniture (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=2249289906)
 
 ![Image](https://i.imgur.com/buuPQel.png)
 
 Update of jecrells mod
 https://steamcommunity.com/sharedfiles/filedetails/?id=777197241
+
+**The release of RimWorld 1.6 added improved support for [Asset Bundles](https://github.com/emipa606/AssetBuilder/blob/main/README.md).**
+To avoid doubling the size of the mod, it was re-released using only Asset Bundles, you can find the new version of this mod [here](https://steamcommunity.com/sharedfiles/filedetails/?id=3539738188).
+This version will not receive any further updates.
 
 - Added wax-patch based on crec4ets mod
 - Made royal chandelier suitable for thronerooms, via SoongJr
@@ -59,7 +63,7 @@ Brachiaraidos, Cory Bonifay, CrankyPeanut, E_T, Finwej, Jan Koutsky, Jonathan, K
 
 -  See if the the error persists if you just have this mod and its requirements active.
 -  If not, try adding your other mods until it happens again.
--  Post your error-log using [HugsLib](https://steamcommunity.com/workshop/filedetails/?id=818773962) or the standalone [Uploader](https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404) and command Ctrl+F12
+-  Post your error-log using the [Log Uploader](https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404) or the standalone [Uploader](https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404) and command Ctrl+F12
 -  For best support, please use the Discord-channel for error-reporting.
 -  Do not report errors by making a discussion-thread, I get no notification of that.
 -  If you have the solution for a problem, please post it to the GitHub repository.

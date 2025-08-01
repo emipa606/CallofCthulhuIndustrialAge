@@ -1,5 +1,8 @@
 # Changelog for CallofCthulhuIndustrialAge
 
+1.5.5 - Last update of the legacy version of the mod
+
+
 1.5.4 - Fixed small chandelier
 
 

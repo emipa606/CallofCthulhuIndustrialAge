@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<HugsLib.UpdateFeatureDef Abstract="true" Name="CallofCthulhuIndustrialAge_UpdateFeatureBase">
+		<modNameReadable>CallofCthulhuIndustrialAge</modNameReadable>
+		<linkUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2249289906</linkUrl>
+	</HugsLib.UpdateFeatureDef>
+	<HugsLib.UpdateFeatureDef ParentName="CallofCthulhuIndustrialAge_UpdateFeatureBase">
+		<defName>CallofCthulhuIndustrialAge_1_5_4</defName>
+		<assemblyVersion>1.5.4</assemblyVersion>
+		<content>This mod has been re-released for the new version of the game. This version will remain but will not be updated further.</content>
+	</HugsLib.UpdateFeatureDef>
+</Defs>
+
