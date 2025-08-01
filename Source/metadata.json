@@ -8,5 +8,11 @@
     "industrial",
     " technology"
   ],
-  "LastXmlCleaning": "2025-02-07T20:18:29.5667979+01:00"
+  "LastXmlCleaning": "2025-02-07T20:18:29.5667979+01:00",
+  "Patches": true,
+  "Defs": true,
+  "Assemblies": true,
+  "LinesOfCode": 89819,
+  "LinesOfXML": 71974,
+  "CodeBaseSize": 82
 }
