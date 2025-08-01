@@ -14,7 +14,7 @@ internal class ThingWithComps_Glower : ThingWithComps
         CheckNeedsFlick();
     }
 
-    public void CheckNeedsDestruction()
+    private void CheckNeedsDestruction()
     {
         if (master == null || !Spawned)
         {
@@ -27,7 +27,7 @@ internal class ThingWithComps_Glower : ThingWithComps
         }
     }
 
-    public void CheckNeedsFlick()
+    private void CheckNeedsFlick()
     {
         if (master == null)
         {

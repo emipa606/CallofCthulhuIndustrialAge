@@ -23,7 +23,7 @@ internal class WorldComponent_ArkhamEstate(World world) : WorldComponent(world)
         CheckedForRecipes = true;
     }
 
-    public void GenerateStrangeMeatRecipe()
+    private void GenerateStrangeMeatRecipe()
     {
         if (!LoadedModManager.RunningMods.Any(x => x.Name.Contains("Cosmic Horrors")) || AreRecipesReady)
         {

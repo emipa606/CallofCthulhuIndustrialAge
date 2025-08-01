@@ -19,20 +19,10 @@ public class JobDriver_AutoPlayListenGramophone : JobDriver
 
     private string report = "";
 
-    public Building_Gramophone Gramophone
-    {
-        get
-        {
-            if (pawn.jobs.curJob.GetTarget(TargetIndex.A).Thing is not Building_Gramophone result)
-            {
-                throw new InvalidOperationException("Gramophone is missing.");
-            }
+    private Building_Gramophone Gramophone => pawn.jobs.curJob.GetTarget(TargetIndex.A).Thing as Building_Gramophone ??
+                                              throw new InvalidOperationException("Gramophone is missing.");
 
-            return result;
-        }
-    }
-
-    protected int Duration { get; } = 400;
+    private int Duration { get; } = 400;
 
     public override bool TryMakePreToilReservations(bool debug)
     {
@@ -113,9 +103,9 @@ public class JobDriver_AutoPlayListenGramophone : JobDriver
             toil = new Toil();
         }
 
-        toil.AddPreTickAction(delegate
+        toil.AddPreTickIntervalAction(delegate(int delta)
         {
-            ListenTickAction();
+            ListenTickAction(delta);
             if (job.targetA.Thing is Building_Radio)
             {
                 report = "CCIA.Listening".Translate();
@@ -127,7 +117,7 @@ public class JobDriver_AutoPlayListenGramophone : JobDriver
         yield return toil;
     }
 
-    protected virtual void ListenTickAction()
+    protected virtual void ListenTickAction(int delta)
     {
         if (!Gramophone.IsOn())
         {
@@ -136,9 +126,9 @@ public class JobDriver_AutoPlayListenGramophone : JobDriver
         }
 
         pawn.rotationTracker.FaceCell(TargetA.Cell);
-        pawn.GainComfortFromCellIfPossible();
+        pawn.GainComfortFromCellIfPossible(delta);
         var statValue = TargetThingA.GetStatValue(StatDefOf.JoyGainFactor);
-        JoyUtility.JoyTickCheckEnd(pawn, JoyTickFullJoyAction.EndJob, statValue);
+        JoyUtility.JoyTickCheckEnd(pawn, delta, JoyTickFullJoyAction.EndJob, statValue);
     }
 }
 

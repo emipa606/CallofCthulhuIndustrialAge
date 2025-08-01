@@ -9,13 +9,9 @@ internal class WorldComponent_Tunes(World world) : WorldComponent(world)
     private bool AreTunesReady;
     public List<TuneDef> TuneDefCache = [];
 
-    public TuneDef GetCache(TuneDef tune)
+    private void GetCache(TuneDef tune)
     {
-        TuneDef result;
-        if (TuneDefCache == null)
-        {
-            TuneDefCache = [];
-        }
+        TuneDefCache ??= [];
 
         foreach (var current in TuneDefCache)
         {
@@ -24,17 +20,14 @@ internal class WorldComponent_Tunes(World world) : WorldComponent(world)
                 continue;
             }
 
-            result = current;
-            return result;
+            return;
         }
 
         TuneDefCache.Add(tune);
-        result = tune;
-        return result;
     }
 
 
-    public void GenerateTunesList()
+    private void GenerateTunesList()
     {
         if (AreTunesReady)
         {

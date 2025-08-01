@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <!-- EN: tallow wax -->
+  <Jecrell_Wax.label>tallow wax</Jecrell_Wax.label>
+  <!-- EN: Wax created from animal fat. -->
+  <Jecrell_Wax.description>Wax created from animal fat.</Jecrell_Wax.description>
+  <!-- EN: wax -->
+  <Jecrell_Wax.stuffProps.stuffAdjective>wax</Jecrell_Wax.stuffProps.stuffAdjective>
+</LanguageData>

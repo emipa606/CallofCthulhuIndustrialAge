@@ -18,16 +18,16 @@ public static class Utility
         Extreme
     }
 
-    public const string SanityLossDef = "ROM_SanityLoss";
-    public const string AltSanityLossDef = "Cults_SanityLoss";
+    private const string SanityLossDef = "ROM_SanityLoss";
+    private const string AltSanityLossDef = "Cults_SanityLoss";
 
-    public static bool modCheck;
-    public static bool loadedCosmicHorrors;
-    public static bool loadedIndustrialAge;
-    public static bool loadedCults;
+    private static bool modCheck;
+    private static bool loadedCosmicHorrors;
+    private static bool loadedIndustrialAge;
+    private static bool loadedCults;
     public static bool loadedFactions;
 
-    public static string Prefix => $"{ModProps.main} :: {ModProps.mod} {ModProps.version} :: ";
+    private static string Prefix => $"{ModProps.main} :: {ModProps.mod} {ModProps.version} :: ";
 
 
     public static bool IsMorning(Map map)
@@ -48,7 +48,7 @@ public static class Utility
     public static T GetMod<T>(string s) where T : Mod
     {
         //Call of Cthulhu - Cosmic Horrors
-        T result = default;
+        T result = null;
         foreach (var ResolvedMod in LoadedModManager.ModHandles)
         {
             if (ResolvedMod.Content.Name == s)
@@ -172,7 +172,7 @@ public static class Utility
         return true;
     }
 
-    public static bool ResultFalseWithReport(StringBuilder s)
+    private static bool ResultFalseWithReport(StringBuilder s)
     {
         s.Append("ActorAvailble: Result = Unavailable");
         DebugReport(s.ToString());
@@ -319,7 +319,7 @@ public static class Utility
         return false;
     }
 
-    public static void ModCheck()
+    private static void ModCheck()
     {
         loadedCosmicHorrors = false;
         loadedIndustrialAge = false;
@@ -360,7 +360,7 @@ public static class Utility
         modCheck = true;
     }
 
-    public static void DebugReport(string x)
+    private static void DebugReport(string x)
     {
         if (Prefs.DevMode && DebugSettings.godMode)
         {

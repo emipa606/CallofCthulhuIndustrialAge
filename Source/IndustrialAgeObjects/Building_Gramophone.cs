@@ -75,10 +75,10 @@ public class Building_Gramophone : Building
     // Destroyed flag. Most of the time not really needed, but sometimes...
     private bool destroyedFlag;
     private float duration = -1f;
-    public bool isRadio;
+    protected bool isRadio;
     private TuneDef nextTuneDef;
 
-    protected Sustainer playingSong;
+    private Sustainer playingSong;
     private List<TuneDef> playlist = [];
     private CompPowerTrader powerTrader;
     private TuneDef prevTuneDef;
@@ -86,13 +86,13 @@ public class Building_Gramophone : Building
     private State state = State.off; // Actual phase
     private State stateOld = State.on; // Save-variable
 
-    public TuneDef CurrentTune
+    private TuneDef CurrentTune
     {
         get => currentTuneDef;
         set => currentTuneDef = value;
     }
 
-    public TuneDef NextTune
+    private TuneDef NextTune
     {
         get => nextTuneDef;
         set => nextTuneDef = value;
@@ -237,10 +237,7 @@ public class Building_Gramophone : Building
         }
 
         //If there is no tuneDef set to play, then let's randomly select one from the library.
-        if (currentTuneDef == null)
-        {
-            currentTuneDef = tuneScape.TuneDefCache.Where(x => !x.instrumentOnly).RandomElement();
-        }
+        currentTuneDef ??= tuneScape.TuneDefCache.Where(x => !x.instrumentOnly).RandomElement();
 
         //We're off? Let's change that.
         if (state != State.off)
@@ -361,7 +358,7 @@ public class Building_Gramophone : Building
         return true;
     }
 
-    public virtual void StartMusic(TuneDef parmDef = null)
+    protected virtual void StartMusic(TuneDef parmDef = null)
     {
         if (state == State.off)
         {

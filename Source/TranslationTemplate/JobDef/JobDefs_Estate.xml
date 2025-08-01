@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <!-- EN: listening to gramophone. -->
+  <ListenToGramophone.reportString>listening to gramophone.</ListenToGramophone.reportString>
+  <!-- EN: listening to gramophone. -->
+  <PlayAndListenToGramophone.reportString>listening to gramophone.</PlayAndListenToGramophone.reportString>
+  <!-- EN: Winding up gramophone. -->
+  <PlayGramophone.reportString>Winding up gramophone.</PlayGramophone.reportString>
+  <!-- EN: turning off gramophone. -->
+  <TurnOffGramophone.reportString>turning off gramophone.</TurnOffGramophone.reportString>
+</LanguageData>

@@ -9,10 +9,10 @@ public class Comp3FireOverlay : ThingCompCandelabra
     private Graphic FireGraphic3;
 
 
-    public Comp3FireOverlay fireOverlay;
+    private Comp3FireOverlay fireOverlay;
     public float fireSize_fromXML;
 
-    public CompProperties_Fire3Overlay Props => (CompProperties_Fire3Overlay)props;
+    private CompProperties_Fire3Overlay Props => (CompProperties_Fire3Overlay)props;
 
 
     public override void PostSpawnSetup(bool bla)

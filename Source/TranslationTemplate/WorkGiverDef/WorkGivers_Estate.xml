@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <!-- EN: cook meals at wood stove furnace -->
+  <DoBillsCookWoodStoveFurnace.label>cook meals at wood stove furnace</DoBillsCookWoodStoveFurnace.label>
+  <!-- EN: cooking -->
+  <DoBillsCookWoodStoveFurnace.gerund>cooking</DoBillsCookWoodStoveFurnace.gerund>
+  <!-- EN: cook -->
+  <DoBillsCookWoodStoveFurnace.verb>cook</DoBillsCookWoodStoveFurnace.verb>
+</LanguageData>

@@ -12,7 +12,7 @@ public class JobDriver_PlayGramophone : JobDriver
 {
     private string report = "";
 
-    protected int Duration { get; } = 400;
+    private int Duration { get; } = 400;
 
     public override bool TryMakePreToilReservations(bool debug)
     {

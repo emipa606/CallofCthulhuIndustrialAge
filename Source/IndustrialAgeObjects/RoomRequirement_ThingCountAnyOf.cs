@@ -13,7 +13,7 @@ public class RoomRequirement_ThingCountAnyOf : RoomRequirement_ThingAnyOf
         return Count(r) >= count;
     }
 
-    public int Count(Room r)
+    private int Count(Room r)
     {
         var thingCount = 0;
         foreach (var def in things)

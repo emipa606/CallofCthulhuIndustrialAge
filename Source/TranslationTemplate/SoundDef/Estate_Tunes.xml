@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <!-- EN: Ain't Misbehavin' -->
+  <Estate_GS_AintMisbehavin.label>Ain't Misbehavin'</Estate_GS_AintMisbehavin.label>
+  <!-- EN: Fats Waller -->
+  <Estate_GS_AintMisbehavin.artist>Fats Waller</Estate_GS_AintMisbehavin.artist>
+  <!-- EN: Charleston -->
+  <Estate_GS_Charleston.label>Charleston</Estate_GS_Charleston.label>
+  <!-- EN: Green Hill Instrumental -->
+  <Estate_GS_Charleston.artist>Green Hill Instrumental</Estate_GS_Charleston.artist>
+  <!-- EN: In The Mood -->
+  <Estate_GS_InTheMood.label>In The Mood</Estate_GS_InTheMood.label>
+  <!-- EN: Glenn Miller -->
+  <Estate_GS_InTheMood.artist>Glenn Miller</Estate_GS_InTheMood.artist>
+  <!-- EN: It Don't Mean A Thing -->
+  <Estate_GS_ItDontMeanAThing.label>It Don't Mean A Thing</Estate_GS_ItDontMeanAThing.label>
+  <!-- EN: Duke Ellington -->
+  <Estate_GS_ItDontMeanAThing.artist>Duke Ellington</Estate_GS_ItDontMeanAThing.artist>
+  <!-- EN: King Porter Stomp -->
+  <Estate_GS_KingPorterStomp.label>King Porter Stomp</Estate_GS_KingPorterStomp.label>
+  <!-- EN: Benny Goodman -->
+  <Estate_GS_KingPorterStomp.artist>Benny Goodman</Estate_GS_KingPorterStomp.artist>
+</LanguageData>

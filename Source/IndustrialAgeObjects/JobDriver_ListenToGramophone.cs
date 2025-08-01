@@ -59,14 +59,14 @@ public class JobDriver_ListenToGramophone : JobDriver
             toil = new Toil();
         }
 
-        toil.AddPreTickAction(delegate
+        toil.AddPreTickIntervalAction(delegate(int delta)
         {
             if (job.targetA.Thing is Building_Radio)
             {
                 report = "CCIA.Listening".Translate();
             }
 
-            ListenTickAction();
+            ListenTickAction(delta);
         });
         toil.AddFinishAction(delegate { JoyUtility.TryGainRecRoomThought(pawn); });
         toil.defaultCompleteMode = ToilCompleteMode.Delay;
@@ -74,7 +74,7 @@ public class JobDriver_ListenToGramophone : JobDriver
         yield return toil;
     }
 
-    protected virtual void ListenTickAction()
+    protected virtual void ListenTickAction(int delta)
     {
         if (TargetA.Thing is Building_Gramophone gramo && !gramo.IsOn())
         {
@@ -83,8 +83,8 @@ public class JobDriver_ListenToGramophone : JobDriver
         }
 
         pawn.rotationTracker.FaceCell(TargetA.Cell);
-        pawn.GainComfortFromCellIfPossible();
+        pawn.GainComfortFromCellIfPossible(delta);
         var statValue = TargetThingA.GetStatValue(StatDefOf.JoyGainFactor);
-        JoyUtility.JoyTickCheckEnd(pawn, JoyTickFullJoyAction.EndJob, statValue);
+        JoyUtility.JoyTickCheckEnd(pawn, delta, JoyTickFullJoyAction.EndJob, statValue);
     }
 }

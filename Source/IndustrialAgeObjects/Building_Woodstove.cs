@@ -19,7 +19,7 @@ public class Building_Woodstove : Building_WorkTable
 
     private CompRefuelable refuelableComp;
 
-    private FloatRange smokeSize = new FloatRange(0.25f, 0.5f);
+    private FloatRange smokeSize = new(0.25f, 0.5f);
 
 //        public override bool UsableNow
 //        {
@@ -36,7 +36,7 @@ public class Building_Woodstove : Building_WorkTable
         billStack = new BillStack(this);
     }
 
-    public void ResolveGlowerAndHeater()
+    private void ResolveGlowerAndHeater()
     {
         if (flickableComp == null)
         {
@@ -73,7 +73,7 @@ public class Building_Woodstove : Building_WorkTable
         Map.glowGrid.RegisterGlower(glowerComp);
     }
 
-    public void ResolveSmoke()
+    private void ResolveSmoke()
     {
         if (Find.TickManager.TicksGame % 60 != 0)
         {

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <!-- EN: carbon arc lamps -->
+  <Estate_TechArcLamps.label>carbon arc lamps</Estate_TechArcLamps.label>
+  <!-- EN: Use a simple voltage ignition system to create voltaic lights. -->
+  <Estate_TechArcLamps.description>Use a simple voltage ignition system to create voltaic lights.</Estate_TechArcLamps.description>
+  <!-- EN: wax-powered lighting -->
+  <Estate_TechCandleLights.label>wax-powered lighting</Estate_TechCandleLights.label>
+  <!-- EN: Allows you to create wax from meat at cooking stations and construct wax-fueled candelabras and chandeliers. -->
+  <Estate_TechCandleLights.description>Allows you to create wax from meat at cooking stations and construct wax-fueled candelabras and chandeliers.</Estate_TechCandleLights.description>
+  <!-- EN: tungsten-filament lamps -->
+  <Estate_TechEdisonLights.label>tungsten-filament lamps</Estate_TechEdisonLights.label>
+  <!-- EN: Allows the crafting of electric lamps with tungsten-filaments. -->
+  <Estate_TechEdisonLights.description>Allows the crafting of electric lamps with tungsten-filaments.</Estate_TechEdisonLights.description>
+  <!-- EN: gas-powered lights -->
+  <Estate_TechGasLights.label>gas-powered lights</Estate_TechGasLights.label>
+  <!-- EN: Generate and use gas to maintain simple light fixtures. -->
+  <Estate_TechGasLights.description>Generate and use gas to maintain simple light fixtures.</Estate_TechGasLights.description>
+  <!-- EN: record player -->
+  <Estate_TechMusicLow.label>record player</Estate_TechMusicLow.label>
+  <!-- EN: Allows you to craft gramophones, antique music playing devices. -->
+  <Estate_TechMusicLow.description>Allows you to craft gramophones, antique music playing devices.</Estate_TechMusicLow.description>
+  <!-- EN: basic radio -->
+  <Estate_TechMusicMed.label>basic radio</Estate_TechMusicMed.label>
+  <!-- EN: Allows you to construct basic radio systems that double as basic communication points. -->
+  <Estate_TechMusicMed.description>Allows you to construct basic radio systems that double as basic communication points.</Estate_TechMusicMed.description>
+  <!-- EN: electric refrigeration -->
+  <Estate_TechRefrigeratorBasic.label>electric refrigeration</Estate_TechRefrigeratorBasic.label>
+  <!-- EN: Allows you to build electric refrigerators to store meals. -->
+  <Estate_TechRefrigeratorBasic.description>Allows you to build electric refrigerators to store meals.</Estate_TechRefrigeratorBasic.description>
+  <!-- EN: wood stove furnace -->
+  <Estate_TechWoodStoveFurnace.label>wood stove furnace</Estate_TechWoodStoveFurnace.label>
+  <!-- EN: Allows you to build wood-fueled stove furnaces to heat rooms and cook meals. -->
+  <Estate_TechWoodStoveFurnace.description>Allows you to build wood-fueled stove furnaces to heat rooms and cook meals.</Estate_TechWoodStoveFurnace.description>
+  <!-- EN: telegraph -->
+  <Industrial_Telegraph.label>telegraph</Industrial_Telegraph.label>
+  <!-- EN: Decode the mysteries of telecommunication. The telegraph allows contact with other communities. -->
+  <Industrial_Telegraph.description>Decode the mysteries of telecommunication. The telegraph allows contact with other communities.</Industrial_Telegraph.description>
+</LanguageData>

@@ -9,11 +9,11 @@ public class Comp4FireOverlay : ThingCompCandelabra
     private Graphic FireGraphic4;
 
 
-    public Comp4FireOverlay fireOverlay;
+    private Comp4FireOverlay fireOverlay;
     public float fireSize_fromXML;
 
 
-    public CompProperties_Fire4Overlay Props => (CompProperties_Fire4Overlay)props;
+    private CompProperties_Fire4Overlay Props => (CompProperties_Fire4Overlay)props;
 
 
     public override void PostSpawnSetup(bool bla)

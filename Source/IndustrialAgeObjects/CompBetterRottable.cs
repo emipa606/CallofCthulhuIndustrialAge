@@ -108,24 +108,25 @@ public class CompBetterRottable : CompRottable
         }
 
         if (Mathf.FloorToInt(rotProgress / 60000f) == Mathf.FloorToInt(RotProgress / 60000f) ||
-            !ShouldTakeRotDamage())
+            !shouldTakeRotDamage())
         {
             return;
         }
 
-        if (Stage == RotStage.Rotting && PropsRot.rotDamagePerDay > 0f)
+        switch (Stage)
         {
-            parent.TakeDamage(new DamageInfo(DamageDefOf.Rotting,
-                GenMath.RoundRandom(PropsRot.rotDamagePerDay)));
-        }
-        else if (Stage == RotStage.Dessicated && PropsRot.dessicatedDamagePerDay > 0f)
-        {
-            parent.TakeDamage(new DamageInfo(DamageDefOf.Rotting,
-                GenMath.RoundRandom(PropsRot.dessicatedDamagePerDay)));
+            case RotStage.Rotting when PropsRot.rotDamagePerDay > 0f:
+                parent.TakeDamage(new DamageInfo(DamageDefOf.Rotting,
+                    GenMath.RoundRandom(PropsRot.rotDamagePerDay)));
+                break;
+            case RotStage.Dessicated when PropsRot.dessicatedDamagePerDay > 0f:
+                parent.TakeDamage(new DamageInfo(DamageDefOf.Rotting,
+                    GenMath.RoundRandom(PropsRot.dessicatedDamagePerDay)));
+                break;
         }
     }
 
-    private bool ShouldTakeRotDamage()
+    private bool shouldTakeRotDamage()
     {
         return parent.ParentHolder is not Thing thing || thing.def.category != ThingCategory.Building ||
                !thing.def.building.preventDeteriorationInside;

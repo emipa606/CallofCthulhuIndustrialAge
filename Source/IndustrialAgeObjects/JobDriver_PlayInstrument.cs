@@ -33,12 +33,12 @@ public class JobDriver_PlayInstrument : JobDriver
         var soundDef = Find.World.GetComponent<WorldComponent_Tunes>().TuneDefCache
             .FindAll(x => x.instrumentDefs.Contains(TargetThingA.def)).RandomElement();
         toil.PlaySustainerOrSound(soundDef);
-        toil.tickAction = delegate
+        toil.tickIntervalAction = delegate(int delta)
         {
             pawn.rotationTracker.FaceCell(TargetA.Cell);
-            pawn.GainComfortFromCellIfPossible();
+            pawn.GainComfortFromCellIfPossible(delta);
             var statValue = TargetThingA.GetStatValue(StatDefOf.JoyGainFactor);
-            JoyUtility.JoyTickCheckEnd(pawn, JoyTickFullJoyAction.EndJob, statValue);
+            JoyUtility.JoyTickCheckEnd(pawn, delta, JoyTickFullJoyAction.EndJob, statValue);
         };
         toil.defaultCompleteMode = ToilCompleteMode.Delay;
         toil.defaultDuration = job.def.joyDuration;

@@ -9,7 +9,7 @@ public class ThingCompCandelabra : ThingComp
 {
     private bool fireOnInt;
 
-    public bool ShouldBeFireNow
+    protected bool ShouldBeFireNow
     {
         get
         {

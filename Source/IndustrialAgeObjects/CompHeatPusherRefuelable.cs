@@ -12,7 +12,7 @@ public class CompHeatPusherRefuelable : ThingComp
 {
     private const int HeatPushInterval = 60;
 
-    public CompProperties_HeatPusher Props => (CompProperties_HeatPusher)props;
+    private CompProperties_HeatPusher Props => (CompProperties_HeatPusher)props;
 
     protected virtual bool ShouldPushHeatNow
     {

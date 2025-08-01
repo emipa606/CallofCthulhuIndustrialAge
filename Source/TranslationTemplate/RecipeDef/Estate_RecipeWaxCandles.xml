@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <!-- EN: make wax -->
+  <Jecrell_MakeWax.label>make wax</Jecrell_MakeWax.label>
+  <!-- EN: renders tallow wax from animal fat -->
+  <Jecrell_MakeWax.description>renders tallow wax from animal fat</Jecrell_MakeWax.description>
+  <!-- EN: making wax -->
+  <Jecrell_MakeWax.jobString>making wax</Jecrell_MakeWax.jobString>
+</LanguageData>

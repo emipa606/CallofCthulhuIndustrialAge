@@ -22,9 +22,9 @@ public class Building_Refrigerator : Building_Storage, IStoreSettingsParent
     private float idealTemp = float.MinValue;
     private bool operatingAtHighPower;
 
-    public CompPowerTrader PowerTrader { get; set; }
+    private CompPowerTrader PowerTrader { get; set; }
 
-    public CompGlower Glower { get; set; }
+    private CompGlower Glower { get; set; }
 
     public float IdealTemp
     {
@@ -51,10 +51,10 @@ public class Building_Refrigerator : Building_Storage, IStoreSettingsParent
 
             return currentTemp;
         }
-        set => currentTemp = value;
+        private set => currentTemp = value;
     }
 
-    public float BasePowerConsumption => -PowerTrader.Props.basePowerConsumption;
+    private float BasePowerConsumption => -PowerTrader.Props.basePowerConsumption;
 
     StorageSettings IStoreSettingsParent.GetParentStoreSettings()
     {

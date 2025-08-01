@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <!-- EN: gramophone -->
+  <Estate_Gramophone.label>gramophone</Estate_Gramophone.label>
+  <!-- EN: An ancient windup device utilized to play sound recordings from bygone eras. -->
+  <Estate_Gramophone.description>An ancient windup device utilized to play sound recordings from bygone eras.</Estate_Gramophone.description>
+  <!-- EN: radio -->
+  <Estate_Radio.label>radio</Estate_Radio.label>
+  <!-- EN: An ancient windup device utilized to play sound recordings from bygone eras. Now with autoplay. -->
+  <Estate_Radio.description>An ancient windup device utilized to play sound recordings from bygone eras. Now with autoplay.</Estate_Radio.description>
+</LanguageData>
